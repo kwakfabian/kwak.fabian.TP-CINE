@@ -1,0 +1,28 @@
+<div class="contenedor-div-login">
+    <div>
+        <h2>Iniciar Sesion</h2>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div>
+                <label>Correo Electronico</label>
+                <input id="email" type="email" formControlName="email" >
+            </div>
+            <div>
+                <label>Contraseña</label>
+                <input id="password" type="password" formControlName="password">
+            </div>
+
+            @if(errorMessage()){
+                <div>{{errorMessage()}}</div>
+            }
+
+            <button type="submit" [disabled]="loginForm.invalid || isLoading()">
+                {{isLoading() ? 'Ingresando' : 'Entrar'}}
+            </button>
+
+            <p>
+                ¿No tenes cuenta?
+                <a routerLink="/register">Toca aca</a>
+            </p>
+        </form>
+    </div>
+</div>

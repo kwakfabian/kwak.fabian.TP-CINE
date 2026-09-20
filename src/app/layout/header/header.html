@@ -1,0 +1,18 @@
+<section class="section-header">
+    <nav class="nav-header">
+        <div class="div-header-izquierda">
+            <a id="nombre-cine" routerLink="/home" routerLinkActive="active">CineKwak</a>
+        </div>
+        <div class="div-header-derecha">
+            <a routerLink="/home" routerLinkActive="active">Inicio</a>
+            <a routerLink="/candy" routerLinkActive="active">Candy</a> 
+            @if (authService.currentUser()) {
+                <a routerLink="/favorito" routerLinkActive="active">Favoritos</a>
+                <a href="#" (click)="logout(); $event.preventDefault()">Cerrar sesion</a>
+            } @else {
+                <a routerLink="/login">Iniciar sesion</a>
+            }
+            <a *appRole="admin" routerLink="/">Agregar Pelicula</a>
+        </div>
+    </nav>
+</section>

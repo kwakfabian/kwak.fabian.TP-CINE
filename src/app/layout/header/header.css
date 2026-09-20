@@ -1,0 +1,20 @@
+.section-header {
+    padding: 20px;
+    color: white;
+    border-bottom: 1px solid rgb(65, 65, 65);
+}
+
+.nav-header {
+    display: flex;
+    align-items: center;
+    gap:300px;
+}
+
+#nombre-cine {
+    font-size: 225%;
+}
+
+.div-header-derecha{
+    display: flex;
+    gap:20px;
+}

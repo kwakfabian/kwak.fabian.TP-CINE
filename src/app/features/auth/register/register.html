@@ -1,0 +1,27 @@
+<div class="contenedor-div-register">
+    <div>
+        <h2>Registrarse</h2>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div>
+                <label>Correo Electronico</label>
+                <input id="email" type="email" formControlName="email">
+            </div>
+            <div>
+                <label>Contraseña</label>
+                <input id="password" type="password" formControlName="password" >
+            </div>
+
+            @if(errorMessage()){
+                <div>{{errorMessage()}}</div>
+            }
+
+            <button type="submit" [disabled]="registerForm.invalid || isLoading()">
+                {{isLoading() ? 'Registrando' : 'Registrarse'}}
+            </button>
+
+            <p>¿Ya tenes una cuenta?
+                <a routerLink="/login">Toca aca</a>
+            </p>
+        </form>
+    </div>
+</div>
