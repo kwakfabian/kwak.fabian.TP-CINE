@@ -1,14 +1,37 @@
 <section class="section-home">
     <div class="div-titulo">
         <h1>MAS POPULARES</h1>
+
+        <div class="div-mas-populares">
+            @for (pelicula of peliculas(); track pelicula.pelicula_id) {
+                @if (pelicula.estado === "MAS POPULARES") {
+                    <app-pelicula-card [pelicula]="pelicula"></app-pelicula-card>
+                }
+            }
+        </div>
     </div>
-    <div class="div-mas-populares">
-        <app-pelicula-card></app-pelicula-card>
-    </div>
+
     <div class="div-titulo">
-        <h1>EN CARTELERA</h1>
+        <h1>CARTELERA</h1>
+
+        <div class="div-cartelera">
+            @for (pelicula of peliculas(); track pelicula.pelicula_id) {
+                @if (pelicula.estado === "CARTELERA") {
+                    <app-pelicula-card [pelicula]="pelicula"></app-pelicula-card>
+                }
+            }
+        </div>
     </div>
+
     <div class="div-titulo">
-        <h1>PROXIMAMENTE</h1>
+        <h1>PREVENTA</h1>
+
+        <div class="div-preventa">
+            @for (pelicula of peliculas(); track pelicula.pelicula_id) {
+                @if (pelicula.estado === "PREVENTA") {
+                    <app-pelicula-card [pelicula]="pelicula"></app-pelicula-card>
+                }
+            }
+        </div>
     </div>
 </section>

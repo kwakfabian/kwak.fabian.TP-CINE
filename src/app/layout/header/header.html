@@ -4,15 +4,18 @@
             <a id="nombre-cine" routerLink="/home" routerLinkActive="active">CineKwak</a>
         </div>
         <div class="div-header-derecha">
+            @if (authService.currentUserData()?.rol === 'admin') {
+                <a routerLink="/add-pelicula">Agregar Pelicula</a>
+                <a routerLink="/add-candy">Agregar Candy</a>
+            }
             <a routerLink="/home" routerLinkActive="active">Inicio</a>
             <a routerLink="/candy" routerLinkActive="active">Candy</a> 
             @if (authService.currentUser()) {
-                <a routerLink="/favorito" routerLinkActive="active">Favoritos</a>
+                <a routerLink="/favoritos" routerLinkActive="active">Favoritos</a>
                 <a href="#" (click)="logout(); $event.preventDefault()">Cerrar sesion</a>
             } @else {
                 <a routerLink="/login">Iniciar sesion</a>
             }
-            <a *appRole="admin" routerLink="/">Agregar Pelicula</a>
         </div>
     </nav>
 </section>

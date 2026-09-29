@@ -16,7 +16,14 @@ export class RegisterComponent {
 
   registerForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]]
+    password: ['', [Validators.required, Validators.minLength(6)]],
+    nombre: ['', [Validators.required, Validators.minLength(3)]],
+    apellido: ['', [Validators.required, Validators.minLength(2)]],
+    fechaDeNacimiento: ['', [Validators.required]],
+    tipoDeSangre: ['', [Validators.required]],
+    colorDeOjos: ['', [Validators.required, Validators.minLength(4)]],
+    vacacionesPorAnio: [0, [Validators.required, Validators.min(0)]]
+
   });
 
   isLoading = signal(false);
@@ -29,13 +36,10 @@ export class RegisterComponent {
     this.isLoading.set(true);
     this.errorMessage.set(null);
 
-    const { email, password } = this.registerForm.value;
+    const { email, password, nombre, apellido, fechaDeNacimiento, tipoDeSangre, colorDeOjos, vacacionesPorAnio } = this.registerForm.value;
 
     try {
-      const { data, error } = await this.authService.signUp(email!, password!);
-
-      console.log('DATA:', data);
-      console.log('ERROR:', error); 
+      const { data, error } = await this.authService.signUp(email!, password!, nombre!, apellido!, fechaDeNacimiento!, tipoDeSangre!, colorDeOjos!,vacacionesPorAnio!);
       if (error) throw error;
 
       if (data.user?.identities?.length === 0){
@@ -43,9 +47,8 @@ export class RegisterComponent {
       } else{
         this.succesMessage.set('Registro exitoso')
         this.registerForm.reset()
+        this.router.navigate(['/home']);
       }
-
-      this.router.navigate(['/home']);
 
     } catch (error: any) {
       this.errorMessage.set(error.message || 'Error al registrar la cuenta');

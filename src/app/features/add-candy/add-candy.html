@@ -1,0 +1,112 @@
+<section>
+    <div>
+        <h2>Agregar Candy</h2>
+
+        <div>
+            <form [formGroup]="candyForm" (ngSubmit)="onSubmit()" class="candy-form">
+
+                <div>
+                    <label for="nombre_candy">Nombre </label>
+
+                    <input
+                    type="text"
+                    id="nombre_candy"
+                    formControlName="nombre_candy"
+                    placeholder="Nombre del Candy"
+                    [class.input-error]="f.nombre_candy.invalid && f.nombre_candy.touched">
+
+                    @if (f.nombre_candy.touched && f.nombre_candy.invalid) {
+                        <div>
+
+                            @if (f.nombre_candy.hasError('required')) {
+                                <small>El nombre es obligatorio</small>
+                            }
+
+                            @if (f.nombre_candy.hasError('minlength')) {
+                                <small>Minimo de 2 caracteres</small>
+                            }
+
+                            @if (f.nombre_candy.hasError('maxlength')) {
+                                <small>Maximo de 100 caracteres</small>
+                            }
+
+                        </div>
+                    }
+                </div>
+
+
+                <div>
+                    <label for="img_url">URL de la Imagen </label>
+
+                    <input
+                    type="text"
+                    id="img_url"
+                    formControlName="img_url"
+                    placeholder="https://..."
+                    [class.input-error]="f.img_url.invalid && f.img_url.touched">
+
+                    @if (f.img_url.touched && f.img_url.invalid) {
+                        <div>
+
+                            @if (f.img_url.hasError('required')) {
+                                <small>La URL es obligatoria</small>
+                            }
+
+                            @if (f.img_url.hasError('pattern')) {
+                                <small>Tiene que empezar con http:// o https://</small>
+                            }
+
+                        </div>
+                    }
+                </div>
+
+
+                <div>
+                    <label for="tipo_candy">Tipo de Candy *</label>
+
+                    <select
+                        id="tipo_candy"
+                        formControlName="tipo_candy"
+                        [class.input-error]="f.tipo_candy.invalid && f.tipo_candy.touched">
+
+                        <option value="" disabled>Seleccioná un tipo</option>
+
+                        @for (tipo of tiposCandy; track tipo) {
+                            <option [value]="tipo">
+                                {{ tipo }}
+                            </option>
+                        }
+
+                    </select>
+
+                    @if (f.tipo_candy.touched && f.tipo_candy.invalid) {
+                        <div>
+                            @if (f.tipo_candy.hasError('required')) {
+                                <small>El tipo de Candy es obligatorio</small>
+                            }
+                        </div>
+                    }
+                </div>
+
+
+                <div>
+                    <label for="estado">
+                        <input
+                        type="checkbox"
+                        id="estado"
+                        formControlName="estado">
+
+                        Disponible
+                    </label>
+                </div>
+
+
+                <button type="submit" [disabled]="candyForm.invalid">
+                    Agregar Candy
+                </button>
+
+            </form>
+        </div>
+    </div>
+</section>
+

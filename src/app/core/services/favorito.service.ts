@@ -22,7 +22,7 @@ export class FavoritoService {
     const { data, error } = await this.supabase
       .from('favoritos')
       .select('*, peliculas(*)')
-      .eq('user_id', user.id);
+      .eq('usuario_id', user.id);
 
     if (error) {
       console.error('Error al cargar favoritos:', error.message);
@@ -41,7 +41,7 @@ export class FavoritoService {
 
     const { data, error } = await this.supabase
       .from('favoritos')
-      .insert([{ ...favorito, user_id: user.id }])
+      .insert([{ ...favorito, usuario_id: user.id }])
       .select('*, peliculas(*)')
       .single();
 

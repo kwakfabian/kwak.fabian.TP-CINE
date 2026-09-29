@@ -1,3 +1,9 @@
-<a href="">
-<img src={{pelicula.img}} alt="">
-
+<div>
+    <img
+        [src]="pelicula().img_url"
+        [alt]="pelicula().pelicula_titulo"
+    >
+    <button (click)="agregarAFavoritos()">
+        ❤️
+    </button>
+</div>

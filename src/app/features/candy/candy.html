@@ -1,12 +1,44 @@
 <section>
     <div class="div-titulo">
-        <h1>COMBOS</h1>
+        <h2>COMBOS</h2>
+            <div class="div-combos">
+            @for (candy of candy(); track candy.candy_id) {
+                @if (candy.tipo_candy === "Combos") {
+                    <app-candy-card [candy]="candy"></app-candy-card>
+                }
+            }
+        </div>
     </div>
 
     <div class="div-titulo">
-        <h1>BEBIDAS</h1>
+        <h2>POCHOCLOS</h2>
+        <div class="div-pochoclos">
+            @for (candy of candy(); track candy.candy_id) {
+                @if (candy.tipo_candy === "Pochoclos") {
+                    <app-candy-card [candy]="candy"></app-candy-card>
+                }
+            }
+        </div>
+    </div>
+
+    <div class="div-titulo">
+        <h2>BEBIDAS</h2>
+            <div class="div-bebidas">
+            @for (candy of candy(); track candy.candy_id) {
+                @if (candy.tipo_candy === "Bebidas") {
+                    <app-candy-card [candy]="candy"></app-candy-card>
+                }
+            }
+        </div>
     </div>
     <div class="div-titulo">
-        <h1>SNACKS</h1>
+        <h2>SNACKS</h2>
+            <div class="div-snacks">
+            @for (candy of candy(); track candy.candy_id) {
+                @if (candy.tipo_candy === "Snacks") {
+                    <app-candy-card [candy]="candy"></app-candy-card>
+                }
+            }
+        </div>
     </div>
 </section>

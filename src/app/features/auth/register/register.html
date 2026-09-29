@@ -10,10 +10,38 @@
                 <label>Contraseña</label>
                 <input id="password" type="password" formControlName="password" >
             </div>
+            <div>
+                <label>Nombre</label>
+                <input id="nombre" type="text" formControlName="nombre">
+            </div>
+            <div>
+                <label>Apellido</label>
+                <input id="apellido" type="text" formControlName="apellido">
+            </div>
+            <div>
+                <label>Fecha de Nacimiento</label>
+                <input id="fechaDeNacimiento" type="date" formControlName="fechaDeNacimiento">
+            </div>
+            <div>
+                <label>Color de Ojos</label>
+                <input id="colorDeOjos" type="text" formControlName="colorDeOjos">
+            </div>
+            <div>
+                <label>Tipo de Sangre</label>
+                <input id="tipoDeSangre" type="text" formControlName="tipoDeSangre">
+            </div>
+            <div>
+                <label>Vacaciones por año</label>
+                <input id="vacacionesPorAnio" type="number" formControlName="vacacionesPorAnio">
+            </div>
 
             @if(errorMessage()){
                 <div>{{errorMessage()}}</div>
             }
+
+            @if (succesMessage()) {
+                <div>{{ succesMessage() }}</div>
+            }       
 
             <button type="submit" [disabled]="registerForm.invalid || isLoading()">
                 {{isLoading() ? 'Registrando' : 'Registrarse'}}
