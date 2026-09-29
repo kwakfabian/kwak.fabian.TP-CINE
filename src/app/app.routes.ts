@@ -14,9 +14,10 @@ export const routes: Routes = [
 
     { path: '', redirectTo: '/home', pathMatch: 'full'},
 
-    {path: 'home', component: Home, children:[{path: 'detail-pelicula/:id', component: DetailPelicula}]},
+    {path: 'home', component: Home},
     {path: 'candy', component: Candy},
     {path: 'favoritos', component: Favoritos, canActivate: [authGuard]},
+    {path: 'pelicula/:id', component: DetailPelicula},
     {path: 'add-pelicula', component: AddPelicula, canActivate: [authAdminGuard]},
     {path: 'add-candy', component: AddCandy, canActivate: [authAdminGuard]},
     {path: 'login', component: LoginComponent},

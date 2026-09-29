@@ -14,6 +14,9 @@ export class RegisterComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
 
+  tipoDeSangre = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
+  colorDeOjos = ['Negro', 'Celeste', 'Verde', 'Marron', 'Otro']
+
   registerForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
@@ -21,7 +24,7 @@ export class RegisterComponent {
     apellido: ['', [Validators.required, Validators.minLength(2)]],
     fechaDeNacimiento: ['', [Validators.required]],
     tipoDeSangre: ['', [Validators.required]],
-    colorDeOjos: ['', [Validators.required, Validators.minLength(4)]],
+    colorDeOjos: ['', [Validators.required]],
     vacacionesPorAnio: [0, [Validators.required, Validators.min(0)]]
 
   });
@@ -29,6 +32,10 @@ export class RegisterComponent {
   isLoading = signal(false);
   errorMessage = signal<string | null>(null);
   succesMessage= signal<string | null>(null);
+
+  get f() {
+    return this.registerForm.controls;
+  }
 
   async onSubmit() {
     if (this.registerForm.invalid) return;

@@ -23,13 +23,54 @@
                 <input id="fechaDeNacimiento" type="date" formControlName="fechaDeNacimiento">
             </div>
             <div>
-                <label>Color de Ojos</label>
-                <input id="colorDeOjos" type="text" formControlName="colorDeOjos">
+                <label for="colorDeOjos">Color de Ojos</label>
+
+                <select
+                    id="colorDeOjos"
+                    formControlName="colorDeOjos"
+                    [class.input-error]="f.colorDeOjos.invalid && f.colorDeOjos.touched">
+
+                    <option value="" disabled>Seleccioná un color</option>
+
+                    @for (color of colorDeOjos; track color) {
+                        <option [value]="color">{{ color }}</option>
+                    }
+                </select>
+
+                @if (f.colorDeOjos.touched && f.colorDeOjos.invalid) {
+                    <div>
+                        @if (f.colorDeOjos.hasError('required')) {
+                            <small>El color de ojos es obligatorio</small>
+                        }
+                    </div>
+                }
             </div>
+
             <div>
-                <label>Tipo de Sangre</label>
-                <input id="tipoDeSangre" type="text" formControlName="tipoDeSangre">
+                <label for="tipoDeSangre">Tipo de Sangre</label>
+
+                <select
+                    id="tipoDeSangre"
+                    formControlName="tipoDeSangre"
+                    [class.input-error]="f.tipoDeSangre.invalid && f.tipoDeSangre.touched">
+
+                    <option value="" disabled>Seleccioná un tipo de sangre</option>
+
+                    @for (tipo of tipoDeSangre; track tipo) {
+                        <option [value]="tipo">{{ tipo }}</option>
+                    }
+                </select>
+
+                @if (f.tipoDeSangre.touched && f.tipoDeSangre.invalid) {
+                    <div>
+                        @if (f.tipoDeSangre.hasError('required')) {
+                            <small>El tipo de sangre es obligatorio</small>
+                        }
+                    </div>
+                }
             </div>
+
+
             <div>
                 <label>Vacaciones por año</label>
                 <input id="vacacionesPorAnio" type="number" formControlName="vacacionesPorAnio">

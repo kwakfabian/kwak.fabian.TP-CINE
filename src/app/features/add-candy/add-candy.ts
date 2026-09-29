@@ -31,9 +31,7 @@
         Validators.required
       ]), 
 
-      disponible: new FormControl(true, [
-        Validators.required
-      ])
+      disponible: new FormControl(true)
     });
 
     get f() {

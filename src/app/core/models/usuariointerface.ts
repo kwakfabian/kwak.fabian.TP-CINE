@@ -3,8 +3,8 @@ export interface Usuario{
     nombre: string,
     apellido: string,
     fechaDeNacimiento: string,
-    tipoDeSangre:string,
-    colorDeOjos:string,
+    tipoDeSangre:string[],
+    colorDeOjos:string[],
     vacacionesPorAnio: number,
     rol: string
 }

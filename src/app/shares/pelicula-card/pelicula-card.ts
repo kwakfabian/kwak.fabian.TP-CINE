@@ -1,10 +1,11 @@
 import { Component, input, inject } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
+import { RouterLink } from '@angular/router';
 import { Pelicula } from '../../core/models/peliculainterface';
 import { FavoritoService } from '../../core/services/favorito.service';
 
 @Component({
-  imports: [],
+  imports: [RouterLink],
   selector: 'app-pelicula-card',
   styleUrl: './pelicula-card.css',
   templateUrl: './pelicula-card.html',

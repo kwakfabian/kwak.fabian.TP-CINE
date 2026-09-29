@@ -1,9 +1,9 @@
 <div>
-    <img
-        [src]="pelicula().img_url"
-        [alt]="pelicula().pelicula_titulo"
-    >
-    <button (click)="agregarAFavoritos()">
-        ❤️
-    </button>
+
+    <a [routerLink]="['/pelicula', pelicula().pelicula_id]">
+        <img 
+            [src]="pelicula().img_url" 
+            [alt]="pelicula().pelicula_titulo">
+    </a>
+
 </div>

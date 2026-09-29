@@ -1,0 +1,13 @@
+img {
+    width: 150%;
+    height: 400px;
+    display: block;
+    object-fit: cover;
+    cursor: pointer;
+    border-radius: 15px;
+}
+
+img:hover{
+    transform: scale(1.06);
+    filter: brightness(50%);
+}

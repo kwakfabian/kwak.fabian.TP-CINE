@@ -93,4 +93,17 @@ export class PeliculaService{
         console.log(`Nueva pelicula Agregada: "${pelicula.pelicula_titulo}"`);
         return true;
     }
+
+    async editarPelicula(id: string, cambios: Omit<Pelicula, 'pelicula_id'>): Promise<boolean> {
+    const { error } = await this.supabase
+        .from('peliculas')
+        .update(cambios)
+        .eq('pelicula_id', id);
+
+    if (error) {
+        console.error('Error al editar pelicula:', error.message);
+        return false;
+    }
+    return true;
+    }
 }

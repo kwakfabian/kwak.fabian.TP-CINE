@@ -1,0 +1,163 @@
+.section-detalle {
+    margin-top: 50px;
+    width: 100%;
+    padding: 40px 0 60px;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+    border: rgb(65, 65, 65) 1px solid;
+    border-radius: 15px;
+    background-color: #1a1a1a;
+}
+
+.card-detalle {
+    width: 90%;
+    max-width: 1100px;
+    min-height: 600px;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+.img-detalle {
+    width: 42%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    border-radius: 10px;
+}
+
+.info-detalle {
+    width: 58%;
+    padding: 40px 40px 10px 40px;
+
+    display: flex;
+    flex-direction: column;
+
+    color: white;
+}
+
+.info-detalle h2 {
+    margin: 0 0 20px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.sinopsis {
+    margin: 0 0 25px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #cccccc;
+}
+
+.datos-detalle {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.generos-detalle {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 25px;
+}
+
+.chip-genero {
+    padding: 5px 12px;
+    background-color: #333;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+/* Este espacio flexible empuja el botón hacia abajo */
+.info-detalle .espacio-flexible {
+    flex: 1;
+}
+
+.btn-comprar {
+    margin-bottom: 10px;
+    padding: 16px 20px;
+    width: 100%;
+
+    border: none;
+    border-radius: 8px;
+    background-color: #e50914;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-comprar:hover {
+    background-color: #b3070f;
+}
+
+/* En pantallas chicas, la imagen arriba y el texto abajo */
+
+@media (max-width: 700px) {
+    .card-detalle {
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    .img-detalle,
+    .info-detalle {
+        width: 100%;
+    }
+
+    .img-detalle {
+        height: 350px;
+    }
+}
+
+.selector-funciones,
+.selector-cantidad {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.selector-funciones label,
+.selector-cantidad label {
+    font-size: 14px;
+    color: #cccccc;
+}
+
+.opciones-fecha,
+.opciones-horario {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.chip-fecha,
+.chip-horario {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background-color: #222;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.chip-fecha.chip-activo,
+.chip-horario.chip-activo {
+    background-color: #e50914;
+    border-color: #e50914;
+}
+
+.selector-cantidad input {
+    width: 80px;
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+}
+
+.btn-comprar:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+}
