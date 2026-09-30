@@ -6,6 +6,7 @@
         <div class="div-header-derecha">
             @if (authService.currentUserData()?.rol === 'admin') {
                 <a routerLink="/add-pelicula">Agregar Pelicula</a>
+                <a routerLink="/add-funcion">Agregar Funcion</a>
                 <a routerLink="/add-candy">Agregar Candy</a>
             }
             <a routerLink="/home" routerLinkActive="active">Inicio</a>

@@ -9,6 +9,7 @@ import { DetailPelicula } from './features/detail-pelicula/detail-pelicula';
 import { Favoritos } from './features/favoritos/favoritos';
 import { AddPelicula } from './features/add-pelicula/add-pelicula';
 import { AddCandy } from './features/add-candy/add-candy';
+import { AddFuncion } from './features/add-funcion/add-funcion';
 
 export const routes: Routes = [
 
@@ -19,6 +20,7 @@ export const routes: Routes = [
     {path: 'favoritos', component: Favoritos, canActivate: [authGuard]},
     {path: 'pelicula/:id', component: DetailPelicula},
     {path: 'add-pelicula', component: AddPelicula, canActivate: [authAdminGuard]},
+    {path: 'add-funcion', component: AddFuncion, canActivate: [authAdminGuard]},
     {path: 'add-candy', component: AddCandy, canActivate: [authAdminGuard]},
     {path: 'login', component: LoginComponent},
     {path: 'register', component: RegisterComponent},

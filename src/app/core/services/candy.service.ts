@@ -94,4 +94,17 @@ export class CandyService{
         console.log(`Nuevo candy Agregada: "${candy.nombre_candy}"`);
         return true;
     }
+
+    async editarCandy(id: string, cambios: Omit<Candy, 'candy_id'>): Promise<boolean> {
+        const { error } = await this.supabase
+            .from('candy')
+            .update(cambios)
+            .eq('candy_id', id);
+
+        if (error) {
+            console.error('Error al editar candy:', error.message);
+            return false;
+        }
+        return true;
+    }
 }

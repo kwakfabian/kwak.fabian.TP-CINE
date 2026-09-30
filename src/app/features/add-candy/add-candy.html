@@ -2,6 +2,11 @@
     <div>
         <h2>Agregar Candy</h2>
 
+        @if (editandoId()) {
+            <p>✏️ Editando: {{ f.nombre_candy.value }}</p>
+            <button type="button" (click)="cancelarEdicion()">Cancelar edición</button>
+        }
+
         <div>
             <form [formGroup]="candyForm" (ngSubmit)="onSubmit()" class="candy-form">
 
@@ -17,23 +22,18 @@
 
                     @if (f.nombre_candy.touched && f.nombre_candy.invalid) {
                         <div>
-
                             @if (f.nombre_candy.hasError('required')) {
                                 <small>El nombre es obligatorio</small>
                             }
-
                             @if (f.nombre_candy.hasError('minlength')) {
                                 <small>Minimo de 2 caracteres</small>
                             }
-
                             @if (f.nombre_candy.hasError('maxlength')) {
                                 <small>Maximo de 100 caracteres</small>
                             }
-
                         </div>
                     }
                 </div>
-
 
                 <div>
                     <label for="img_url">URL de la Imagen </label>
@@ -47,19 +47,15 @@
 
                     @if (f.img_url.touched && f.img_url.invalid) {
                         <div>
-
                             @if (f.img_url.hasError('required')) {
                                 <small>La URL es obligatoria</small>
                             }
-
                             @if (f.img_url.hasError('pattern')) {
                                 <small>Tiene que empezar con http:// o https://</small>
                             }
-
                         </div>
                     }
                 </div>
-
 
                 <div>
                     <label for="tipo_candy">Tipo de Candy *</label>
@@ -76,7 +72,6 @@
                                 {{ tipo }}
                             </option>
                         }
-
                     </select>
 
                     @if (f.tipo_candy.touched && f.tipo_candy.invalid) {
@@ -88,25 +83,53 @@
                     }
                 </div>
 
+                <div>
+                <label for="precio">Precio</label>
+
+                <input
+                    type="number"
+                    id="precio"
+                    formControlName="precio"
+                    placeholder="Precio"
+                    [class.input-error]="f.precio.invalid && f.precio.touched">
+
+                @if (f.precio.touched && f.precio.invalid) {
+                    <div>
+                        @if (f.precio.hasError('required')) {
+                            <small>El precio es obligatorio</small>
+                        }
+                    </div>
+                }
+            </div>
 
                 <div>
-                    <label for="estado">
+                    <label for="disponible">
                         <input
                         type="checkbox"
-                        id="estado"
-                        formControlName="estado">
+                        id="disponible"
+                        formControlName="disponible">
 
                         Disponible
                     </label>
                 </div>
 
-
                 <button type="submit" [disabled]="candyForm.invalid">
-                    Agregar Candy
+                    {{ editandoId() ? 'Guardar Cambios' : 'Agregar Candy' }}
                 </button>
-
             </form>
         </div>
+
+        <hr>
+        <h2>Candys existentes</h2>
+        <div class="lista-candy-admin">
+            @for (candy of candys(); track candy.candy_id) {
+                <div class="item-candy-admin">
+                    <img [src]="candy.img_url" [alt]="candy.nombre_candy" width="60">
+                    <span>{{ candy.nombre_candy }}</span>
+                    <button type="button" (click)="iniciarEdicion(candy)">Editar</button>
+                </div>
+            }
+        </div>
+
     </div>
 </section>
-

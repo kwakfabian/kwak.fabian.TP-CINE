@@ -1,0 +1,152 @@
+<section>
+    <div>
+        <h2>Agregar Función</h2>
+
+        @if (editandoId()) {
+            <p>✏️ Editando función</p>
+            <button type="button" (click)="cancelarEdicion()">Cancelar edición</button>
+        }
+
+        <div>
+            <form [formGroup]="funcionForm" (ngSubmit)="onSubmit()" class="funcion-form">
+
+                <div>
+                    <label for="peliculas_id">Película *</label>
+                    <select
+                    id="peliculas_id"
+                    formControlName="peliculas_id"
+                    [class.input-error]="f.peliculas_id.invalid && f.peliculas_id.touched">
+                        <option value="" disabled>Selecciona una película</option>
+                        @for (pelicula of peliculas(); track pelicula.pelicula_id) {
+                            <option [value]="pelicula.pelicula_id">{{ pelicula.pelicula_titulo }}</option>
+                        }
+                    </select>
+
+                    @if (f.peliculas_id.touched && f.peliculas_id.invalid) {
+                        <small>La película es obligatoria</small>
+                    }
+                </div>
+
+                <div>
+                    <label for="salas_id">Sala *</label>
+                    <select
+                    id="salas_id"
+                    formControlName="salas_id"
+                    [class.input-error]="f.salas_id.invalid && f.salas_id.touched">
+                        <option value="" disabled>Selecciona una sala</option>
+                        @for (sala of salas(); track sala.salas_id) {
+                            <option [value]="sala.salas_id">{{ sala.nombre_salas }}</option>
+                        }
+                    </select>
+
+                    @if (f.salas_id.touched && f.salas_id.invalid) {
+                        <small>La sala es obligatoria</small>
+                    }
+                </div>
+                <div>
+                    <label for="fecha">Fecha *</label>
+                    <input
+                    type="date"
+                    id="fecha"
+                    formControlName="fecha"
+                    [class.input-error]="f.fecha.invalid && f.fecha.touched">
+
+                    @if (f.fecha.touched && f.fecha.invalid) {
+                        <small>La fecha es obligatoria</small>
+                    }
+                </div>
+
+                <div>
+                    <label for="hora_inicio">Horario *</label>
+                    <input
+                    type="time"
+                    id="hora_inicio"
+                    formControlName="hora_inicio"
+                    [class.input-error]="f.hora_inicio.invalid && f.hora_inicio.touched">
+
+                    @if (f.hora_inicio.touched && f.hora_inicio.invalid) {
+                        <small>El horario es obligatorio</small>
+                    }
+                </div>
+
+                <div>
+                    <label for="formato">Formato *</label>
+                    <select
+                    id="formato"
+                    formControlName="formato"
+                    [class.input-error]="f.formato.invalid && f.formato.touched">
+                        <option value="" disabled>Selecciona un formato</option>
+                        @for (formato of formatos; track formato) {
+                            <option [value]="formato">{{ formato }}</option>
+                        }
+                    </select>
+
+                    @if (f.formato.touched && f.formato.invalid) {
+                        <small>El formato es obligatorio</small>
+                    }
+                </div>
+
+                <div>
+                    <label for="idioma">Idioma *</label>
+                    <select
+                    id="idioma"
+                    formControlName="idioma"
+                    [class.input-error]="f.idioma.invalid && f.idioma.touched">
+                        <option value="" disabled>Selecciona un idioma</option>
+                        @for (idioma of idiomas; track idioma) {
+                            <option [value]="idioma">{{ idioma }}</option>
+                        }
+                    </select>
+
+                    @if (f.idioma.touched && f.idioma.invalid) {
+                        <small>El idioma es obligatorio</small>
+                    }
+                </div>
+
+                <div>
+                    <label for="precio">Precio *</label>
+                    <input
+                    type="number"
+                    id="precio"
+                    formControlName="precio"
+                    placeholder="2500"
+                    [class.input-error]="f.precio.invalid && f.precio.touched">
+
+                    @if (f.precio.touched && f.precio.invalid) {
+                        <div>
+                            @if (f.precio.hasError('required')) {
+                                <small>El precio es obligatorio</small>
+                            }
+                            @if (f.precio.hasError('min')) {
+                                <small>Tiene que ser mayor o igual a 0</small>
+                            }
+                        </div>
+                    }
+                </div>
+
+                <button type="submit" [disabled]="funcionForm.invalid">
+                    {{ editandoId() ? 'Guardar Cambios' : 'Agregar Función' }}
+                </button>
+
+            </form>
+        </div>
+
+        <hr>
+
+        <h2>Funciones existentes</h2>
+        <div class="lista-funciones-admin">
+            @for (funcion of funciones(); track funcion.funciones_id) {
+                <div class="item-funcion-admin">
+                    <span class="funcion-pelicula">{{ nombrePelicula(funcion.peliculas_id) }}</span>
+                    <span class="funcion-sala">{{ nombreSala(funcion.salas_id) }}</span>
+                    <span class="funcion-fecha">{{ funcion.fecha }}</span>
+                    <span class="funcion-hora">{{ funcion.hora_inicio }}</span>
+                    <span class="funcion-formato">{{ funcion.formato }} — {{ funcion.idioma }}</span>
+                    <span class="funcion-precio">${{ funcion.precio }}</span>
+                    <button type="button" (click)="iniciarEdicion(funcion)">Editar</button>
+                </div>
+            }
+        </div>
+
+    </div>
+</section>

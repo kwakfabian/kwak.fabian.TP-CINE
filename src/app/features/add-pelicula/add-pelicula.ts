@@ -1,6 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { PeliculaService } from '../../core/services/pelicula.service';
 import { Pelicula } from '../../core/models/peliculainterface';
 
@@ -12,7 +11,6 @@ import { Pelicula } from '../../core/models/peliculainterface';
 })
 export class AddPelicula {
   private peliculaService = inject(PeliculaService);
-  private router = inject(Router);
 
   peliculas = this.peliculaService.peliculas;
 

@@ -46,6 +46,7 @@ input[type="text"],
 input[type="email"],
 input[type="password"],
 input[type="date"],
+input[type="number"],
 select {
     width: 100%;
     box-sizing: border-box;
@@ -66,6 +67,7 @@ input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus,
 input[type="date"]:focus,
+input[type="number"],
 select:focus {
     border-color: #777;
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);

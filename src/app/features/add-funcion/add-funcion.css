@@ -1,0 +1,92 @@
+.funcion-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto 40px;
+}
+
+.funcion-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: white;
+}
+
+.funcion-form input,
+.funcion-form select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    background-color: #1a1a1a;
+    color: white;
+}
+
+.funcion-form .input-error {
+    border-color: #e50914;
+}
+
+.funcion-form small {
+    color: #e50914;
+    font-size: 13px;
+}
+
+.funcion-form button[type="submit"] {
+    padding: 14px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #e50914;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.funcion-form button[type="submit"]:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+}
+
+/* LISTA DE FUNCIONES EXISTENTES */
+
+.lista-funciones-admin {
+    width: 90%;
+    max-width: 900px;
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.item-funcion-admin {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    padding: 12px 16px;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+}
+
+.item-funcion-admin span {
+    flex: 1;
+}
+
+.item-funcion-admin button {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+}
+
+.item-funcion-admin button:hover {
+    background-color: #444;
+}
