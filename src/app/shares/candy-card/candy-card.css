@@ -1,13 +1,114 @@
-img {
-    width: 150%;
-    height: 400px;
+.candy-card {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 15px;
+    overflow: hidden;
+
+    background-color: #222222;
+
+    box-sizing: border-box;
+
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.candy-card:hover {
+    transform: scale(1.06);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+
+/* IMAGEN */
+
+.imagen-candy {
+    width: 100%;
+    height: 320px;
+    overflow: hidden;
+}
+
+.imagen-candy img {
+    width: 100%;
+    height: 100%;
     display: block;
     object-fit: cover;
     cursor: pointer;
-    border-radius: 15px;
+
+    transition: transform 0.2s ease, filter 0.2s ease;
 }
 
-img:hover{
-    transform: scale(1.06);
-    filter: brightness(50%);
+
+/* INFORMACIÓN */
+
+.info-candy {
+    padding: 18px;
+    text-align: center;
+}
+
+.info-candy h3 {
+    margin: 0 0 10px;
+
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.precio {
+    margin: 0 0 8px;
+
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.descripcion {
+    margin: 0 0 18px;
+
+    color: #bbbbbb;
+    font-size: 14px;
+}
+
+
+/* CANTIDAD */
+
+.cantidad {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.cantidad button {
+    width: 35px;
+    height: 35px;
+
+    border: 1px solid #555;
+    border-radius: 8px;
+
+    background-color: #333;
+    color: white;
+
+    font-size: 20px;
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.cantidad button:hover:not(:disabled) {
+    background-color: white;
+    color: black;
+}
+
+.cantidad button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.cantidad span {
+    min-width: 25px;
+
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
 }

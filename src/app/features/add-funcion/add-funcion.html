@@ -3,7 +3,7 @@
         <h2>Agregar Función</h2>
 
         @if (editandoId()) {
-            <p>✏️ Editando función</p>
+            <h2>✏️ Editando función</h2>
             <button type="button" (click)="cancelarEdicion()">Cancelar edición</button>
         }
 
@@ -137,14 +137,15 @@
         <div class="lista-funciones-admin">
             @for (funcion of funciones(); track funcion.funciones_id) {
                 <div class="item-funcion-admin">
-                    <span class="funcion-pelicula">{{ nombrePelicula(funcion.peliculas_id) }}</span>
-                    <span class="funcion-sala">{{ nombreSala(funcion.salas_id) }}</span>
-                    <span class="funcion-fecha">{{ funcion.fecha }}</span>
-                    <span class="funcion-hora">{{ funcion.hora_inicio }}</span>
-                    <span class="funcion-formato">{{ funcion.formato }} — {{ funcion.idioma }}</span>
-                    <span class="funcion-precio">${{ funcion.precio }}</span>
-                    <button type="button" (click)="iniciarEdicion(funcion)">Editar</button>
-                </div>
+                <span class="funcion-pelicula">{{ nombrePelicula(funcion.peliculas_id) }}</span>
+                <span class="funcion-sala">{{ nombreSala(funcion.salas_id) }}</span>
+                <span class="funcion-fecha">{{ funcion.fecha }}</span>
+                <span class="funcion-hora">{{ funcion.hora_inicio }}</span>
+                <span class="funcion-formato">{{ funcion.formato }} — {{ funcion.idioma }}</span>
+                <span class="funcion-precio">${{ funcion.precio }}</span>
+                <button type="button" (click)="iniciarEdicion(funcion)">Editar</button>
+                <button type="button" (click)="eliminar(funcion.funciones_id)">Eliminar</button>
+            </div>
             }
         </div>
 

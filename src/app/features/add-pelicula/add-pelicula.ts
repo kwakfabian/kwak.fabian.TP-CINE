@@ -1,11 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators, FormsModule } from '@angular/forms';
 import { PeliculaService } from '../../core/services/pelicula.service';
 import { Pelicula } from '../../core/models/peliculainterface';
 
 @Component({
   selector: 'app-pelicula-book',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, FormsModule],
   templateUrl: './add-pelicula.html',
   styleUrl: './add-pelicula.css'
 })
@@ -17,6 +17,43 @@ export class AddPelicula {
   generos = ['Accion', 'Comedia', 'Drama', 'Terror', 'Ciencia Ficción', 'Fantasia', 'Romance', 'Suspenso', 'Aventura', 'Bibliografico', 'Animacion'];
   estados = ['MAS POPULARES', 'CARTELERA', 'PREVENTA'];
   edad_restriccion = ['ATP', '+13', '+18'];
+
+  busquedaAdmin: string = '';
+
+generoSeleccionadoAdmin: string = 'TODOS';
+
+estadoSeleccionadoAdmin: string = 'TODOS';
+
+seleccionarGeneroAdmin(genero: string) {
+    this.generoSeleccionadoAdmin = genero;
+}
+
+seleccionarEstadoAdmin(estado: string) {
+    this.estadoSeleccionadoAdmin = estado;
+}
+
+peliculasFiltradasAdmin() {
+    return this.peliculas().filter(pelicula => {
+
+        // BUSCAR POR NOMBRE
+        const coincideNombre =
+            pelicula.pelicula_titulo
+                .toLowerCase()
+                .includes(this.busquedaAdmin.toLowerCase());
+
+        // FILTRAR POR GÉNERO
+        const coincideGenero =
+            this.generoSeleccionadoAdmin === 'TODOS' ||
+            pelicula.genero.includes(this.generoSeleccionadoAdmin);
+
+        // FILTRAR POR ESTADO
+        const coincideEstado =
+            this.estadoSeleccionadoAdmin === 'TODOS' ||
+            pelicula.estado === this.estadoSeleccionadoAdmin;
+
+        return coincideNombre && coincideGenero && coincideEstado;
+    });
+}
 
   editandoId = signal<string | null>(null);
 

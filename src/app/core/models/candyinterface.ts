@@ -4,5 +4,6 @@ export interface Candy {
     img_url:string;
     tipo_candy:string;
     precio:number;
-    disponible:boolean
+    disponible:boolean;
+    descripcion:string;
 }

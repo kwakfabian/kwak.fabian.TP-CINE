@@ -36,6 +36,31 @@
                 </div>
 
                 <div>
+                    <label for="descripcion">Descripcion</label>
+
+                    <input 
+                    type="text"
+                    id="descripcion"
+                    formControlName="descripcion"
+                    placeholder="descripcion"
+                    [class.input.error]="f.descripcion.invalid && f.descripcion.touched">
+
+                    @if (f.descripcion.touched && f.descripcion.invalid) {
+                        <div>
+                            @if (f.descripcion.hasError('required')) {
+                                <small>La descripcion es obligatoria</small>
+                            }
+                            @if (f.descripcion.hasError('minlength')) {
+                                <small>Minimo de 5 caracteres</small>
+                            }
+                            @if (f.descripcion.hasError('maxlength')) {
+                                <small>Maximo de 100 caracteres</small>
+                            }
+                        </div>
+                    }
+                </div>
+
+                <div>
                     <label for="img_url">URL de la Imagen </label>
 
                     <input
@@ -121,15 +146,66 @@
 
         <hr>
         <h2>Candys existentes</h2>
-        <div class="lista-candy-admin">
-            @for (candy of candys(); track candy.candy_id) {
-                <div class="item-candy-admin">
-                    <img [src]="candy.img_url" [alt]="candy.nombre_candy" width="60">
-                    <span>{{ candy.nombre_candy }}</span>
-                    <button type="button" (click)="iniciarEdicion(candy)">Editar</button>
-                </div>
-            }
+
+<div class="filtros-admin">
+    <input
+        type="text"
+        placeholder="Buscar candy..."
+        [(ngModel)]="busquedaAdmin"
+    >
+
+    <div class="filtros-grupo">
+        <span>Tipo:</span>
+
+        <button
+            type="button"
+            [class.activo]="tipoCandySeleccionadoAdmin === 'TODOS'"
+            (click)="seleccionarTipoCandyAdmin('TODOS')">
+            Todos
+        </button>
+
+        @for (tipo of tiposCandy; track tipo) {
+            <button
+                type="button"
+                [class.activo]="tipoCandySeleccionadoAdmin === tipo"
+                (click)="seleccionarTipoCandyAdmin(tipo)">
+                {{ tipo }}
+            </button>
+        }
+    </div>
+</div>
+
+<div class="lista-candy-admin">
+    @for (candy of candyFiltradoAdmin(); track candy.candy_id) {
+        <div class="item-candy-admin">
+            <img
+                [src]="candy.img_url"
+                [alt]="candy.nombre_candy"
+            >
+
+            <div class="info-candy-admin">
+                <span class="titulo-candy-admin">
+                    {{ candy.nombre_candy }}
+                </span>
+
+                <span class="tipo-candy-admin">
+                    {{ candy.tipo_candy }}
+                </span>
+
+                <span class="precio-candy-admin">
+                    ${{ candy.precio }}
+                </span>
+            </div>
+
+            <button
+                type="button"
+                class="btn-editar"
+                (click)="iniciarEdicion(candy)">
+                ✏️ Editar
+            </button>
         </div>
+    }
+</div>
 
     </div>
 </section>

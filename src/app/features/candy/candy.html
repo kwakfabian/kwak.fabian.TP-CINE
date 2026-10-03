@@ -1,10 +1,13 @@
 <section class="section-candy">
     <div class="div-titulo">
         <h2>COMBOS</h2>
-            <div class="div-combos">
+        <div class="div-combos">
             @for (candy of candy(); track candy.candy_id) {
-                @if (candy.tipo_candy === "Combos") {
-                    <app-candy-card [candy]="candy"></app-candy-card>
+                @if (candy.tipo_candy === "Combo") {
+                    <app-candy-card
+                        [candy]="candy"
+                        (cantidadCambiada)="cambiarCantidad(candy.candy_id, $event)"
+                    ></app-candy-card>
                 }
             }
         </div>
@@ -14,8 +17,11 @@
         <h2>POCHOCLOS</h2>
         <div class="div-pochoclos">
             @for (candy of candy(); track candy.candy_id) {
-                @if (candy.tipo_candy === "Pochoclos") {
-                    <app-candy-card [candy]="candy"></app-candy-card>
+                @if (candy.tipo_candy === "Pochoclo") {
+                    <app-candy-card
+                        [candy]="candy"
+                        (cantidadCambiada)="cambiarCantidad(candy.candy_id, $event)"
+                    ></app-candy-card>
                 }
             }
         </div>
@@ -23,22 +29,39 @@
 
     <div class="div-titulo">
         <h2>BEBIDAS</h2>
-            <div class="div-bebidas">
+        <div class="div-bebidas">
             @for (candy of candy(); track candy.candy_id) {
                 @if (candy.tipo_candy === "Bebidas") {
-                    <app-candy-card [candy]="candy"></app-candy-card>
+                    <app-candy-card
+                        [candy]="candy"
+                        (cantidadCambiada)="cambiarCantidad(candy.candy_id, $event)"
+                    ></app-candy-card>
                 }
             }
         </div>
     </div>
+
     <div class="div-titulo">
         <h2>SNACKS</h2>
-            <div class="div-snacks">
+        <div class="div-snacks">
             @for (candy of candy(); track candy.candy_id) {
                 @if (candy.tipo_candy === "Snacks") {
-                    <app-candy-card [candy]="candy"></app-candy-card>
+                    <app-candy-card
+                        [candy]="candy"
+                        (cantidadCambiada)="cambiarCantidad(candy.candy_id, $event)"
+                    ></app-candy-card>
                 }
             }
         </div>
+    </div>
+
+    <div class="contenedor-continuar">
+        <button
+            type="button"
+            class="btn-continuar"
+            (click)="continuar()"
+        >
+            Continuar
+        </button>
     </div>
 </section>

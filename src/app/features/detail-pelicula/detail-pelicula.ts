@@ -1,58 +1,73 @@
 import { Component, inject, computed, signal, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { PeliculaService } from '../../core/services/pelicula.service';
 import { FuncionService } from '../../core/services/funcion.service';
 
 @Component({
-    imports: [],
-    selector: 'app-detail-pelicula',
-    styleUrl: './detail-pelicula.css',
-    templateUrl: './detail-pelicula.html',
+  imports: [],
+  selector: 'app-detail-pelicula',
+  styleUrl: './detail-pelicula.css',
+  templateUrl: './detail-pelicula.html',
 })
-
 export class DetailPelicula implements OnInit {
 
-    peliculaService = inject(PeliculaService);
-    funcionService = inject(FuncionService);
-    private route = inject(ActivatedRoute);
+  peliculaService = inject(PeliculaService);
+  funcionService = inject(FuncionService);
 
-    peliculaId = this.route.snapshot.paramMap.get('id')!;
-    pelicula = this.peliculaService.getPeliculasId(this.peliculaId);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
-    fechaSeleccionada = signal<string | null>(null);
-    horarioSeleccionado = signal<string | null>(null);
-    cantidadBoletos = signal<number>(1);
+  peliculaId = this.route.snapshot.paramMap.get('id')!;
 
-    ngOnInit() {
-        this.funcionService.cargarFuncionesDePelicula(this.peliculaId);
-    }
+  pelicula = this.peliculaService.getPeliculasId(this.peliculaId);
 
-    fechasDisponibles = computed(() => {
-        const fechas = this.funcionService.funciones().map(f => f.fecha);
-        return [...new Set(fechas)];
-    });
+  fechaSeleccionada = signal<string | null>(null);
+  horarioSeleccionado = signal<string | null>(null);
+  cantidadBoletos = signal<number>(1);
 
-    horariosDelDia = computed(() => {
-        if (!this.fechaSeleccionada()) return [];
-        return this.funcionService.funciones().filter(
-            f => f.fecha === this.fechaSeleccionada()
-        );
-    });
+  ngOnInit() {
+    this.funcionService.cargarFuncionesDePelicula(this.peliculaId);
+  }
 
-    puedeComprar = computed(() =>
-        !!this.fechaSeleccionada() && !!this.horarioSeleccionado() && this.cantidadBoletos() > 0
+  fechasDisponibles = computed(() => {
+    const fechas = this.funcionService.funciones().map(f => f.fecha);
+    return [...new Set(fechas)];
+  });
+
+  horariosDelDia = computed(() => {
+    if (!this.fechaSeleccionada()) return [];
+
+    return this.funcionService.funciones().filter(
+      f => f.fecha === this.fechaSeleccionada()
     );
+  });
 
-    elegirFecha(fecha: string) {
-        this.fechaSeleccionada.set(fecha);
-        this.horarioSeleccionado.set(null);
-    }
+  puedeComprar = computed(() =>
+    !!this.fechaSeleccionada() &&
+    !!this.horarioSeleccionado() &&
+    this.cantidadBoletos() > 0
+  );
 
-    elegirHorario(funcionId: string) {
-        this.horarioSeleccionado.set(funcionId);
-    }
+  elegirFecha(fecha: string) {
+    this.fechaSeleccionada.set(fecha);
+    this.horarioSeleccionado.set(null);
+  }
 
-    comprar() {
-        alert(`Comprando ${this.cantidadBoletos()} boleto(s) para el ${this.fechaSeleccionada()} a las ${this.horarioSeleccionado()}`);
+  elegirHorario(funcionId: string) {
+    this.horarioSeleccionado.set(funcionId);
+  }
+
+  comprar() {
+
+    const funcionId = this.horarioSeleccionado();
+    if (!funcionId) {
+      return;
     }
+    this.router.navigate(['/comprar',funcionId,'butacas'], {
+      queryParams: {
+        cantidad: this.cantidadBoletos()
+      }
+    });
+  }
 }

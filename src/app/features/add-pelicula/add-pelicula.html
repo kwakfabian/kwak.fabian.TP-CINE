@@ -176,14 +176,86 @@
             <hr>
 
             <h2>Películas existentes</h2>
-            <div class="lista-peliculas-admin">
-                @for (pelicula of peliculas(); track pelicula.pelicula_id) {
-                    <div class="item-pelicula-admin">
-                        <img [src]="pelicula.img_url" [alt]="pelicula.pelicula_titulo" width="60">
-                        <span>{{ pelicula.pelicula_titulo }}</span>
-                        <button type="button" (click)="iniciarEdicion(pelicula)">Editar</button>
+                <div class="filtros-admin">
+                    <input
+                        type="text"
+                        placeholder="Buscar película..."
+                        [(ngModel)]="busquedaAdmin"
+                    >
+                    <div class="filtros-grupo">
+                        <span>Género:</span>
+                        <button
+                            type="button"
+                            [class.activo]="generoSeleccionadoAdmin === 'TODOS'"
+                            (click)="seleccionarGeneroAdmin('TODOS')">
+                            Todos
+                        </button>
+                        @for (g of generos; track g) {
+                            <button
+                                type="button"
+                                [class.activo]="generoSeleccionadoAdmin === g"
+                                (click)="seleccionarGeneroAdmin(g)">
+                                {{ g }}
+                            </button>
+                        }
                     </div>
-                }
-            </div>  
+
+                    <div class="filtros-grupo">
+                        <span>Estado:</span>
+                        <button
+                            type="button"
+                            [class.activo]="estadoSeleccionadoAdmin === 'TODOS'"
+                            (click)="seleccionarEstadoAdmin('TODOS')">
+                            Todos
+                        </button>
+                        <button
+                            type="button"
+                            [class.activo]="estadoSeleccionadoAdmin === 'PREVENTA'"
+                            (click)="seleccionarEstadoAdmin('PREVENTA')">
+                            PREVENTA
+                        </button>
+                        <button
+                            type="button"
+                            [class.activo]="estadoSeleccionadoAdmin === 'CARTELERA'"
+                            (click)="seleccionarEstadoAdmin('CARTELERA')">
+                            CARTELERA
+                        </button>
+                        <button
+                            type="button"
+                            [class.activo]="estadoSeleccionadoAdmin === 'MAS POPULARES'"
+                            (click)="seleccionarEstadoAdmin('MAS POPULARES')">
+                            MAS POPULARES
+                        </button>
+                    </div>
+                </div>
+
+                <div class="lista-peliculas-admin">
+                    @for (pelicula of peliculasFiltradasAdmin(); track pelicula.pelicula_id) {
+                        <div class="item-pelicula-admin">
+                            <img
+                                [src]="pelicula.img_url"
+                                [alt]="pelicula.pelicula_titulo"
+                            >
+                            <div class="info-pelicula-admin">
+                                <span class="titulo-pelicula-admin">
+                                    {{ pelicula.pelicula_titulo }}
+                                </span>
+
+                                <span class="estado-pelicula-admin">
+                                    {{ pelicula.estado }}
+                                </span>
+                            </div>
+
+                            <button
+                                type="button"
+                                class="btn-editar"
+                                (click)="iniciarEdicion(pelicula)">
+                                ✏️ Editar
+                            </button>
+                        </div>
+                    }
+                </div>
         </div>
     </section>
+
+    

@@ -1,6 +1,21 @@
-<div>
-    <img 
-        [src]="candy().img_url"
-        [alt]="candy().nombre_candy"
-    >
+<div class="candy-card">
+
+    <div class="imagen-candy">
+        <img 
+            [src]="candy().img_url"
+            [alt]="candy().nombre_candy"
+        >
+    </div>
+
+    <div class="info-candy">
+        <h3>{{ candy().nombre_candy }}</h3>
+        <p class="precio">${{ candy().precio }}</p>
+        <p class="descripcion">{{ candy().descripcion }}</p>
+
+        <div class="cantidad">
+            <button type="button" (click)="restar()" [disabled]="cantidad === 0">−</button>
+            <span>{{ cantidad }}</span>
+            <button type="button" (click)="sumar()">+</button>
+        </div>
+    </div>
 </div>

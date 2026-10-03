@@ -105,4 +105,16 @@ export class AddFuncion implements OnInit {
       alert('Error al guardar la función.');
     }
   }
+
+  async eliminar(id: string) {
+    if (confirm('¿Estás seguro de que querés eliminar esta función?')) {
+        const exito = await this.funcionService.eliminarFuncion(id);
+
+        if (exito) {
+            alert('Función eliminada correctamente');
+        } else {
+            alert('Error al eliminar la función');
+        }
+    }
+}
 }

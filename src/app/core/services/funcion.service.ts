@@ -74,4 +74,19 @@ export class FuncionService {
         }
       return true;
   }
+
+  async eliminarFuncion(id: string): Promise<boolean> {
+    const { error } = await this.supabase
+        .from('funciones')
+        .delete()
+        .eq('funciones_id', id);
+
+    if (error) {
+        console.error('Error al eliminar funcion:', error.message);
+        return false;
+    }
+
+    this.funciones.update(funciones => funciones.filter(f => f.funciones_id !== id));
+    return true;
+}
 }

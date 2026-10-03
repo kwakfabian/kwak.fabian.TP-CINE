@@ -1,16 +1,30 @@
-import { Component, inject, input } from '@angular/core';
-import { AuthService } from '../../core/services/auth.service';
+import { Component, input, output } from '@angular/core';
 import { Candy } from '../../core/models/candyinterface';
 
 @Component({
-  imports: [],
   selector: 'app-candy-card',
-  styleUrl: './candy-card.css',
+  imports: [],
   templateUrl: './candy-card.html',
+  styleUrl: './candy-card.css',
 })
 export class CandyCard {
-  authService = inject(AuthService);
-  
+
   candy = input.required<Candy>();
+
+  cantidad: number = 0;
+
+  cantidadCambiada = output<number>();
+
+  sumar() {
+    this.cantidad++;
+    this.cantidadCambiada.emit(this.cantidad);
+  }
+
+  restar() {
+    if (this.cantidad > 0) {
+      this.cantidad--;
+      this.cantidadCambiada.emit(this.cantidad);
+    }
+  }
 
 }

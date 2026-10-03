@@ -1,0 +1,143 @@
+<div class="contenedor-butacas">
+
+  <h2>Elegí tus butacas</h2>
+
+  <div class="pantalla">
+    PANTALLA
+  </div>
+
+  <div class="butacas">
+
+    @for (fila of filas; track fila) {
+
+      <div
+        class="fila"
+        [class.fila-vip]="fila === 'R' || fila === 'S' || fila === 'T'"
+        [class.fila-accesible]="fila === 'J' || fila === 'K'"
+      >
+
+        <span class="nombre-fila">
+          {{ fila }}
+        </span>
+
+
+        @if (fila === 'J' || fila === 'K') {
+
+          <!-- J y K: 2 | 10 | 2 -->
+
+          <div class="grupo">
+            @for (numero of [1, 2]; track numero) {
+              <button
+                [class.ocupada]="estaOcupada(fila + numero)"
+                [class.seleccionada]="estaSeleccionada(fila + numero)"
+                [disabled]="estaOcupada(fila + numero)"
+                (click)="seleccionarButaca(fila + numero)"
+              >
+                {{ fila }}{{ numero }}
+              </button>
+            }
+          </div>
+
+          <div class="grupo grupo-central">
+            @for (numero of [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; track numero) {
+              <button
+                [class.ocupada]="estaOcupada(fila + numero)"
+                [class.seleccionada]="estaSeleccionada(fila + numero)"
+                [disabled]="estaOcupada(fila + numero)"
+                (click)="seleccionarButaca(fila + numero)"
+              >
+                {{ fila }}{{ numero }}
+              </button>
+            }
+          </div>
+
+          <div class="grupo">
+            @for (numero of [13, 14]; track numero) {
+              <button
+                [class.ocupada]="estaOcupada(fila + numero)"
+                [class.seleccionada]="estaSeleccionada(fila + numero)"
+                [disabled]="estaOcupada(fila + numero)"
+                (click)="seleccionarButaca(fila + numero)"
+              >
+                {{ fila }}{{ numero }}
+              </button>
+            }
+          </div>
+
+        } @else {
+
+          <!-- A-Q y R-T: 4 | 20 | 4 -->
+
+          <div class="grupo">
+            @for (numero of [1, 2, 3, 4]; track numero) {
+              <button
+                [class.ocupada]="estaOcupada(fila + numero)"
+                [class.seleccionada]="estaSeleccionada(fila + numero)"
+                [disabled]="estaOcupada(fila + numero)"
+                (click)="seleccionarButaca(fila + numero)"
+              >
+                {{ fila }}{{ numero }}
+              </button>
+            }
+          </div>
+
+          <div class="grupo grupo-central">
+            @for (numero of [
+              5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+              15, 16, 17, 18, 19, 20, 21, 22, 23, 24
+            ]; track numero) {
+              <button
+                [class.ocupada]="estaOcupada(fila + numero)"
+                [class.seleccionada]="estaSeleccionada(fila + numero)"
+                [disabled]="estaOcupada(fila + numero)"
+                (click)="seleccionarButaca(fila + numero)"
+              >
+                {{ fila }}{{ numero }}
+              </button>
+            }
+          </div>
+
+          <div class="grupo">
+            @for (numero of [25, 26, 27, 28]; track numero) {
+              <button
+                [class.ocupada]="estaOcupada(fila + numero)"
+                [class.seleccionada]="estaSeleccionada(fila + numero)"
+                [disabled]="estaOcupada(fila + numero)"
+                (click)="seleccionarButaca(fila + numero)"
+              >
+                {{ fila }}{{ numero }}
+              </button>
+            }
+          </div>
+
+        }
+
+      </div>
+    }
+
+  </div>
+
+
+  <div class="resumen">
+
+    <p>
+      Butacas seleccionadas:
+      {{ butacasSeleccionadas.length }} / {{ cantidadBoletos }}
+    </p>
+
+    @if (butacasSeleccionadas.length > 0) {
+      <p>
+        {{ butacasSeleccionadas.join(', ') }}
+      </p>
+    }
+
+    <button
+      [disabled]="!puedeContinuar()"
+      (click)="continuar()"
+    >
+      Continuar
+    </button>
+
+  </div>
+
+</div>

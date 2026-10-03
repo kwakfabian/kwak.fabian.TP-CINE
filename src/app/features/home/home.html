@@ -14,14 +14,37 @@
     </div>
 
     <div class="div-titulo">
-        <h1>CARTELERA</h1>
-        <div class="div-cartelera">
-            @for (pelicula of peliculas(); track pelicula.pelicula_id) {
-                @if (pelicula.estado === "CARTELERA") {
-                    <app-pelicula-card
-                        [pelicula]="pelicula">
-                    </app-pelicula-card>
+    <h1>CARTELERA</h1>
+        <!-- BUSCADOR -->
+        <div class="filtros-cartelera">
+            <input
+                type="text"
+                placeholder="Buscar película..."
+                [(ngModel)]="busqueda"
+            >
+
+            <!-- FILTROS POR GÉNERO -->
+            <div class="botones-genero">
+                <button
+                    [class.activo]="generoSeleccionado === 'TODOS'"
+                    (click)="seleccionarGenero('TODOS')">
+                    Todos
+                </button>
+                @for (genero of generos; track genero) {
+                    <button
+                        [class.activo]="generoSeleccionado === genero"
+                        (click)="seleccionarGenero(genero)">
+                        {{ genero }}
+                    </button>
                 }
+            </div>
+        </div>
+        <!-- PELÍCULAS FILTRADAS -->
+        <div class="div-cartelera">
+            @for (pelicula of peliculasFiltradas(); track pelicula.pelicula_id) {
+                <app-pelicula-card
+                    [pelicula]="pelicula">
+                </app-pelicula-card>
             }
         </div>
     </div>

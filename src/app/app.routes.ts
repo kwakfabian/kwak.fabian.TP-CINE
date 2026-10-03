@@ -10,6 +10,7 @@ import { Favoritos } from './features/favoritos/favoritos';
 import { AddPelicula } from './features/add-pelicula/add-pelicula';
 import { AddCandy } from './features/add-candy/add-candy';
 import { AddFuncion } from './features/add-funcion/add-funcion';
+import { Butacas } from './features/butacas/butacas';
 
 export const routes: Routes = [
 
@@ -19,6 +20,7 @@ export const routes: Routes = [
     {path: 'candy', component: Candy},
     {path: 'favoritos', component: Favoritos, canActivate: [authGuard]},
     {path: 'pelicula/:id', component: DetailPelicula},
+    {path: 'comprar/:funcionId/butacas', component: Butacas},
     {path: 'add-pelicula', component: AddPelicula, canActivate: [authAdminGuard]},
     {path: 'add-funcion', component: AddFuncion, canActivate: [authAdminGuard]},
     {path: 'add-candy', component: AddCandy, canActivate: [authAdminGuard]},

@@ -165,17 +165,232 @@ small {
     cursor: not-allowed;
 }
 
-/* Responsive */
+.lista-peliculas-admin {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.filtros-admin {
+    margin-bottom: 25px;
+    padding: 25px;
+    background-color: #181818;
+    border: 1px solid #333;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+.filtros-admin > input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px 16px;
+    background-color: #242424;
+    border: 1px solid #444;
+    border-radius: 6px;
+    color: white;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.filtros-admin > input::placeholder {
+    color: #999;
+}
+
+.filtros-admin > input:focus {
+    border-color: #777;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
+}
+
+.filtros-grupo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.filtros-grupo span {
+    width: 100%;
+    margin-bottom: 3px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #aaa;
+}
+
+.filtros-grupo button {
+    padding: 8px 14px;
+    border: 1px solid #444;
+    border-radius: 20px;
+    background-color: #242424;
+    color: #ddd;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.2s,
+                border-color 0.2s,
+                color 0.2s,
+                transform 0.2s;
+}
+
+.filtros-grupo button:hover {
+    background-color: #333;
+    border-color: #666;
+    color: white;
+}
+
+.filtros-grupo button.activo {
+    background-color: white;
+    border-color: white;
+    color: #181818;
+    font-weight: bold;
+}
+
+.filtros-grupo button:active {
+    transform: scale(0.95);
+}
+
+.item-pelicula-admin {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 15px;
+    background-color: #181818;
+    border: 1px solid #333;
+    border-radius: 10px;
+    transition: background-color 0.2s,
+                border-color 0.2s,
+                transform 0.2s;
+}
+
+.item-pelicula-admin:hover {
+    background-color: #202020;
+    border-color: #555;
+    transform: translateY(-1px);
+}
+
+.item-pelicula-admin img {
+    width: 55px;
+    height: 75px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.info-pelicula-admin {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+    min-width: 0;
+}
+
+.titulo-pelicula-admin {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.estado-pelicula-admin {
+    font-size: 12px;
+    color: #999;
+    text-transform: uppercase;
+}
+
+.btn-editar {
+    padding: 9px 15px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #242424;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s,
+                border-color 0.2s,
+                color 0.2s;
+}
+
+.btn-editar:hover {
+    background-color: white;
+    border-color: white;
+    color: #181818;
+}
+
+section > div > p {
+    text-align: center;
+    margin: -15px 0 20px;
+    color: #ccc;
+}
+
+section > div > p + button {
+    display: block;
+    margin: -5px auto 25px;
+    padding: 8px 15px;
+    background-color: #242424;
+    border: 1px solid #444;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s,
+                border-color 0.2s;
+}
+
+section > div > p + button:hover {
+    background-color: #333;
+    border-color: #666;
+}
+
+hr {
+    margin: 50px 0;
+    border: none;
+    border-top: 1px solid #333;
+}
 
 @media (max-width: 600px) {
     section {
         padding: 30px 15px;
     }
-
     form {
         padding: 25px 20px;
     }
+    h2 {
+        font-size: 26px;
+    }
 
+    .filtros-admin {
+        padding: 20px 15px;
+    }
+
+    .item-pelicula-admin {
+        flex-wrap: wrap;
+    }
+
+    .item-pelicula-admin img {
+        width: 50px;
+        height: 70px;
+    }
+
+    .info-pelicula-admin {
+        width: calc(100% - 70px);
+    }
+
+    .btn-editar {
+        width: 100%;
+        margin-top: 5px;
+    }
+}
+
+@media (max-width: 600px) {
+    section {
+        padding: 30px 15px;
+    }
+    form {
+        padding: 25px 20px;
+    }
     h2 {
         font-size: 26px;
     }
