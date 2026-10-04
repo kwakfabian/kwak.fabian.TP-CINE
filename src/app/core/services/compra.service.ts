@@ -43,9 +43,12 @@ export class CompraService {
         return fila === 'R' || fila === 'S' || fila === 'T';
     }
 
-    calcularPrecioTotal(precioFuncion: number): number {
+    calcularPrecioTotal(): number {
+        const PRECIO_NORMAL = 3000;
+        const PRECIO_VIP = 4500;
+
         const totalButacas = this.butacasSeleccionadas().reduce((suma, butaca) => {
-            const precio = this.esVip(butaca) ? precioFuncion * 1.5 : precioFuncion;
+            const precio = this.esVip(butaca) ? PRECIO_VIP : PRECIO_NORMAL;
             return suma + precio;
         }, 0);
 
@@ -58,49 +61,47 @@ export class CompraService {
 
     async confirmarCompra(datosComprador: {
         usuario_id: string | null;
-        nombre: string | null;
-        email: string | null;
-    }, precioFuncion: number): Promise<boolean> {
+        nombre_comprador: string | null;
+        email_comprador: string | null;
+        fecha_nacimiento_comprador: string | null;
+    }): Promise<Compra | null> {
 
-        const precioTotal = this.calcularPrecioTotal(precioFuncion);
-
+        const precioTotal = this.calcularPrecioTotal();
+        const codigoQr = crypto.randomUUID();
         const nuevaCompra: Compra = {
             funciones_id: this.funcionId()!,
             usuario_id: datosComprador.usuario_id,
-            nombre_comprador: datosComprador.nombre,
-            email_comprador: datosComprador.email,
+            nombre_comprador: datosComprador.nombre_comprador,
+            email_comprador: datosComprador.email_comprador,
+            fecha_nacimiento_comprador: datosComprador.fecha_nacimiento_comprador,
             butacas: this.butacasSeleccionadas(),
-            candy_items: this.candySeleccionado().length > 0 ? this.candySeleccionado() : null,
+            candy_productos: this.candySeleccionado().length > 0 ? this.candySeleccionado() : null,
+            qr_disponible: true,
+            codigo_qr: codigoQr,
             precio_total: precioTotal
         };
 
-        // 1. Insertamos la compra
         const { error: errorCompra } = await this.supabase
             .from('compras')
             .insert([nuevaCompra]);
-
         if (errorCompra) {
             console.error('Error al guardar la compra:', errorCompra.message);
-            return false;
+            return null;
         }
 
-        // 2. Actualizamos la ocupación de butacas para esa función
         const exitoButacas = await this.marcarButacasComoOcupadas();
-
         if (!exitoButacas) {
             console.error('La compra se guardó, pero hubo un error al marcar las butacas como ocupadas.');
-            return false;
+            return null;
         }
-
         this.reiniciarCompra();
-        return true;
+        return nuevaCompra;
     }
 
     private async marcarButacasComoOcupadas(): Promise<boolean> {
         const funcionId = this.funcionId();
         if (!funcionId) return false;
 
-        // Buscamos si ya existe una fila de ocupación para esta función
         const { data: filaExistente, error: errorBusqueda } = await this.supabase
             .from('butacas')
             .select('id, butacas_ocupadas')
@@ -113,7 +114,6 @@ export class CompraService {
         }
 
         if (filaExistente) {
-            // Ya existe una fila: actualizamos, sumando las nuevas butacas
             const ocupadasActuales: string[] = filaExistente.butacas_ocupadas || [];
             const nuevasOcupadas = [
                 ...new Set([
@@ -132,7 +132,6 @@ export class CompraService {
                 return false;
             }
         } else {
-            // No existe fila todavía: la creamos
             const { error: errorInsert } = await this.supabase
                 .from('butacas')
                 .insert([{

@@ -1,0 +1,79 @@
+.section-confirmar {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #1f1f1f;
+    border-radius: 12px;
+}
+
+.datos-invitado {
+    margin-bottom: 25px;
+}
+
+.datos-invitado h3 {
+    margin-bottom: 20px;
+}
+
+.datos-invitado form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.datos-invitado form div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.datos-invitado label {
+    font-weight: bold;
+}
+
+.datos-invitado input {
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+.datos-invitado input:focus {
+    outline: 2px solid #ffffff;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #ffffff;
+    border-radius: 6px;
+    background-color: transparent;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-login:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.btn-confirmar {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-confirmar:hover {
+    opacity: 0.85;
+}
+
+.btn-confirmar:disabled {
+    opacity: 0.5;
+}

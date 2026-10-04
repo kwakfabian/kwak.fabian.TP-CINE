@@ -1,32 +1,20 @@
 import { Routes } from '@angular/router';
 import { authAdminGuard } from './core/guards/auth.admin.guard';
 import { authGuard } from './core/guards/auth.guard';
-import { LoginComponent } from './features/auth/login/login';
-import { RegisterComponent } from './features/auth/register/register'
-import { Home } from './features/home/home';
-import { Candy } from './features/candy/candy';
-import { DetailPelicula } from './features/detail-pelicula/detail-pelicula';
-import { Favoritos } from './features/favoritos/favoritos';
-import { AddPelicula } from './features/add-pelicula/add-pelicula';
-import { AddCandy } from './features/add-candy/add-candy';
-import { AddFuncion } from './features/add-funcion/add-funcion';
-import { Butacas } from './features/butacas/butacas';
 
 export const routes: Routes = [
 
-    { path: '', redirectTo: '/home', pathMatch: 'full'},
-
-    {path: 'home', component: Home},
-    {path: 'candy', component: Candy},
-    {path: 'favoritos', component: Favoritos, canActivate: [authGuard]},
-    {path: 'pelicula/:id', component: DetailPelicula},
-    {path: 'comprar/:funcionId/butacas', component: Butacas},
-    {path: 'add-pelicula', component: AddPelicula, canActivate: [authAdminGuard]},
-    {path: 'add-funcion', component: AddFuncion, canActivate: [authAdminGuard]},
-    {path: 'add-candy', component: AddCandy, canActivate: [authAdminGuard]},
-    {path: 'login', component: LoginComponent},
-    {path: 'register', component: RegisterComponent},
-
+    { path: '', redirectTo: '/home', pathMatch: 'full' },
+    { path: 'home', loadComponent: () => import('./features/home/home').then((component) => component.Home) },
+    { path: 'candy', loadComponent: () => import('./features/candy/candy').then((component) => component.Candy) },
+    { path: 'pelicula/:id', loadComponent: () => import('./features/detail-pelicula/detail-pelicula').then((component) => component.DetailPelicula) },
+    { path: 'comprar/:funcionId/butacas', loadComponent: () => import('./features/butacas/butacas').then((component) => component.Butacas) },
+    { path: 'confirmar-compra', loadComponent: () => import('./features/confirmar-compra/confirmar-compra').then((component) => component.ConfirmarCompra) },
+    { path: 'add-pelicula', loadComponent: () => import('./features/add-pelicula/add-pelicula').then((component) => component.AddPelicula), canActivate: [authAdminGuard] },
+    { path: 'add-funcion', loadComponent: () => import('./features/add-funcion/add-funcion').then((component) => component.AddFuncion), canActivate: [authAdminGuard] },
+    { path: 'add-candy', loadComponent: () => import('./features/add-candy/add-candy').then((component) => component.AddCandy), canActivate: [authAdminGuard] },
+    { path: 'login', loadComponent: () => import('./features/auth/login/login').then((component) => component.LoginComponent) },
+    { path: 'register', loadComponent: () => import('./features/auth/register/register').then((component) => component.RegisterComponent) },
     { path: '**', redirectTo: '/home' }
 
 ];

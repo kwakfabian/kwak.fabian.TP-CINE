@@ -7,23 +7,17 @@ import { RealtimeChannel } from "@supabase/supabase-js";
 export class PeliculaService{
     private supabase = inject(SupabaseService).client;
     private destroyRef = inject(DestroyRef);
-
     private peliculasSignal = signal<Pelicula[]>([]);
 
     cargando = signal(false);
-
     peliculas = computed(() => this.peliculasSignal());
 
     private channel! : RealtimeChannel;
 
     constructor() {
         this.cargarPeliculasdesdeDB();
-
         this.channel = this.iniciarRealTime();
-
-        this.destroyRef.onDestroy(() =>{
-            this.supabase.removeChannel(this.channel);
-        });
+        this.destroyRef.onDestroy(() =>{this.supabase.removeChannel(this.channel);});
     }
 
     private async cargarPeliculasdesdeDB(): Promise<void> {
@@ -105,5 +99,25 @@ export class PeliculaService{
         return false;
     }
     return true;
+    }
+
+    async obtenerPeliculasMasVendidas(): Promise<Pelicula[]> {
+
+    const { data, error } = await this.supabase
+        .rpc('obtener_peliculas_mas_vendidas');
+
+    if (error) {
+        console.error(
+            'Error al obtener películas más vendidas:',
+            error.message
+        );
+        return [];
+        }
+
+        const top3Ids = data.map(
+        (item: { pelicula_id: string; cantidad_vendida: number }) => item.pelicula_id);
+        return top3Ids
+        .map((id: string) => this.peliculasSignal().find((p: Pelicula) => p.pelicula_id === id))
+        .filter((p: Pelicula | undefined): p is Pelicula =>p !== undefined);
     }
 }

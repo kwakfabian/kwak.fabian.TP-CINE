@@ -110,6 +110,9 @@
     padding: 8px 0;
 }
 
+.fila-accesible button {
+    background-color: #4a90d9;
+}
 
 /* ================================= */
 /* R, S Y T = VIP                    */
@@ -126,7 +129,8 @@
 }
 
 .fila-vip button {
-    border: 2px solid #d89b00;
+    background-color: #e5c100;
+    color: black
 }
 
 
@@ -141,6 +145,59 @@
 
 .resumen p {
     margin: 8px 0;
+}
+
+.referencia-precios {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    justify-content: space-around;
+}
+
+.item-precio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.butaca-muestra {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+    color: white;
+}
+
+.butaca-muestra.normal {
+    background-color: #555;
+}
+
+.butaca-muestra.discapacitado {
+    background-color: #4a90d9;
+}
+
+.butaca-muestra.vip {
+    background-color: #e5c100;
+    color: #1a1a1a;
+}
+
+.precio-muestra {
+    font-weight: bold;
+    color: white;
+    font-size: 14px;
+}
+
+.etiqueta-muestra {
+    color: #aaa;
+    font-size: 12px;
 }
 
 .resumen button {

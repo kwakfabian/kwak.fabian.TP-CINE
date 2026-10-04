@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal} from '@angular/core';
 import { PeliculaService } from '../../core/services/pelicula.service';
-import { PeliculaCard } from '../../shares/pelicula-card/pelicula-card'
+import { PeliculaCard } from '../../shares/pelicula-card/pelicula-card';
+import { Pelicula } from '../../core/models/peliculainterface';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -52,5 +53,12 @@ export class Home {
 
             return coincideNombre && coincideGenero;
         });
+    }
+
+    peliculasMasVendidas = signal<Pelicula[]>([]);
+
+    async ngOnInit() {
+        const top3 = await this.peliculaService.obtenerPeliculasMasVendidas();
+        this.peliculasMasVendidas.set(top3);
     }
 }

@@ -2,7 +2,6 @@ import { Component, input, inject } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { RouterLink } from '@angular/router';
 import { Pelicula } from '../../core/models/peliculainterface';
-import { FavoritoService } from '../../core/services/favorito.service';
 
 @Component({
   imports: [RouterLink],
@@ -12,16 +11,7 @@ import { FavoritoService } from '../../core/services/favorito.service';
 })
 export class PeliculaCard {
   authService = inject(AuthService);
-  private favoritoService = inject(FavoritoService);
 
   pelicula = input.required<Pelicula>();
-
-  agregarAFavoritos() {
-    const pelicula = this.pelicula();
-    this.favoritoService.agregarFavorito({
-      pelicula_id: pelicula.pelicula_id,
-      nota: ''
-    });
-  }
 
 }

@@ -5,6 +5,5 @@ export interface Funcion {
     fecha: string,
     hora_inicio: string,
     formato: string,
-    idioma: string,
-    precio: number
+    idioma: string
 }

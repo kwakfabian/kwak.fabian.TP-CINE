@@ -1,30 +1,84 @@
 <section class="section-confirmar">
 
-    @if (esAnonimo()) {
-        <div class="datos-invitado">
-            <h3>Antes de confirmar, completá tus datos</h3>
+    <div class="resumen-compra">
+        <h3>Resumen de tu compra</h3>
 
+        <p><strong>Película:</strong> {{ peliculaActual()?.pelicula_titulo }}</p>
+        <p><strong>Fecha:</strong> {{ funcionActual()?.fecha }} — {{ funcionActual()?.hora_inicio }}</p>
+
+        <p><strong>Butacas:</strong> {{ compraService.butacasSeleccionadas().join(', ') }}</p>
+
+        @if (compraService.candySeleccionado().length > 0) {
+            <div class="resumen-candy">
+                <strong>Candy:</strong>
+
+                <ul>
+                    @for (item of compraService.candySeleccionado(); track item.candy_id) {
+                        <li>
+                            {{ item.cantidad }}x {{ item.nombre_candy }} —
+                            ${{ item.precio * item.cantidad }}
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <p class="precio-total">
+            <strong>Total: ${{ compraService.calcularPrecioTotal() }}</strong>
+        </p>
+    </div>
+
+    @if (esAnonimo()) {
+
+        <div class="datos-invitado">
+        
+            <h3>Antes de confirmar, completá tus datos</h3>
             <form [formGroup]="datosInvitadoForm">
                 <div>
-                    <label for="nombre">Nombre</label>
-                    <input type="text" id="nombre" formControlName="nombre">
+                    <label for="nombre_comprador">Nombre</label>
+                    <input
+                        type="text"
+                        id="nombre_comprador"
+                        formControlName="nombre_comprador"
+                    >
                 </div>
 
                 <div>
-                    <label for="email">Email</label>
-                    <input type="email" id="email" formControlName="email">
+                    <label for="email_comprador">Email</label>
+                    <input
+                        type="email"
+                        id="email_comprador"
+                        formControlName="email_comprador"
+                    >
                 </div>
 
                 <div>
-                    <label for="fecha_nacimiento">Fecha de nacimiento</label>
-                    <input type="date" id="fecha_nacimiento" formControlName="fecha_nacimiento">
+                    <label for="fecha_nacimiento_comprador">Fecha de nacimiento</label>
+                    <input
+                        type="date"
+                        id="fecha_nacimiento_comprador"
+                        formControlName="fecha_nacimiento_comprador"
+                    >
                 </div>
             </form>
+
+            <button
+                type="button"
+                class="btn-login"
+                (click)="iniciarSesion()"
+            >
+                Iniciar sesión
+            </button>
         </div>
     }
 
-    <button [disabled]="!puedeConfirmar()" (click)="confirmarCompra()">
-        Confirmar Compra
+    <button
+        type="button"
+        class="btn-confirmar"
+        [disabled]="!puedeConfirmar()"
+        (click)="confirmarCompra()"
+    >
+        Confirmar compra
     </button>
 
 </section>

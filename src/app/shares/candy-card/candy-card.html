@@ -10,7 +10,7 @@
     <div class="info-candy">
         <h3>{{ candy().nombre_candy }}</h3>
         <p class="precio">${{ candy().precio }}</p>
-        <p class="descripcion">{{ candy().descripcion }}</p>
+        <p class="descripcion"> {{ candy().descripcion }}</p>
 
         <div class="cantidad">
             <button type="button" (click)="restar()" [disabled]="cantidad === 0">−</button>

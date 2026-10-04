@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ButacasService } from '../../core/services/butacas.service';
@@ -29,82 +29,56 @@ export class Butacas implements OnInit {
   funcionId!: string;
   cantidadBoletos!: number;
 
-  butacas: string[] = [];
-  butacasOcupadas: string[] = [];
-  butacasSeleccionadas: string[] = [];
+  butacas = signal<string[]>([]);
+  butacasOcupadas = signal<string[]>([]);
+  butacasSeleccionadas = signal<string[]>([]);
 
   async ngOnInit() {
 
-    this.funcionId =
-      this.route.snapshot.queryParamMap.get('funcionId')!;
+    this.funcionId = this.route.snapshot.paramMap.get('funcionId')!;
+    this.cantidadBoletos = Number(this.route.snapshot.queryParamMap.get('cantidad'));
+    this.compraService.setearFuncion(this.funcionId, this.cantidadBoletos);
+    this.butacas.set(this.butacasService.generarTodasLasButacas());
+    const ocupadas = await this.butacasService.obtenerButacasOcupadas(this.funcionId);
+    this.butacasOcupadas.set(ocupadas);
 
-    this.cantidadBoletos =
-      Number(this.route.snapshot.queryParamMap.get('cantidad'));
-
-    this.compraService.setearFuncion(
-      this.funcionId,
-      this.cantidadBoletos
-    );
-
-    this.butacas =
-      this.butacasService.generarTodasLasButacas();
-
-    this.butacasOcupadas =
-      await this.butacasService.obtenerButacasOcupadas(
-        this.funcionId
-      );
   }
 
   estaOcupada(butaca: string): boolean {
-    return this.butacasOcupadas.includes(butaca);
+      return this.butacasOcupadas().includes(butaca);
   }
 
   estaSeleccionada(butaca: string): boolean {
-    return this.butacasSeleccionadas.includes(butaca);
+      return this.butacasSeleccionadas().includes(butaca);
   }
 
   seleccionarButaca(butaca: string) {
-    if (this.estaOcupada(butaca)) {
-      return;
-    }
-
-    if (this.estaSeleccionada(butaca)) {
-      this.butacasSeleccionadas =
-        this.butacasSeleccionadas.filter(
-          b => b !== butaca
-        );
-    } else {
-      if (
-        this.butacasSeleccionadas.length >=
-        this.cantidadBoletos
-      ) {
+      if (this.estaOcupada(butaca)) {
         return;
       }
-      this.butacasSeleccionadas.push(butaca);
-    }
+      if (this.estaSeleccionada(butaca)) {
+        this.butacasSeleccionadas.update(actuales =>
+          actuales.filter(b => b !== butaca)
+        );
+      } else {
+        if (this.butacasSeleccionadas().length >= this.cantidadBoletos) {
+          return;
+        }
+        this.butacasSeleccionadas.update(actuales => [...actuales, butaca]);
+      }
   }
 
   puedeContinuar(): boolean {
-    return (
-      this.butacasSeleccionadas.length ===
-      this.cantidadBoletos
-    );
+      return this.butacasSeleccionadas().length === this.cantidadBoletos;
   }
 
   continuar() {
-    if (!this.puedeContinuar()) {
-      alert(
-        `Tenés que elegir ${this.cantidadBoletos} butaca(s) para continuar.`
-      );
-      return;
-    }
-    this.compraService.setearButacas(
-      this.butacasSeleccionadas
-    );
-    console.log(
-      'Butacas guardadas en CompraService:',
-      this.compraService.butacasSeleccionadas()
-    );
+      if (!this.puedeContinuar()) {
+        alert(`Tenés que elegir ${this.cantidadBoletos} butaca(s) para continuar.`);
+        return;
+      }
+    this.compraService.setearButacas(this.butacasSeleccionadas());
+    console.log('Butacas guardadas en CompraService:',this.compraService.butacasSeleccionadas());
     this.router.navigate(['/candy']);
   }
 }

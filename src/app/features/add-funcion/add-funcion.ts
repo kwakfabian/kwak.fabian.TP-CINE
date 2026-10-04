@@ -32,7 +32,6 @@ export class AddFuncion implements OnInit {
     hora_inicio: new FormControl('', [Validators.required]),
     formato: new FormControl('', [Validators.required]),
     idioma: new FormControl('', [Validators.required]),
-    precio: new FormControl<number | null>(null, [Validators.required, Validators.min(0)]),
   });
 
   get f() {
@@ -52,8 +51,7 @@ export class AddFuncion implements OnInit {
       fecha: funcion.fecha,
       hora_inicio: funcion.hora_inicio,
       formato: funcion.formato,
-      idioma: funcion.idioma,
-      precio: funcion.precio
+      idioma: funcion.idioma
     });
   }
 
@@ -88,7 +86,6 @@ export class AddFuncion implements OnInit {
       hora_inicio: formValue.hora_inicio!,
       formato: formValue.formato!,
       idioma: formValue.idioma!,
-      precio: formValue.precio!
     };
 
     const idEnEdicion = this.editandoId();
