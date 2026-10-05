@@ -319,4 +319,84 @@ export class CompraService {
         }
         return true;
     }
+
+    async validarEntrada(codigo: string) {
+
+        const codigoLimpio = codigo.trim();
+
+        if (!codigoLimpio) {
+            return {
+                exito: false,
+                mensaje: 'Ingresá un código.'
+            };
+        }
+
+        const { data: compra, error: errorBusqueda } = await this.supabase
+            .from('compras')
+            .select('*')
+            .eq('codigo_qr', codigoLimpio)
+            .maybeSingle();
+
+        console.log('Código buscado:', codigoLimpio);
+        console.log('Compra encontrada:', compra);
+        console.log('Error Supabase:', errorBusqueda);
+
+        if (errorBusqueda) {
+            console.error('Error al buscar la entrada:', errorBusqueda.message);
+
+            return {
+                exito: false,
+                mensaje: 'Ocurrió un error al buscar la entrada.'
+            };
+        }
+
+        if (!compra) {
+            return {
+                exito: false,
+                mensaje: 'El código ingresado no existe.'
+            };
+        }
+
+        if (!compra.qr_disponible || !compra.compra_activa) {
+            return {
+                exito: false,
+                mensaje: 'Esta entrada ya fue utilizada.'
+            };
+        }
+
+        const { data: compraActualizada, error: errorUpdate } = await this.supabase
+            .from('compras')
+            .update({
+                qr_disponible: false,
+                compra_activa: false
+            })
+            .eq('compra_id', compra.compra_id)
+            .eq('qr_disponible', true)
+            .eq('compra_activa', true)
+            .select()
+            .maybeSingle();
+
+        if (errorUpdate) {
+            console.error('Error al validar la entrada:', errorUpdate.message);
+
+            return {
+                exito: false,
+                mensaje: 'No se pudo validar la entrada.'
+            };
+        }
+
+        // Si no actualizó ninguna fila, alguien ya la utilizó
+        if (!compraActualizada) {
+            return {
+                exito: false,
+                mensaje: 'Esta entrada ya fue utilizada.'
+            };
+        }
+
+        return {
+            exito: true,
+            mensaje: 'Entrada validada correctamente.',
+            compra: compraActualizada
+        };
+    }
 }

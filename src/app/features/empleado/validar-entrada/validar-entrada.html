@@ -1,0 +1,103 @@
+<div class="validar-page">
+
+  <div class="validar-container">
+
+    <div class="encabezado">
+      <h1>Control de acceso</h1>
+      <p>Escaneá el QR de la entrada o ingresá el código manualmente.</p>
+    </div>
+
+    <div class="scanner">
+
+      <div class="scanner-placeholder">
+        <span class="scanner-icon">▦</span>
+
+        <h2>Escanear código QR</h2>
+
+        <p>
+          Utilizá la cámara para escanear el código
+          de la entrada.
+        </p>
+
+        <button class="btn-camera" type="button">
+          Activar cámara
+        </button>
+      </div>
+
+    </div>
+
+    <div class="separador">
+      <span></span>
+      <p>O INGRESÁ EL CÓDIGO MANUALMENTE</p>
+      <span></span>
+    </div>
+
+    <div class="manual">
+
+      <label for="codigo">Código de entrada</label>
+
+      <div class="codigo-container">
+
+        <input
+          id="codigo"
+          type="text"
+          [(ngModel)]="codigo"
+          placeholder="Ej: ENT-8F4A92C71B"
+          (keyup.enter)="validarCodigo()"
+        >
+
+        <button
+          type="button"
+          class="btn-validar"
+          (click)="validarCodigo()"
+        >
+          Validar
+        </button>
+
+      </div>
+
+    </div>
+
+    @if (mensaje()) {
+
+      <div
+        class="resultado"
+        [class.exito]="tipoMensaje() === 'exito'"
+        [class.error]="tipoMensaje() === 'error'"
+      >
+
+        <div class="resultado-icon">
+          @if (tipoMensaje() === 'exito') {
+            ✓
+          } @else {
+            ✕
+          }
+        </div>
+
+        <div class="resultado-info">
+          <strong>
+            @if (tipoMensaje() === 'exito') {
+              Código leído
+            } @else {
+              Error
+            }
+          </strong>
+
+          <p>{{ mensaje() }}</p>
+        </div>
+
+        <button
+          type="button"
+          class="btn-limpiar"
+          (click)="limpiar()"
+        >
+          ✕
+        </button>
+
+      </div>
+
+    }
+
+  </div>
+
+</div>

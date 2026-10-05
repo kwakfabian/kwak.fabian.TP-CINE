@@ -10,6 +10,9 @@
                 <a routerLink="/add-funcion">Agregar Funcion</a>
                 <a routerLink="/add-candy">Agregar Candy</a>
             }
+            @if (authService.currentUserData()?.rol === 'empleado'){
+                <a routerLink="/validar-entrada">Validar Entrada</a>
+            }
             <a routerLink="/home" routerLinkActive="active">Inicio</a>
             <a routerLink="/candy" routerLinkActive="active">Candy</a> 
             @if (authService.currentUser()) {

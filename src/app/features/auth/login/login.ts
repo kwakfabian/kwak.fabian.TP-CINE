@@ -23,17 +23,31 @@ export class LoginComponent {
   errorMessage = signal<string | null>(null);
 
   async onSubmit() {
-    if (this.loginForm.invalid) return;
+  if (this.loginForm.invalid) return;
 
-    this.isLoading.set(true);
-    this.errorMessage.set(null);
+  this.isLoading.set(true);
+  this.errorMessage.set(null);
 
-    const { email, password } = this.loginForm.value;
-
+  const { email, password } = this.loginForm.value;
     try {
       const { error } = await this.authService.signIn(email!, password!);
+
       if (error) throw error;
+
+      const user = this.authService.currentUserData();
+
+      if (user?.rol === 'empleado') {
+        this.router.navigate(['/empleado/validar']);
+        return;
+      }
+
+      if (user?.rol === 'admin') {
+        this.router.navigate(['/home']);
+        return;
+      }
+
       this.router.navigate(['/home']);
+
     } catch (error: any) {
       this.errorMessage.set(error.message || 'Error al iniciar sesión');
     } finally {
