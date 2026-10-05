@@ -1,0 +1,82 @@
+<section class="admin-usuarios">
+
+    <div class="encabezado">
+        <h1>Administración de usuarios</h1>
+        <p>Gestioná los usuarios registrados en CineKwak.</p>
+    </div>
+
+    @if (mensaje()) {
+        <div class="mensaje">
+            {{ mensaje() }}
+        </div>
+    }
+
+    @if (cargando()) {
+        <p class="cargando">
+            Cargando usuarios...
+        </p>
+
+    } @else {
+
+        <div class="tabla-container">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @for (
+                        usuario of usuarioService.usuarios();
+                        track usuario.usuario_id
+                    ) {
+
+                        <tr>
+                            <td>{{ usuario.nombre }} {{ usuario.apellido }}</td>
+                            <td>{{ usuario.email }}</td>
+
+                            <td>
+                                <select
+                                    [value]="usuario.rol"
+                                    (change)="cambiarRol(
+                                        usuario.usuario_id,
+                                        $event
+                                    )"
+                                >
+                                    <option value="user">Usuario</option>
+                                    <option value="empleado">Empleado
+                                    </option>
+                                    <option value="admin">Administrador</option>
+                                </select>
+                            </td>
+
+                            <td>
+                                <button
+                                    type="button"
+                                    class="btn-eliminar"
+                                >
+                                    Eliminar
+                                </button>
+                            </td>
+
+                        </tr>
+
+                    } @empty {
+
+                        <tr>
+                            <td colspan="4">No hay usuarios registrados.</td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>
