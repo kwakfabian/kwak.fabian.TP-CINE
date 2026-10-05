@@ -9,13 +9,16 @@
 
         <div class="info-detalle">
             <h2>{{ pelicula()?.pelicula_titulo }}</h2>
+
             <p class="sinopsis">
                 {{ pelicula()?.sinopsis }}
             </p>
+
             <div class="datos-detalle">
                 <span>{{ pelicula()?.duracion }} min</span>
                 <span>{{ pelicula()?.edad_restriccion }}</span>
             </div>
+
             <div class="generos-detalle">
                 @for (g of pelicula()?.genero; track g) {
                     <span class="chip-genero">
@@ -24,70 +27,86 @@
                 }
             </div>
 
-            <div class="selector-funciones">
-                <label>Elegí una fecha</label>
-                <div class="opciones-fecha">
-                    @for (fecha of fechasDisponibles(); track fecha) {
-                        <button
-                            type="button"
-                            class="chip-fecha"
-                            [class.chip-activo]="fechaSeleccionada() === fecha"
-                            (click)="elegirFecha(fecha)"
-                        >
-                            {{ fecha }}
-                        </button>
-                    }
-                </div>
-            </div>
+            @if (fechasDisponibles().length > 0) {
 
-            @if (fechaSeleccionada()) {
                 <div class="selector-funciones">
-                    <label>Elegí un horario</label>
-                    <div class="opciones-horario">
-                        @for (
-                            funcion of horariosDelDia();
-                            track funcion.funciones_id
-                        ) {
+                    <label>Elegí una fecha</label>
+
+                    <div class="opciones-fecha">
+                        @for (fecha of fechasDisponibles(); track fecha) {
                             <button
                                 type="button"
-                                class="chip-horario"
-                                [class.chip-activo]="
-                                    horarioSeleccionado() === funcion.funciones_id
-                                "
-                                (click)="elegirHorario(funcion.funciones_id)"
+                                class="chip-fecha"
+                                [class.chip-activo]="fechaSeleccionada() === fecha"
+                                (click)="elegirFecha(fecha)"
                             >
-                                {{ funcion.hora_inicio }}
-                                —
-                                {{ funcion.formato }}
+                                {{ fecha }}
                             </button>
                         }
                     </div>
                 </div>
+
+                @if (fechaSeleccionada()) {
+                    <div class="selector-funciones">
+                        <label>Elegí un horario</label>
+
+                        <div class="opciones-horario">
+                            @for (
+                                funcion of horariosDelDia();
+                                track funcion.funciones_id
+                            ) {
+                                <button
+                                    type="button"
+                                    class="chip-horario"
+                                    [class.chip-activo]="
+                                        horarioSeleccionado() === funcion.funciones_id
+                                    "
+                                    (click)="elegirHorario(funcion.funciones_id)"
+                                >
+                                    {{ funcion.hora_inicio }}
+                                    —
+                                    {{ funcion.formato }}
+                                </button>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <!-- CANTIDAD -->
+                <div class="selector-cantidad">
+
+                    <label for="cantidad">
+                        Cantidad de boletos
+                    </label>
+
+                    <input
+                        type="number"
+                        id="cantidad"
+                        min="1"
+                        [value]="cantidadBoletos()"
+                        (input)="cantidadBoletos.set(+$any($event.target).value)"
+                    >
+
+                </div>
+
+                <div class="espacio-flexible"></div>
+
+                <button
+                    class="btn-comprar"
+                    [disabled]="!puedeComprar()"
+                    (click)="comprar()"
+                >
+                    Comprar Boletos
+                </button>
+
+            } @else {
+
+                <div class="selector-funciones">
+                    <p>No hay funciones disponibles para esta película.</p>
+                </div>
+
             }
 
-            <!-- CANTIDAD -->
-            <div class="selector-cantidad">
-
-                <label for="cantidad">
-                    Cantidad de boletos
-                </label>
-                <input
-                    type="number"
-                    id="cantidad"
-                    min="1"
-                    [value]="cantidadBoletos()"
-                    (input)="cantidadBoletos.set(+$any($event.target).value)"
-                >
-
-            </div>
-            <div class="espacio-flexible"></div>
-            <button
-                class="btn-comprar"
-                [disabled]="!puedeComprar()"
-                (click)="comprar()"
-            >
-                Comprar Boletos
-            </button>
         </div>
     </div>
 </section>

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
+import { RealtimeChannel } from '@supabase/supabase-js';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,35 @@ export class ButacasService {
     }
 
     return data?.butacas_ocupadas ?? [];
+  }
+
+  iniciarRealTime(funcionId: string, actualizarButacas: (butacas: string[]) => void): RealtimeChannel {
+
+    return this.supabase.client
+      .channel(`butacas-${funcionId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'butacas',
+          filter: `funciones_id=eq.${funcionId}`
+        },
+        (payload) => {
+
+          console.log('Cambio en butacas:', payload);
+
+          if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') {
+            const nuevasButacas = payload.new['butacas_ocupadas'] ?? [];
+            actualizarButacas(nuevasButacas);
+          }
+        }
+      )
+      .subscribe();
+  }
+
+  detenerRealTime(channel: RealtimeChannel) {
+    this.supabase.client.removeChannel(channel);
   }
 
   generarTodasLasButacas(): string[] {

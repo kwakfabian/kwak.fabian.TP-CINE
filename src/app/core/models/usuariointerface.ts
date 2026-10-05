@@ -6,5 +6,6 @@ export interface Usuario{
     tipoDeSangre:string[],
     colorDeOjos:string[],
     vacacionesPorAnio: number,
+    credito: number,
     rol: string
 }

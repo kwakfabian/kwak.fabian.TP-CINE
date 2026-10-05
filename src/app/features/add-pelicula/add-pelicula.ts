@@ -15,7 +15,7 @@ export class AddPelicula {
   peliculas = this.peliculaService.peliculas;
 
   generos = ['Accion', 'Comedia', 'Drama', 'Terror', 'Ciencia Ficción', 'Fantasia', 'Romance', 'Suspenso', 'Aventura', 'Bibliografico', 'Animacion'];
-  estados = ['MAS POPULARES', 'CARTELERA', 'PREVENTA'];
+  estados = ['CARTELERA', 'PREVENTA'];
   edad_restriccion = ['ATP', '+13', '+18'];
 
   busquedaAdmin: string = '';

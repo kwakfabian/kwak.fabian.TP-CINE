@@ -1,4 +1,4 @@
-import { Component, inject, computed, OnInit  } from '@angular/core';
+import { Component, inject, computed, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -8,158 +8,211 @@ import { FuncionService } from '../../core/services/funcion.service';
 import { PeliculaService } from '../../core/services/pelicula.service';
 
 @Component({
-  selector: 'app-confirmar-compra',
-  imports: [ReactiveFormsModule],
-  templateUrl: './confirmar-compra.html',
-  styleUrl: './confirmar-compra.css'
+    selector: 'app-confirmar-compra',
+    imports: [ReactiveFormsModule],
+    templateUrl: './confirmar-compra.html',
+    styleUrl: './confirmar-compra.css'
 })
 export class ConfirmarCompra implements OnInit {
 
-  authService = inject(AuthService);
-  compraService = inject(CompraService);
-  private funcionService = inject(FuncionService);
-  private peliculaService = inject(PeliculaService);
-  private router = inject(Router);
+    authService = inject(AuthService);
+    compraService = inject(CompraService);
+    private funcionService = inject(FuncionService);
+    private peliculaService = inject(PeliculaService);
+    private router = inject(Router);
 
-  ngOnInit() {
-    this.funcionService.cargarTodasLasFunciones();
-  }
+    creditoUsado = new FormControl(0);
 
-  esAnonimo = computed(() => !this.authService.currentUser());
-
-  funcionActual = computed(() => {
-    const funcionId = this.compraService.funcionId();
-
-    return this.funcionService.funciones().find(
-      f => f.funciones_id === funcionId
-    );
-  });
-
-  peliculaActual = computed(() => {
-    const peliculaId = this.funcionActual()?.peliculas_id;
-
-    if (!peliculaId) return undefined;
-
-    return this.peliculaService.peliculas().find(
-      p => p.pelicula_id === peliculaId
-    );
-  });
-
-  datosInvitadoForm = new FormGroup({
-    nombre_comprador: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2)
-    ]),
-
-    email_comprador: new FormControl('', [
-      Validators.required,
-      Validators.email
-    ]),
-
-    fecha_nacimiento_comprador: new FormControl('', [
-      Validators.required
-    ])
-  });
-
-  get f() {
-    return this.datosInvitadoForm.controls;
-  }
-
-  calcularEdad(fechaNacimiento: string): number {
-    const hoy = new Date();
-    const nacimiento = new Date(fechaNacimiento);
-
-    let edad = hoy.getFullYear() - nacimiento.getFullYear();
-    const mes = hoy.getMonth() - nacimiento.getMonth();
-
-    if (
-      mes < 0 ||
-      (mes === 0 && hoy.getDate() < nacimiento.getDate())
-    ) {
-      edad--;
+    ngOnInit() {
+        this.funcionService.cargarTodasLasFunciones();
     }
 
-    return edad;
-  }
+    esAnonimo = computed(() => !this.authService.currentUser());
 
-  puedeConfirmar(): boolean {
-    if (this.esAnonimo()) {
-      return this.datosInvitadoForm.valid;
+    funcionActual = computed(() => {
+        const funcionId = this.compraService.funcionId();
+
+        return this.funcionService.funciones().find(
+            f => f.funciones_id === funcionId
+        );
+    });
+
+    peliculaActual = computed(() => {
+        const peliculaId = this.funcionActual()?.peliculas_id;
+
+        if (!peliculaId) return undefined;
+
+        return this.peliculaService.peliculas().find(
+            p => p.pelicula_id === peliculaId
+        );
+    });
+
+    datosInvitadoForm = new FormGroup({
+        nombre_comprador: new FormControl('', [
+            Validators.required,
+            Validators.minLength(2)
+        ]),
+
+        email_comprador: new FormControl('', [
+            Validators.required,
+            Validators.email
+        ]),
+
+        fecha_nacimiento_comprador: new FormControl('', [
+            Validators.required
+        ])
+    });
+
+    get f() {
+        return this.datosInvitadoForm.controls;
     }
 
-    return true;
-  }
+    calcularEdad(fechaNacimiento: string): number {
+        const hoy = new Date();
+        const nacimiento = new Date(fechaNacimiento);
 
-  iniciarSesion() {
-    this.router.navigate(['/login']);
-  }
+        let edad = hoy.getFullYear() - nacimiento.getFullYear();
+        const mes = hoy.getMonth() - nacimiento.getMonth();
 
-  async confirmarCompra() {
-
-    let edadComprador: number;
-    let fechaNacimientoComprador: string | null = null;
-    let nombreComprador: string | null = null;
-    let emailComprador: string | null = null;
-
-    if (this.esAnonimo()) {
-
-        if (this.datosInvitadoForm.invalid) {
-            this.datosInvitadoForm.markAllAsTouched();
-            return;
+        if (
+            mes < 0 ||
+            (mes === 0 && hoy.getDate() < nacimiento.getDate())
+        ) {
+            edad--;
         }
-        fechaNacimientoComprador = this.datosInvitadoForm.value.fecha_nacimiento_comprador!;
-        edadComprador = this.calcularEdad(fechaNacimientoComprador);
-        nombreComprador = this.datosInvitadoForm.value.nombre_comprador!;
-        emailComprador = this.datosInvitadoForm.value.email_comprador!;
 
-    } else {
-        edadComprador = this.calcularEdad(
-            this.authService.currentUserData()!.fechaDeNacimiento
+        return edad;
+    }
+
+    obtenerCreditoDisponible(): number {
+        return Number(
+            this.authService.currentUserData()?.credito ?? 0
         );
     }
 
-    const restriccion =
-        this.peliculaActual()?.edad_restriccion;
+    obtenerCreditoUsado(): number {
+        return Number(this.creditoUsado.value ?? 0);
+    }
 
-    const edadMinima = parseInt(
-        restriccion?.replace('+', '') || '0'
-    );
+    creditoValido(): boolean {
+        const credito = this.obtenerCreditoUsado();
+        const creditoDisponible = this.obtenerCreditoDisponible();
+        const totalCompra = this.compraService.calcularPrecioTotal();
 
-    if (
-        restriccion !== 'ATP' &&
-        edadComprador < edadMinima
-    ) {
-        const acompañadoPorAdulto = confirm(
-            `Esta película tiene restricción ${restriccion} y no cumplís con la edad mínima.\n\n` +
-            `Para ver esta película debés estar acompañado por un adulto.\n\n` +
-            `¿Vas a asistir acompañado por un adulto?`
-        );
+        if (credito < 0) {
+            return false;
+        }
 
-        if (!acompañadoPorAdulto) {
-            alert(
-                'No podés continuar con la compra sin estar acompañado por un adulto.'
+        if (credito > creditoDisponible) {
+            return false;
+        }
+
+        if (credito > totalCompra) {
+            return false;
+        }
+
+        return true;
+    }
+
+    calcularTotalAPagar(): number {
+        if (!this.creditoValido()) {
+            return this.compraService.calcularPrecioTotal();
+        }
+
+        const totalCompra = this.compraService.calcularPrecioTotal();
+        const credito = this.obtenerCreditoUsado();
+
+        return totalCompra - credito;
+    }
+
+    puedeConfirmar(): boolean {
+        if (this.esAnonimo()) {
+            return this.datosInvitadoForm.valid;
+        }
+
+        return this.creditoValido();
+    }
+
+    iniciarSesion() {
+        this.router.navigate(['/login']);
+    }
+
+    async confirmarCompra() {
+
+        let edadComprador: number;
+        let fechaNacimientoComprador: string | null = null;
+        let nombreComprador: string | null = null;
+        let emailComprador: string | null = null;
+
+        if (this.esAnonimo()) {
+
+            if (this.datosInvitadoForm.invalid) {
+                this.datosInvitadoForm.markAllAsTouched();
+                return;
+            }
+
+            fechaNacimientoComprador = this.datosInvitadoForm.value.fecha_nacimiento_comprador!;
+            edadComprador = this.calcularEdad(fechaNacimientoComprador);
+            nombreComprador = this.datosInvitadoForm.value.nombre_comprador!;
+            emailComprador = this.datosInvitadoForm.value.email_comprador!;
+
+        } else {
+
+            if (!this.creditoValido()) {
+                alert('La cantidad de crédito ingresada no es válida.');
+                return;
+            }
+
+            edadComprador = this.calcularEdad(
+                this.authService.currentUserData()!.fechaDeNacimiento
             );
-            return;
         }
-    }
 
-    const usuarioActual =
-        this.authService.currentUser();
+        const restriccion =
+            this.peliculaActual()?.edad_restriccion;
 
-    const compraCreada = await this.compraService.confirmarCompra({
+        const edadMinima = parseInt(
+            restriccion?.replace('+', '') || '0'
+        );
+
+        if (
+            restriccion !== 'ATP' &&
+            edadComprador < edadMinima
+        ) {
+            const acompañadoPorAdulto = confirm(
+                `Esta película tiene restricción ${restriccion} y no cumplís con la edad mínima.\n\n` +
+                `Para ver esta película debés estar acompañado por un adulto.\n\n` +
+                `¿Vas a asistir acompañado por un adulto?`
+            );
+
+            if (!acompañadoPorAdulto) {
+                alert(
+                    'No podés continuar con la compra sin estar acompañado por un adulto.'
+                );
+                return;
+            }
+        }
+
+        const usuarioActual =
+            this.authService.currentUser();
+
+        const creditoUsado =
+            usuarioActual ? this.obtenerCreditoUsado() : 0;
+
+        const compraCreada = await this.compraService.confirmarCompra({
             usuario_id: usuarioActual?.id ?? null,
             nombre_comprador: nombreComprador,
             email_comprador: emailComprador,
             fecha_nacimiento_comprador: fechaNacimientoComprador
-        });
+        }, creditoUsado);
 
-    if (compraCreada) {
-        alert('¡Compra confirmada con éxito!');
-        this.router.navigate(['/home']);
-    } else {
-        alert(
-            'Hubo un error al confirmar tu compra. Intentá de nuevo.'
-        );
+        if (compraCreada) {
+            alert('¡Compra confirmada con éxito!');
+            this.router.navigate(['/home']);
+        } else {
+            alert(
+                'Hubo un error al confirmar tu compra. Intentá de nuevo.'
+            );
+        }
     }
-  }
 }

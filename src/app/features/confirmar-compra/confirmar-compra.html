@@ -26,14 +26,78 @@
         <p class="precio-total">
             <strong>Total: ${{ compraService.calcularPrecioTotal() }}</strong>
         </p>
+
+        @if (!esAnonimo()) {
+            <div class="credito-compra">
+
+                <p>
+                    <strong>
+                        Crédito disponible: {{ obtenerCreditoDisponible() }}
+                    </strong>
+                </p>
+
+                <label for="creditoUsado">
+                    Crédito que querés usar
+                </label>
+
+                <input
+                    type="number"
+                    id="creditoUsado"
+                    [formControl]="creditoUsado"
+                    min="0"
+                    [max]="obtenerCreditoDisponible()"
+                    [disabled]="obtenerCreditoDisponible() <= 0"
+                >
+
+                @if (obtenerCreditoDisponible() <= 0) {
+                    <small class="error-credito">
+                        No tenés crédito disponible.
+                    </small>
+                }
+
+                @if (obtenerCreditoUsado() > obtenerCreditoDisponible()) {
+                    <small class="error-credito">
+                        No tenés crédito suficiente. Tu saldo disponible es de {{ obtenerCreditoDisponible() }}.
+                    </small>
+                }
+
+                @if (obtenerCreditoUsado() > compraService.calcularPrecioTotal()) {
+                    <small class="error-credito">
+                        No podés usar más crédito que el total de la compra.
+                    </small>
+                }
+
+                @if (obtenerCreditoUsado() < 0) {
+                    <small class="error-credito">
+                        El crédito no puede ser negativo.
+                    </small>
+                }
+
+                @if (obtenerCreditoUsado() > 0 && creditoValido()) {
+                    <p>
+                        Crédito utilizado:
+                        -{{ obtenerCreditoUsado() }}
+                    </p>
+
+                    <p class="precio-total">
+                        <strong>
+                            Total a pagar: {{ calcularTotalAPagar() }}
+                        </strong>
+                    </p>
+                }
+
+            </div>
+        }
     </div>
 
     @if (esAnonimo()) {
 
         <div class="datos-invitado">
-        
+
             <h3>Antes de confirmar, completá tus datos</h3>
+
             <form [formGroup]="datosInvitadoForm">
+
                 <div>
                     <label for="nombre_comprador">Nombre</label>
                     <input
@@ -53,13 +117,17 @@
                 </div>
 
                 <div>
-                    <label for="fecha_nacimiento_comprador">Fecha de nacimiento</label>
+                    <label for="fecha_nacimiento_comprador">
+                        Fecha de nacimiento
+                    </label>
+
                     <input
                         type="date"
                         id="fecha_nacimiento_comprador"
                         formControlName="fecha_nacimiento_comprador"
                     >
                 </div>
+
             </form>
 
             <button
@@ -69,6 +137,7 @@
             >
                 Iniciar sesión
             </button>
+
         </div>
     }
 

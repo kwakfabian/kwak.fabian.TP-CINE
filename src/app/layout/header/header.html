@@ -5,6 +5,7 @@
         </div>
         <div class="div-header-derecha">
             @if (authService.currentUserData()?.rol === 'admin') {
+                <a routerLink="/admin-config">Admin Config</a>
                 <a routerLink="/add-pelicula">Agregar Pelicula</a>
                 <a routerLink="/add-funcion">Agregar Funcion</a>
                 <a routerLink="/add-candy">Agregar Candy</a>
@@ -12,8 +13,8 @@
             <a routerLink="/home" routerLinkActive="active">Inicio</a>
             <a routerLink="/candy" routerLinkActive="active">Candy</a> 
             @if (authService.currentUser()) {
-                <a routerLink="/favoritos" routerLinkActive="active">Favoritos</a>
                 <a href="#" (click)="logout(); $event.preventDefault()">Cerrar sesion</a>
+                <a routerLink="/perfil" routerLinkActive="active">Perfil</a>
             } @else {
                 <a routerLink="/login">Iniciar sesion</a>
             }

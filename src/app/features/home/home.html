@@ -13,7 +13,6 @@
 
     <div class="div-titulo">
     <h1>CARTELERA</h1>
-        <!-- BUSCADOR -->
         <div class="filtros-cartelera">
             <input
                 type="text"
@@ -21,7 +20,6 @@
                 [(ngModel)]="busqueda"
             >
 
-            <!-- FILTROS POR GÉNERO -->
             <div class="botones-genero">
                 <button
                     [class.activo]="generoSeleccionado === 'TODOS'"
@@ -37,7 +35,7 @@
                 }
             </div>
         </div>
-        <!-- PELÍCULAS FILTRADAS -->
+
         <div class="div-cartelera">
             @for (pelicula of peliculasFiltradas(); track pelicula.pelicula_id) {
                 <app-pelicula-card

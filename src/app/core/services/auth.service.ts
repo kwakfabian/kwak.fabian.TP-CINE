@@ -10,7 +10,6 @@ export class AuthService{
 
     currentUser = signal<User | null>(null);
     currentSession = signal<Session | null>(null);
-
     currentUserData = signal<Usuario | null>(null);
 
     constructor(){

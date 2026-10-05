@@ -1,9 +1,8 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { RealtimeChannel } from '@supabase/supabase-js';
 import { ButacasService } from '../../core/services/butacas.service';
 import { CompraService } from '../../core/services/compra.service';
-
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -12,7 +11,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './butacas.html',
   styleUrl: './butacas.css'
 })
-export class Butacas implements OnInit {
+export class Butacas implements OnInit, OnDestroy {
 
   filas: string[] = [
   'A', 'B', 'C', 'D', 'E',
@@ -21,6 +20,7 @@ export class Butacas implements OnInit {
   'P', 'Q', 'R', 'S', 'T'
   ];
 
+  private realtimeChannel!: RealtimeChannel;
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private butacasService = inject(ButacasService);
@@ -35,17 +35,36 @@ export class Butacas implements OnInit {
 
   async ngOnInit() {
 
-    this.funcionId = this.route.snapshot.paramMap.get('funcionId')!;
-    this.cantidadBoletos = Number(this.route.snapshot.queryParamMap.get('cantidad'));
-    this.compraService.setearFuncion(this.funcionId, this.cantidadBoletos);
-    this.butacas.set(this.butacasService.generarTodasLasButacas());
-    const ocupadas = await this.butacasService.obtenerButacasOcupadas(this.funcionId);
-    this.butacasOcupadas.set(ocupadas);
+      this.funcionId = this.route.snapshot.paramMap.get('funcionId')!;
+      this.cantidadBoletos = Number(this.route.snapshot.queryParamMap.get('cantidad'));
 
+      this.compraService.setearFuncion(this.funcionId, this.cantidadBoletos);
+
+      this.butacas.set(this.butacasService.generarTodasLasButacas());
+
+      const ocupadas = await this.butacasService.obtenerButacasOcupadas(this.funcionId);
+      this.butacasOcupadas.set(ocupadas);
+
+      this.realtimeChannel = this.butacasService.iniciarRealTime(
+          this.funcionId,
+          (butacas) => {
+              this.butacasOcupadas.set(butacas);
+
+              this.butacasSeleccionadas.update(actuales =>
+                  actuales.filter(butaca => !butacas.includes(butaca))
+              );
+          }
+      );
+  }
+
+  ngOnDestroy() {
+      if (this.realtimeChannel) {
+          this.butacasService.detenerRealTime(this.realtimeChannel);
+      }
   }
 
   estaOcupada(butaca: string): boolean {
-      return this.butacasOcupadas().includes(butaca);
+    return this.butacasOcupadas().includes(butaca);
   }
 
   estaSeleccionada(butaca: string): boolean {
@@ -54,17 +73,19 @@ export class Butacas implements OnInit {
 
   seleccionarButaca(butaca: string) {
       if (this.estaOcupada(butaca)) {
-        return;
-      }
-      if (this.estaSeleccionada(butaca)) {
-        this.butacasSeleccionadas.update(actuales =>
-          actuales.filter(b => b !== butaca)
-        );
-      } else {
-        if (this.butacasSeleccionadas().length >= this.cantidadBoletos) {
           return;
-        }
-        this.butacasSeleccionadas.update(actuales => [...actuales, butaca]);
+      }
+
+      if (this.estaSeleccionada(butaca)) {
+          this.butacasSeleccionadas.update(actuales =>
+              actuales.filter(b => b !== butaca)
+          );
+      } else {
+          if (this.butacasSeleccionadas().length >= this.cantidadBoletos) {
+              return;
+          }
+
+          this.butacasSeleccionadas.update(actuales => [...actuales, butaca]);
       }
   }
 

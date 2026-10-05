@@ -30,17 +30,32 @@ export class DetailPelicula implements OnInit {
     this.funcionService.cargarFuncionesDePelicula(this.peliculaId);
   }
 
+  funcionPasada(fecha: string, horaInicio: string): boolean {
+    const fechaFuncion = new Date(`${fecha}T${horaInicio}`);
+    const ahora = new Date();
+
+    return fechaFuncion.getTime() <= ahora.getTime();
+  }
+
   fechasDisponibles = computed(() => {
-    const fechas = this.funcionService.funciones().map(f => f.fecha);
-    return [...new Set(fechas)];
+
+      const funcionesFuturas = this.funcionService.funciones().filter(
+          f => !this.funcionPasada(f.fecha, f.hora_inicio)
+      );
+
+      const fechas = funcionesFuturas.map(f => f.fecha);
+
+      return [...new Set(fechas)];
   });
 
   horariosDelDia = computed(() => {
-    if (!this.fechaSeleccionada()) return [];
+      if (!this.fechaSeleccionada()) return [];
 
-    return this.funcionService.funciones().filter(
-      f => f.fecha === this.fechaSeleccionada()
-    );
+      return this.funcionService.funciones().filter(
+          f =>
+              f.fecha === this.fechaSeleccionada() &&
+              !this.funcionPasada(f.fecha, f.hora_inicio)
+      );
   });
 
   puedeComprar = computed(() =>
