@@ -20,10 +20,7 @@
           {{ fila }}
         </span>
 
-
         @if (fila === 'J' || fila === 'K') {
-
-          <!-- J y K: 2 | 10 | 2 -->
 
           <div class="grupo">
             @for (numero of [1, 2]; track numero) {
@@ -66,8 +63,6 @@
 
         } @else {
 
-          <!-- A-Q y R-T: 4 | 20 | 4 -->
-
           <div class="grupo">
             @for (numero of [1, 2, 3, 4]; track numero) {
               <button
@@ -106,11 +101,13 @@
               </button>
             }
           </div>
+
         }
+
       </div>
     }
-  </div>
 
+  </div>
 
   <div class="resumen">
 
@@ -126,23 +123,43 @@
     }
 
     <div class="referencia-precios">
-        <div class="item-precio">
-            <div class="butaca-muestra normal">L14</div>
-            <span class="precio-muestra">$3000</span>
-            <span class="etiqueta-muestra">Normal</span>
-        </div>
 
-        <div class="item-precio">
-            <div class="butaca-muestra discapacitado">J5</div>
-            <span class="precio-muestra">$3000</span>
-            <span class="etiqueta-muestra">Discapacitado</span>
-        </div>
+      <div class="item-precio">
+        <div class="butaca-muestra normal">L14</div>
 
-        <div class="item-precio">
-            <div class="butaca-muestra vip">R10</div>
-            <span class="precio-muestra">$4500</span>
-            <span class="etiqueta-muestra">VIP</span>
-        </div>
+        <span class="precio-muestra">
+          ${{ configuracionService.configuracion()?.precio_estandar ?? 3000 }}
+        </span>
+
+        <span class="etiqueta-muestra">
+          Normal
+        </span>
+      </div>
+
+      <div class="item-precio">
+        <div class="butaca-muestra discapacitado">J5</div>
+
+        <span class="precio-muestra">
+          ${{ configuracionService.configuracion()?.precio_discapacitado ?? 3000 }}
+        </span>
+
+        <span class="etiqueta-muestra">
+          Discapacitado
+        </span>
+      </div>
+
+      <div class="item-precio">
+        <div class="butaca-muestra vip">R10</div>
+
+        <span class="precio-muestra">
+          ${{ configuracionService.configuracion()?.precio_vip ?? 4500 }}
+        </span>
+
+        <span class="etiqueta-muestra">
+          VIP
+        </span>
+      </div>
+
     </div>
 
     <button

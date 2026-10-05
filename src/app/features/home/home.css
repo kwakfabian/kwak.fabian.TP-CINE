@@ -6,10 +6,10 @@
 }
 
 .div-titulo {
-    width: 90%;
-    max-width: 1400px;
-    margin: 0 auto 70px;
-    padding: 30px;
+    width: 80%;
+    max-width: 1000px;
+    margin: 0 auto 50px;
+    padding: 22px;
     display: block;
     border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 15px;
@@ -20,9 +20,9 @@
 .div-titulo h1 {
     display: block;
     width: 100%;
-    margin: 0 0 30px;
+    margin: 0 0 22px;
     text-align: center;
-    font-size: 28px;
+    font-size: 22px;
     font-weight: bold;
     letter-spacing: 3px;
     text-transform: uppercase;
@@ -31,9 +31,8 @@
 
 .div-mas-populares {
     display: grid;
-    height: 600px;
     grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
+    gap: 22px;
 }
 
 .div-cartelera,
@@ -41,7 +40,7 @@
     width: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
+    gap: 22px;
 }
 
 app-pelicula-card {
@@ -55,28 +54,14 @@ app-pelicula-card {
 
 .filtros-cartelera input {
     width: 100%;
-    max-width: 500px;
+    max-width: 380px;
     box-sizing: border-box;
-    padding: 14px 20px;
-    border: 2px solid #444;
-    border-radius: 10px;
-    background-color: #ffffff;
-    color: #222;
-    font-size: 16px;
-    outline: none;
-    transition: all 0.2s ease;
-}
-
-.filtros-cartelera input {
-    width: 100%;
-    max-width: 500px;
-    box-sizing: border-box;
-    padding: 14px 20px;
+    padding: 12px 16px;
     border: 1px solid #444;
-    border-radius: 10px;
+    border-radius: 8px;
     background-color: #151515;
     color: white;
-    font-size: 16px;
+    font-size: 14px;
     outline: none;
     transition: all 0.2s ease;
 }
@@ -94,17 +79,17 @@ app-pelicula-card {
 .botones-genero {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 18px;
+    gap: 8px;
+    margin-top: 14px;
 }
 
 .botones-genero button {
-    padding: 10px 18px;
-    border: 2px solid #444;
+    padding: 7px 14px;
+    border: 1px solid #444;
     border-radius: 25px;
     background-color: transparent;
     color: white;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -122,7 +107,6 @@ app-pelicula-card {
     border-color: #e50914;
 }
 
-
 .botones-genero button:active {
     transform: scale(0.95);
 }
@@ -131,7 +115,7 @@ app-pelicula-card {
     .div-mas-populares,
     .div-cartelera,
     .div-preventa {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
@@ -139,11 +123,16 @@ app-pelicula-card {
     .div-mas-populares,
     .div-cartelera,
     .div-preventa {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 550px) {
+    .div-titulo {
+        width: 92%;
+        padding: 18px;
+    }
+
     .div-mas-populares,
     .div-cartelera,
     .div-preventa {
@@ -162,5 +151,4 @@ app-pelicula-card {
         padding: 8px 14px;
         font-size: 13px;
     }
-
 }

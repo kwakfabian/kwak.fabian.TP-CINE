@@ -6,10 +6,10 @@
 }
 
 .section-candy .div-titulo {
-    width: 90%;
-    max-width: 1400px;
+    width: fit-content;
+    max-width: 95%;
     margin: 0 auto 70px;
-    padding: 30px;
+    padding: 30px 40px;
     display: block;
     border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 15px;
@@ -29,41 +29,68 @@
     color: white;
 }
 
-/* CONTENEDOR DE PRODUCTOS */
-
 .div-combos,
 .div-pochoclos,
 .div-bebidas,
 .div-snacks {
-    width: 100%;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
+    grid-template-columns: repeat(3, 300px);
+    justify-content: center;
+    gap: 25px;
 }
-
-/* Cada tarjeta de candy */
 
 app-candy-card {
     display: block;
 }
 
-/* Responsive */
+.contenedor-continuar {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 35px;
+}
+
+.btn-continuar {
+    padding: 12px 35px;
+    border: none;
+    border-radius: 8px;
+    background-color: #e50914;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-continuar:hover {
+    background-color: #ff1a24;
+    transform: scale(1.05);
+}
+
+.btn-continuar:active {
+    transform: scale(0.97);
+}
 
 @media (max-width: 1000px) {
     .div-combos,
     .div-pochoclos,
     .div-bebidas,
     .div-snacks {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(2, 300px);
     }
 }
 
 @media (max-width: 750px) {
+    .section-candy .div-titulo {
+        width: 90%;
+        padding: 25px;
+    }
+
     .div-combos,
     .div-pochoclos,
     .div-bebidas,
     .div-snacks {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -72,6 +99,7 @@ app-candy-card {
     .div-pochoclos,
     .div-bebidas,
     .div-snacks {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
     }
 }
+

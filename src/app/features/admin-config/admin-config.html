@@ -1,1 +1,137 @@
-<p>admin-config works!</p>
+<section class="section-admin-config">
+
+    <h1>Configuracion del cine</h1>
+
+    <div class="configuracion-bloque">
+        <h2>Precios de entradas</h2>
+
+        <div class="campo">
+            <label for="precioEstandar">Precio butaca estandar</label>
+            <input
+                type="number"
+                id="precioEstandar"
+                [(ngModel)]="precioEstandar"
+                min="0"
+            >
+        </div>
+
+        <div class="campo">
+            <label for="precioDiscapacitado">Precio butaca discapacitado</label>
+            <input
+                type="number"
+                id="precioDiscapacitado"
+                [(ngModel)]="precioDiscapacitado"
+                min="0"
+            >
+        </div>
+
+        <div class="campo">
+            <label for="precioVip">Precio butaca VIP</label>
+            <input
+                type="number"
+                id="precioVip"
+                [(ngModel)]="precioVip"
+                min="0"
+            >
+        </div>
+    </div>
+
+    <button
+        type="button"
+        class="btn-guardar"
+        (click)="guardarConfiguracion()"
+    >
+        Guardar configuracion
+    </button>
+
+    <div class="configuracion-bloque bloque-cupon">
+        <h2>{{ cuponEditando ? 'Editar cupon' : 'Crear cupon' }}</h2>
+
+        <div class="campo">
+            <label for="codigoCupon">Codigo del cupon</label>
+            <input
+                type="text"
+                id="codigoCupon"
+                [(ngModel)]="codigoCupon"
+                placeholder="NombreCupon"
+            >
+        </div>
+
+        <div class="campo">
+            <label for="descuentoCupon">Descuento (%)</label>
+            <input
+                type="number"
+                id="descuentoCupon"
+                [(ngModel)]="descuentoCupon"
+                min="1"
+                max="100"
+            >
+        </div>
+
+        <button
+            type="button"
+            class="btn-guardar"
+            (click)="guardarCupon()"
+        >
+            {{ cuponEditando ? 'Guardar cambios' : 'Crear cupon' }}
+        </button>
+
+        @if (cuponEditando) {
+            <button
+                type="button"
+                class="btn-cancelar"
+                (click)="cancelarEdicion()"
+            >
+                Cancelar edicion
+            </button>
+        }
+    </div>
+
+    <div class="configuracion-bloque">
+        <h2>Cupones creados</h2>
+
+        @if (cuponService.cupones().length === 0) {
+            <p class="sin-cupones">No hay cupones creados.</p>
+        }
+
+        <div class="lista-cupones">
+            @for (cupon of cuponService.cupones(); track cupon.cupon_id) {
+                <div
+                    class="cupon"
+                    [class.cupon-inactivo]="!cupon.activo"
+                >
+                    <div class="cupon-info">
+                        <strong>{{ cupon.codigo }}</strong>
+
+                        <span>
+                            Descuento: {{ cupon.descuento }}%
+                        </span>
+
+                        <span>
+                            Estado: {{ cupon.activo ? 'Activo' : 'Inactivo' }}
+                        </span>
+                    </div>
+
+                    <div class="cupon-acciones">
+                        <button
+                            type="button"
+                            class="btn-editar"
+                            (click)="editarCupon(cupon)"
+                        >
+                            Editar
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn-estado"
+                            (click)="cambiarEstadoCupon(cupon)"
+                        >
+                            {{ cupon.activo ? 'Dar de baja' : 'Activar' }}
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+</section>

@@ -1,153 +1,251 @@
 <section class="section-confirmar">
 
-    <div class="resumen-compra">
-        <h3>Resumen de tu compra</h3>
+    @if (!compraFinalizada()) {
 
-        <p><strong>Película:</strong> {{ peliculaActual()?.pelicula_titulo }}</p>
-        <p><strong>Fecha:</strong> {{ funcionActual()?.fecha }} — {{ funcionActual()?.hora_inicio }}</p>
+        <div class="resumen-compra">
+            <h3>Resumen de tu compra</h3>
 
-        <p><strong>Butacas:</strong> {{ compraService.butacasSeleccionadas().join(', ') }}</p>
+            <p><strong>Película:</strong> {{ peliculaActual()?.pelicula_titulo }}</p>
+            <p><strong>Fecha:</strong> {{ funcionActual()?.fecha }} — {{ funcionActual()?.hora_inicio }}</p>
 
-        @if (compraService.candySeleccionado().length > 0) {
-            <div class="resumen-candy">
-                <strong>Candy:</strong>
+            <p><strong>Butacas:</strong> {{ compraService.butacasSeleccionadas().join(', ') }}</p>
 
-                <ul>
-                    @for (item of compraService.candySeleccionado(); track item.candy_id) {
-                        <li>
-                            {{ item.cantidad }}x {{ item.nombre_candy }} —
-                            ${{ item.precio * item.cantidad }}
-                        </li>
-                    }
-                </ul>
-            </div>
-        }
+            @if (compraService.candySeleccionado().length > 0) {
+                <div class="resumen-candy">
+                    <strong>Candy:</strong>
 
-        <p class="precio-total">
-            <strong>Total: ${{ compraService.calcularPrecioTotal() }}</strong>
-        </p>
+                    <ul>
+                        @for (item of compraService.candySeleccionado(); track item.candy_id) {
+                            <li>
+                                {{ item.cantidad }}x {{ item.nombre_candy }} —
+                                ${{ item.precio * item.cantidad }}
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
 
-        @if (!esAnonimo()) {
-            <div class="credito-compra">
+            <p class="precio-total">
+                <strong>Total: ${{ compraService.calcularPrecioTotal() }}</strong>
+            </p>
 
-                <p>
-                    <strong>
-                        Crédito disponible: {{ obtenerCreditoDisponible() }}
-                    </strong>
-                </p>
+            @if (!esAnonimo()) {
+                <div class="cupon-compra">
 
-                <label for="creditoUsado">
-                    Crédito que querés usar
-                </label>
-
-                <input
-                    type="number"
-                    id="creditoUsado"
-                    [formControl]="creditoUsado"
-                    min="0"
-                    [max]="obtenerCreditoDisponible()"
-                    [disabled]="obtenerCreditoDisponible() <= 0"
-                >
-
-                @if (obtenerCreditoDisponible() <= 0) {
-                    <small class="error-credito">
-                        No tenés crédito disponible.
-                    </small>
-                }
-
-                @if (obtenerCreditoUsado() > obtenerCreditoDisponible()) {
-                    <small class="error-credito">
-                        No tenés crédito suficiente. Tu saldo disponible es de {{ obtenerCreditoDisponible() }}.
-                    </small>
-                }
-
-                @if (obtenerCreditoUsado() > compraService.calcularPrecioTotal()) {
-                    <small class="error-credito">
-                        No podés usar más crédito que el total de la compra.
-                    </small>
-                }
-
-                @if (obtenerCreditoUsado() < 0) {
-                    <small class="error-credito">
-                        El crédito no puede ser negativo.
-                    </small>
-                }
-
-                @if (obtenerCreditoUsado() > 0 && creditoValido()) {
                     <p>
-                        Crédito utilizado:
-                        -{{ obtenerCreditoUsado() }}
+                        <strong>Cupones disponibles</strong>
                     </p>
 
-                    <p class="precio-total">
+                    @if (cuponesDisponibles().length > 0) {
+                        <select
+                            id="cuponSeleccionado"
+                            [formControl]="cuponSeleccionado"
+                        >
+                            <option value="">No usar cupón</option>
+
+                            @for (cupon of cuponesDisponibles(); track cupon.cupon_id) {
+                                <option [value]="cupon.cupon_id">
+                                    {{ cupon.codigo }} - {{ cupon.descuento }}%
+                                </option>
+                            }
+                        </select>
+                    } @else {
+                        <p>No tenés cupones disponibles.</p>
+                    }
+
+                    @if (obtenerCuponSeleccionado()) {
+                        <p>
+                            Cupón aplicado:
+                            {{ obtenerCuponSeleccionado()?.codigo }}
+                        </p>
+
+                        <p>
+                            Descuento:
+                            -${{ obtenerMontoDescuentoCupon() }}
+                        </p>
+
+                        <p class="precio-total">
+                            <strong>
+                                Total con cupón: ${{ calcularTotalConCupon() }}
+                            </strong>
+                        </p>
+                    }
+
+                </div>
+            }
+
+            @if (!esAnonimo()) {
+                <div class="credito-compra">
+
+                    <p>
                         <strong>
-                            Total a pagar: {{ calcularTotalAPagar() }}
+                            Crédito disponible: {{ obtenerCreditoDisponible() }}
                         </strong>
                     </p>
-                }
+
+                    <input
+                        type="number"
+                        id="creditoUsado"
+                        [formControl]="creditoUsado"
+                        min="0"
+                        [max]="obtenerCreditoDisponible()"
+                        [disabled]="obtenerCreditoDisponible() <= 0"
+                    >
+
+                    @if (obtenerCreditoDisponible() <= 0) {
+                        <small class="error-credito">
+                            No tenés crédito disponible.
+                        </small>
+                    }
+
+                    @if (obtenerCreditoUsado() > obtenerCreditoDisponible()) {
+                        <small class="error-credito">
+                            No tenés crédito suficiente. Tu saldo disponible es de {{ obtenerCreditoDisponible() }}.
+                        </small>
+                    }
+
+                    @if (obtenerCreditoUsado() > calcularTotalConCupon()) {
+                        <small class="error-credito">
+                            No podés usar más crédito que el total de la compra.
+                        </small>
+                    }
+
+                    @if (obtenerCreditoUsado() < 0) {
+                        <small class="error-credito">
+                            El crédito no puede ser negativo.
+                        </small>
+                    }
+
+                    @if (obtenerCreditoUsado() > 0 && creditoValido()) {
+                        <p>
+                            Crédito utilizado:
+                            -{{ obtenerCreditoUsado() }}
+                        </p>
+
+                        <p class="precio-total">
+                            <strong>
+                                Total a pagar: {{ calcularTotalAPagar() }}
+                            </strong>
+                        </p>
+                    }
+
+                    @if (obtenerCuponSeleccionado() && obtenerCreditoUsado() === 0) {
+                        <p class="precio-total">
+                            <strong>
+                                Total a pagar: {{ calcularTotalAPagar() }}
+                            </strong>
+                        </p>
+                    }
+
+                </div>
+            }
+        </div>
+
+        @if (esAnonimo()) {
+
+            <div class="datos-invitado">
+
+                <h3>Antes de confirmar, completá tus datos</h3>
+
+                <form [formGroup]="datosInvitadoForm">
+
+                    <div>
+                        <label for="nombre_comprador">Nombre</label>
+
+                        <input
+                            type="text"
+                            id="nombre_comprador"
+                            formControlName="nombre_comprador"
+                        >
+                    </div>
+
+                    <div>
+                        <label for="email_comprador">Email</label>
+
+                        <input
+                            type="email"
+                            id="email_comprador"
+                            formControlName="email_comprador"
+                        >
+                    </div>
+
+                    <div>
+                        <label for="fecha_nacimiento_comprador">
+                            Fecha de nacimiento
+                        </label>
+
+                        <input
+                            type="date"
+                            id="fecha_nacimiento_comprador"
+                            formControlName="fecha_nacimiento_comprador"
+                        >
+                    </div>
+
+                </form>
+
+                <button
+                    type="button"
+                    class="btn-login"
+                    (click)="iniciarSesion()"
+                >
+                    Iniciar sesión
+                </button>
 
             </div>
         }
-    </div>
 
-    @if (esAnonimo()) {
+        <button
+            type="button"
+            class="btn-confirmar"
+            [disabled]="!puedeConfirmar()"
+            (click)="confirmarCompra()"
+        >
+            Confirmar compra
+        </button>
 
-        <div class="datos-invitado">
+    } @else {
 
-            <h3>Antes de confirmar, completá tus datos</h3>
+        <div class="compra-finalizada">
 
-            <form [formGroup]="datosInvitadoForm">
+            <h2>¡Compra confirmada!</h2>
 
-                <div>
-                    <label for="nombre_comprador">Nombre</label>
-                    <input
-                        type="text"
-                        id="nombre_comprador"
-                        formControlName="nombre_comprador"
-                    >
-                </div>
+            <p>
+                Presentá este QR al ingresar al cine y para retirar tu Candy.
+            </p>
 
-                <div>
-                    <label for="email_comprador">Email</label>
-                    <input
-                        type="email"
-                        id="email_comprador"
-                        formControlName="email_comprador"
-                    >
-                </div>
+            @if (qrImagen()) {
+                <img
+                    class="imagen-qr"
+                    [src]="qrImagen()"
+                    alt="Código QR de la compra"
+                >
+            }
 
-                <div>
-                    <label for="fecha_nacimiento_comprador">
-                        Fecha de nacimiento
-                    </label>
+            <p>
+                <strong>Código manual:</strong>
+            </p>
 
-                    <input
-                        type="date"
-                        id="fecha_nacimiento_comprador"
-                        formControlName="fecha_nacimiento_comprador"
-                    >
-                </div>
-
-            </form>
+            <p class="codigo-qr">
+                {{ codigoQr() }}
+            </p>
 
             <button
                 type="button"
-                class="btn-login"
-                (click)="iniciarSesion()"
+                class="btn-descargar-qr"
+                (click)="descargarQrPdf()"
             >
-                Iniciar sesión
+                Descargar entrada PDF
             </button>
 
+            <button
+                type="button"
+                class="btn-confirmar"
+                (click)="volverAlHome()"
+            >
+                Volver al inicio
+            </button>
         </div>
-    }
 
-    <button
-        type="button"
-        class="btn-confirmar"
-        [disabled]="!puedeConfirmar()"
-        (click)="confirmarCompra()"
-    >
-        Confirmar compra
-    </button>
+    }
 
 </section>

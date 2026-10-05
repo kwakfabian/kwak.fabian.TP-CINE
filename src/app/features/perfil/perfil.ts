@@ -1,5 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import QRCode from 'qrcode';
+
 import { AuthService } from '../../core/services/auth.service';
 import { CompraService } from '../../core/services/compra.service';
 import { FuncionService } from '../../core/services/funcion.service';
@@ -26,6 +28,9 @@ export class Perfil implements OnInit {
     estrellasSeleccionadas: { [peliculaId: string]: number } = {};
     comentarios: { [peliculaId: string]: string } = {};
     resenasExpandidas: { [peliculaId: string]: boolean } = {};
+
+    qrImagen: string | null = null;
+    compraQr: Compra | null = null;
 
     async ngOnInit() {
         const usuario = this.authService.currentUser();
@@ -105,6 +110,35 @@ export class Perfil implements OnInit {
         return this.compraService.comprasUsuario().some(
             compra => !compra.compra_activa
         );
+    }
+
+    async verQr(compra: Compra) {
+
+        if (!compra.compra_activa) {
+            alert('Esta compra fue cancelada.');
+            return;
+        }
+
+        if (!compra.qr_disponible) {
+            alert('Este QR ya no está disponible.');
+            return;
+        }
+
+        if (!compra.codigo_qr) {
+            alert('Esta compra no tiene un código QR.');
+            return;
+        }
+
+        this.compraQr = compra;
+
+        this.qrImagen = await QRCode.toDataURL(
+            compra.codigo_qr
+        );
+    }
+
+    cerrarQr() {
+        this.qrImagen = null;
+        this.compraQr = null;
     }
 
     seleccionarEstrellas(peliculaId: string, estrellas: number) {

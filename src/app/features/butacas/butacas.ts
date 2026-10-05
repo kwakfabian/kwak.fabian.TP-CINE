@@ -3,103 +3,114 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { ButacasService } from '../../core/services/butacas.service';
 import { CompraService } from '../../core/services/compra.service';
+import { ConfiguracionService } from '../../core/services/configuracion.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-butacas',
-  imports: [CommonModule],
-  templateUrl: './butacas.html',
-  styleUrl: './butacas.css'
+    selector: 'app-butacas',
+    imports: [CommonModule],
+    templateUrl: './butacas.html',
+    styleUrl: './butacas.css'
 })
 export class Butacas implements OnInit, OnDestroy {
 
-  filas: string[] = [
-  'A', 'B', 'C', 'D', 'E',
-  'F', 'G', 'H', 'I', 'J',
-  'K', 'L', 'M', 'N', 'O',
-  'P', 'Q', 'R', 'S', 'T'
-  ];
+    filas: string[] = [
+        'A', 'B', 'C', 'D', 'E',
+        'F', 'G', 'H', 'I', 'J',
+        'K', 'L', 'M', 'N', 'O',
+        'P', 'Q', 'R', 'S', 'T'
+    ];
 
-  private realtimeChannel!: RealtimeChannel;
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private butacasService = inject(ButacasService);
-  private compraService = inject(CompraService);
+    private realtimeChannel!: RealtimeChannel;
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private butacasService = inject(ButacasService);
+    private compraService = inject(CompraService);
 
-  funcionId!: string;
-  cantidadBoletos!: number;
+    configuracionService = inject(ConfiguracionService);
 
-  butacas = signal<string[]>([]);
-  butacasOcupadas = signal<string[]>([]);
-  butacasSeleccionadas = signal<string[]>([]);
+    funcionId!: string;
+    cantidadBoletos!: number;
 
-  async ngOnInit() {
+    butacas = signal<string[]>([]);
+    butacasOcupadas = signal<string[]>([]);
+    butacasSeleccionadas = signal<string[]>([]);
 
-      this.funcionId = this.route.snapshot.paramMap.get('funcionId')!;
-      this.cantidadBoletos = Number(this.route.snapshot.queryParamMap.get('cantidad'));
+    async ngOnInit() {
 
-      this.compraService.setearFuncion(this.funcionId, this.cantidadBoletos);
+        this.funcionId = this.route.snapshot.paramMap.get('funcionId')!;
+        this.cantidadBoletos = Number(this.route.snapshot.queryParamMap.get('cantidad'));
 
-      this.butacas.set(this.butacasService.generarTodasLasButacas());
+        this.compraService.setearFuncion(this.funcionId, this.cantidadBoletos);
 
-      const ocupadas = await this.butacasService.obtenerButacasOcupadas(this.funcionId);
-      this.butacasOcupadas.set(ocupadas);
+        await this.configuracionService.cargarConfiguracion();
 
-      this.realtimeChannel = this.butacasService.iniciarRealTime(
-          this.funcionId,
-          (butacas) => {
-              this.butacasOcupadas.set(butacas);
+        this.butacas.set(this.butacasService.generarTodasLasButacas());
 
-              this.butacasSeleccionadas.update(actuales =>
-                  actuales.filter(butaca => !butacas.includes(butaca))
-              );
-          }
-      );
-  }
+        const ocupadas = await this.butacasService.obtenerButacasOcupadas(this.funcionId);
+        this.butacasOcupadas.set(ocupadas);
 
-  ngOnDestroy() {
-      if (this.realtimeChannel) {
-          this.butacasService.detenerRealTime(this.realtimeChannel);
-      }
-  }
+        this.realtimeChannel = this.butacasService.iniciarRealTime(
+            this.funcionId,
+            (butacas) => {
+                this.butacasOcupadas.set(butacas);
 
-  estaOcupada(butaca: string): boolean {
-    return this.butacasOcupadas().includes(butaca);
-  }
+                this.butacasSeleccionadas.update(actuales =>
+                    actuales.filter(butaca => !butacas.includes(butaca))
+                );
+            }
+        );
+    }
 
-  estaSeleccionada(butaca: string): boolean {
-      return this.butacasSeleccionadas().includes(butaca);
-  }
+    ngOnDestroy() {
+        if (this.realtimeChannel) {
+            this.butacasService.detenerRealTime(this.realtimeChannel);
+        }
+    }
 
-  seleccionarButaca(butaca: string) {
-      if (this.estaOcupada(butaca)) {
-          return;
-      }
+    estaOcupada(butaca: string): boolean {
+        return this.butacasOcupadas().includes(butaca);
+    }
 
-      if (this.estaSeleccionada(butaca)) {
-          this.butacasSeleccionadas.update(actuales =>
-              actuales.filter(b => b !== butaca)
-          );
-      } else {
-          if (this.butacasSeleccionadas().length >= this.cantidadBoletos) {
-              return;
-          }
+    estaSeleccionada(butaca: string): boolean {
+        return this.butacasSeleccionadas().includes(butaca);
+    }
 
-          this.butacasSeleccionadas.update(actuales => [...actuales, butaca]);
-      }
-  }
+    seleccionarButaca(butaca: string) {
+        if (this.estaOcupada(butaca)) {
+            return;
+        }
 
-  puedeContinuar(): boolean {
-      return this.butacasSeleccionadas().length === this.cantidadBoletos;
-  }
+        if (this.estaSeleccionada(butaca)) {
+            this.butacasSeleccionadas.update(actuales =>
+                actuales.filter(b => b !== butaca)
+            );
+        } else {
+            if (this.butacasSeleccionadas().length >= this.cantidadBoletos) {
+                return;
+            }
 
-  continuar() {
-      if (!this.puedeContinuar()) {
-        alert(`Tenés que elegir ${this.cantidadBoletos} butaca(s) para continuar.`);
-        return;
-      }
-    this.compraService.setearButacas(this.butacasSeleccionadas());
-    console.log('Butacas guardadas en CompraService:',this.compraService.butacasSeleccionadas());
-    this.router.navigate(['/candy']);
-  }
+            this.butacasSeleccionadas.update(actuales => [...actuales, butaca]);
+        }
+    }
+
+    puedeContinuar(): boolean {
+        return this.butacasSeleccionadas().length === this.cantidadBoletos;
+    }
+
+    continuar() {
+        if (!this.puedeContinuar()) {
+            alert(`Tenés que elegir ${this.cantidadBoletos} butaca(s) para continuar.`);
+            return;
+        }
+
+        this.compraService.setearButacas(this.butacasSeleccionadas());
+
+        console.log(
+            'Butacas guardadas en CompraService:',
+            this.compraService.butacasSeleccionadas()
+        );
+
+        this.router.navigate(['/candy']);
+    }
 }

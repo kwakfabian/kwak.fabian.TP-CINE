@@ -13,8 +13,8 @@
             <a routerLink="/home" routerLinkActive="active">Inicio</a>
             <a routerLink="/candy" routerLinkActive="active">Candy</a> 
             @if (authService.currentUser()) {
-                <a href="#" (click)="logout(); $event.preventDefault()">Cerrar sesion</a>
                 <a routerLink="/perfil" routerLinkActive="active">Perfil</a>
+                <a href="#" (click)="logout(); $event.preventDefault()">Cerrar sesion</a>
             } @else {
                 <a routerLink="/login">Iniciar sesion</a>
             }

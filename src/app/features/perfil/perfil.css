@@ -139,6 +139,15 @@ button:active {
     transform: scale(0.95);
 }
 
+.btn-qr {
+    margin-right: 8px;
+    background-color: #333333;
+}
+
+.btn-qr:hover {
+    background-color: #555555;
+}
+
 .estrellas .estrella {
     margin: 0;
     padding: 0 2px;
@@ -260,6 +269,77 @@ textarea:focus {
     font-size: 14px;
 }
 
+/* QR */
+
+.fondo-qr {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0.75);
+    z-index: 1000;
+}
+
+.modal-qr {
+    width: 90%;
+    max-width: 420px;
+    padding: 30px;
+    box-sizing: border-box;
+    text-align: center;
+    background-color: #222222;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 15px;
+}
+
+.modal-qr h2 {
+    margin: 0 0 10px;
+}
+
+.modal-qr h3 {
+    margin: 10px 0;
+    color: white;
+}
+
+.modal-qr p {
+    color: #dddddd;
+}
+
+.imagen-qr {
+    width: 240px;
+    height: 240px;
+    display: block;
+    margin: 20px auto;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.texto-codigo {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.codigo-qr {
+    margin: 0;
+    padding: 10px;
+    background-color: #151515;
+    border-radius: 6px;
+    font-size: 12px;
+    word-break: break-all;
+}
+
+.cerrar-qr {
+    margin-top: 20px;
+    padding: 10px 25px;
+}
+
 @media (max-width: 1100px) {
     .lista-compras {
         grid-template-columns: 1fr;
@@ -308,5 +388,10 @@ textarea:focus {
 
     .datos-compra p {
         font-size: 13px;
+    }
+
+    .imagen-qr {
+        width: 210px;
+        height: 210px;
     }
 }

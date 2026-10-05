@@ -1,0 +1,219 @@
+.section-admin-config {
+    width: 90%;
+    max-width: 750px;
+    margin: 50px auto;
+    padding: 35px;
+    box-sizing: border-box;
+    background-color: #181818;
+    border: 1px solid #333;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
+
+.section-admin-config h1 {
+    margin: 0 0 30px;
+    text-align: center;
+    font-size: 26px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.configuracion-bloque {
+    margin-bottom: 25px;
+    padding: 20px;
+    background-color: #202020;
+    border: 1px solid #333;
+    border-radius: 8px;
+}
+
+.configuracion-bloque h2 {
+    margin: 0 0 20px;
+    font-size: 20px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.campo:last-child {
+    margin-bottom: 0;
+}
+
+.campo label {
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.campo input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    background-color: #242424;
+    border: 1px solid #444;
+    border-radius: 6px;
+    color: white;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.campo input:focus {
+    border-color: #777;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
+}
+
+.btn-guardar {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 6px;
+    background-color: #e50914;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-guardar:hover {
+    background-color: #f40612;
+    transform: translateY(-1px);
+}
+
+.bloque-cupon {
+    margin-top: 35px;
+}
+
+.aclaracion {
+    margin: -5px 0 20px;
+    color: #aaa;
+    font-size: 14px;
+}
+
+.btn-cancelar {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background-color: transparent;
+    border: 1px solid #666;
+    border-radius: 6px;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-cancelar:hover {
+    background-color: #2a2a2a;
+    border-color: #999;
+}
+
+.sin-cupones {
+    margin: 0;
+    color: #aaa;
+}
+
+.lista-cupones {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.cupon {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 15px;
+    background-color: #292929;
+    border: 1px solid #444;
+    border-radius: 8px;
+}
+
+.cupon-inactivo {
+    opacity: 0.5;
+}
+
+.cupon-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.cupon-info strong {
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+.cupon-info span {
+    color: #ccc;
+    font-size: 14px;
+}
+
+.cupon-acciones {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-editar,
+.btn-estado {
+    padding: 9px 12px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-editar {
+    background-color: #555;
+}
+
+.btn-editar:hover {
+    background-color: #666;
+}
+
+.btn-estado {
+    background-color: #e50914;
+}
+
+.btn-estado:hover {
+    background-color: #f40612;
+}
+
+@media (max-width: 600px) {
+    .section-admin-config {
+        width: 95%;
+        margin: 30px auto;
+        padding: 25px 20px;
+    }
+
+    .section-admin-config h1 {
+        font-size: 22px;
+    }
+
+    .configuracion-bloque {
+        padding: 15px;
+    }
+
+    .cupon {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .cupon-acciones {
+        width: 100%;
+    }
+
+    .btn-editar,
+    .btn-estado {
+        flex: 1;
+    }
+}
