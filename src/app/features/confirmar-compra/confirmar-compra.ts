@@ -239,7 +239,7 @@ export class ConfirmarCompra implements OnInit {
             const acompañadoPorAdulto = confirm(
                 `Esta película tiene restricción ${restriccion} y no cumplís con la edad mínima.\n\n` +
                 `Para ver esta película debés estar acompañado por un adulto.\n\n` +
-                `¿Vas a asistir acompañado por un adulto?`
+                `El cine no se hace cargo si no venis acompañado de un adulto`
             );
 
             if (!acompañadoPorAdulto) {
