@@ -11,23 +11,25 @@
             <form [formGroup]="candyForm" (ngSubmit)="onSubmit()" class="candy-form">
 
                 <div>
-                    <label for="nombre_candy">Nombre </label>
+                    <label for="nombre_candy">Nombre *</label>
 
                     <input
-                    type="text"
-                    id="nombre_candy"
-                    formControlName="nombre_candy"
-                    placeholder="Nombre del Candy"
-                    [class.input-error]="f.nombre_candy.invalid && f.nombre_candy.touched">
+                        type="text"
+                        id="nombre_candy"
+                        formControlName="nombre_candy"
+                        placeholder="Nombre del Candy"
+                        [class.input-error]="f.nombre_candy.invalid && f.nombre_candy.touched">
 
                     @if (f.nombre_candy.touched && f.nombre_candy.invalid) {
                         <div>
                             @if (f.nombre_candy.hasError('required')) {
                                 <small>El nombre es obligatorio</small>
                             }
+
                             @if (f.nombre_candy.hasError('minlength')) {
-                                <small>Minimo de 2 caracteres</small>
+                                <small>Minimo de 4 caracteres</small>
                             }
+
                             @if (f.nombre_candy.hasError('maxlength')) {
                                 <small>Maximo de 100 caracteres</small>
                             }
@@ -36,23 +38,25 @@
                 </div>
 
                 <div>
-                    <label for="descripcion">Descripcion</label>
+                    <label for="descripcion">Descripcion *</label>
 
-                    <input 
-                    type="text"
-                    id="descripcion"
-                    formControlName="descripcion"
-                    placeholder="descripcion"
-                    [class.input.error]="f.descripcion.invalid && f.descripcion.touched">
+                    <input
+                        type="text"
+                        id="descripcion"
+                        formControlName="descripcion"
+                        placeholder="Descripcion"
+                        [class.input-error]="f.descripcion.invalid && f.descripcion.touched">
 
                     @if (f.descripcion.touched && f.descripcion.invalid) {
                         <div>
                             @if (f.descripcion.hasError('required')) {
                                 <small>La descripcion es obligatoria</small>
                             }
+
                             @if (f.descripcion.hasError('minlength')) {
                                 <small>Minimo de 5 caracteres</small>
                             }
+
                             @if (f.descripcion.hasError('maxlength')) {
                                 <small>Maximo de 100 caracteres</small>
                             }
@@ -61,23 +65,28 @@
                 </div>
 
                 <div>
-                    <label for="img_url">URL de la Imagen </label>
+                    <label for="imagen-candy">Imagen *</label>
 
                     <input
-                    type="text"
-                    id="img_url"
-                    formControlName="img_url"
-                    placeholder="https://..."
-                    [class.input-error]="f.img_url.invalid && f.img_url.touched">
+                        type="file"
+                        id="imagen-candy"
+                        accept="image/png, image/jpeg, image/webp"
+                        (change)="seleccionarImagen($event)">
 
-                    @if (f.img_url.touched && f.img_url.invalid) {
-                        <div>
-                            @if (f.img_url.hasError('required')) {
-                                <small>La URL es obligatoria</small>
-                            }
-                            @if (f.img_url.hasError('pattern')) {
-                                <small>Tiene que empezar con http:// o https://</small>
-                            }
+                    @if (previewImagen) {
+                        <div class="preview-imagen">
+                            <img [src]="previewImagen" alt="Vista previa">
+
+                            <button
+                                type="button"
+                                class="btn-quitar-imagen"
+                                (click)="quitarImagen()">
+                                ✕ Quitar imagen
+                            </button>
+                        </div>
+                    } @else if (editandoId() && imagenActual) {
+                        <div class="preview-imagen">
+                            <img [src]="imagenActual" alt="Imagen actual">
                         </div>
                     }
                 </div>
@@ -109,30 +118,30 @@
                 </div>
 
                 <div>
-                <label for="precio">Precio</label>
+                    <label for="precio">Precio *</label>
 
-                <input
-                    type="number"
-                    id="precio"
-                    formControlName="precio"
-                    placeholder="Precio"
-                    [class.input-error]="f.precio.invalid && f.precio.touched">
+                    <input
+                        type="number"
+                        id="precio"
+                        formControlName="precio"
+                        placeholder="Precio"
+                        [class.input-error]="f.precio.invalid && f.precio.touched">
 
-                @if (f.precio.touched && f.precio.invalid) {
-                    <div>
-                        @if (f.precio.hasError('required')) {
-                            <small>El precio es obligatorio</small>
-                        }
-                    </div>
-                }
-            </div>
+                    @if (f.precio.touched && f.precio.invalid) {
+                        <div>
+                            @if (f.precio.hasError('required')) {
+                                <small>El precio es obligatorio</small>
+                            }
+                        </div>
+                    }
+                </div>
 
                 <div>
                     <label for="disponible">
                         <input
-                        type="checkbox"
-                        id="disponible"
-                        formControlName="disponible">
+                            type="checkbox"
+                            id="disponible"
+                            formControlName="disponible">
 
                         Disponible
                     </label>
@@ -145,67 +154,63 @@
         </div>
 
         <hr>
+
         <h2>Candys existentes</h2>
 
-<div class="filtros-admin">
-    <input
-        type="text"
-        placeholder="Buscar candy..."
-        [(ngModel)]="busquedaAdmin"
-    >
+        <div class="filtros-admin">
+            <input
+                type="text"
+                placeholder="Buscar candy..."
+                [(ngModel)]="busquedaAdmin">
 
-    <div class="filtros-grupo">
-        <span>Tipo:</span>
+            <div class="filtros-grupo">
+                <span>Tipo:</span>
 
-        <button
-            type="button"
-            [class.activo]="tipoCandySeleccionadoAdmin === 'TODOS'"
-            (click)="seleccionarTipoCandyAdmin('TODOS')">
-            Todos
-        </button>
+                <button
+                    type="button"
+                    [class.activo]="tipoCandySeleccionadoAdmin === 'TODOS'"
+                    (click)="seleccionarTipoCandyAdmin('TODOS')">
+                    Todos
+                </button>
 
-        @for (tipo of tiposCandy; track tipo) {
-            <button
-                type="button"
-                [class.activo]="tipoCandySeleccionadoAdmin === tipo"
-                (click)="seleccionarTipoCandyAdmin(tipo)">
-                {{ tipo }}
-            </button>
-        }
-    </div>
-</div>
-
-<div class="lista-candy-admin">
-    @for (candy of candyFiltradoAdmin(); track candy.candy_id) {
-        <div class="item-candy-admin">
-            <img
-                [src]="candy.img_url"
-                [alt]="candy.nombre_candy"
-            >
-
-            <div class="info-candy-admin">
-                <span class="titulo-candy-admin">
-                    {{ candy.nombre_candy }}
-                </span>
-
-                <span class="tipo-candy-admin">
-                    {{ candy.tipo_candy }}
-                </span>
-
-                <span class="precio-candy-admin">
-                    ${{ candy.precio }}
-                </span>
+                @for (tipo of tiposCandy; track tipo) {
+                    <button
+                        type="button"
+                        [class.activo]="tipoCandySeleccionadoAdmin === tipo"
+                        (click)="seleccionarTipoCandyAdmin(tipo)">
+                        {{ tipo }}
+                    </button>
+                }
             </div>
-
-            <button
-                type="button"
-                class="btn-editar"
-                (click)="iniciarEdicion(candy)">
-                ✏️ Editar
-            </button>
         </div>
-    }
-</div>
 
+        <div class="lista-candy-admin">
+            @for (candy of candyFiltradoAdmin(); track candy.candy_id) {
+                <div class="item-candy-admin">
+                    <img [src]="candy.img_url" [alt]="candy.nombre_candy">
+
+                    <div class="info-candy-admin">
+                        <span class="titulo-candy-admin">
+                            {{ candy.nombre_candy }}
+                        </span>
+
+                        <span class="tipo-candy-admin">
+                            {{ candy.tipo_candy }}
+                        </span>
+
+                        <span class="precio-candy-admin">
+                            ${{ candy.precio }}
+                        </span>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn-editar"
+                        (click)="iniciarEdicion(candy)">
+                        ✏️ Editar
+                    </button>
+                </div>
+            }
+        </div>
     </div>
 </section>

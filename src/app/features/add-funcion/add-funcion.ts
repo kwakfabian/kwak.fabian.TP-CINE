@@ -60,12 +60,10 @@ export class AddFuncion implements OnInit {
         this.funcionForm.reset();
     }
 
-    // Ayuda visual: busca el título de la película, dado su id
     nombrePelicula(peliculaId: string): string {
         return this.peliculas().find(p => p.pelicula_id === peliculaId)?.pelicula_titulo || '—';
     }
 
-    // Ayuda visual: busca el nombre de la sala, dado su id
     nombreSala(salaId: string): string {
         return this.salas().find(s => s.salas_id === salaId)?.nombre_salas || '—';
     }

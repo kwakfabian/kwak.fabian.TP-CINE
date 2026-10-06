@@ -13,6 +13,7 @@ export const routes: Routes = [
     { path: 'comprar/:funcionId/butacas', loadComponent: () => import('./features/butacas/butacas').then((component) => component.Butacas)},
     { path: 'confirmar-compra', loadComponent: () => import('./features/confirmar-compra/confirmar-compra').then((component) => component.ConfirmarCompra) },
     { path: 'validar-entrada', loadComponent: () => import('./features/empleado/validar-entrada/validar-entrada').then((component) => component.ValidarEntrada), canActivate: [authEmpleadoGuard]},
+    { path: 'admin-reportes', loadComponent: () =>import('./features/admin-reportes/admin-reportes').then((component) => component.AdminReportes), canActivate: [authAdminGuard]},
     { path: 'admin-config',loadComponent: () => import('./features/admin-config/admin-config').then((component) => component.AdminConfig),canActivate: [authAdminGuard]},
     { path: 'admin-usuarios',loadComponent: () => import('./features/admin-usuarios/admin-usuarios').then((component) => component.AdminUsuarios),canActivate: [authAdminGuard]},
     { path: 'add-pelicula', loadComponent: () => import('./features/add-pelicula/add-pelicula').then((component) => component.AddPelicula), canActivate: [authAdminGuard]},

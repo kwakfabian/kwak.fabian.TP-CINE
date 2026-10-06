@@ -1,0 +1,170 @@
+<section class="admin-reportes">
+
+    <div class="encabezado">
+
+        <h1>
+            Reportes y estadísticas
+        </h1>
+
+        <p>
+            Resumen de ventas y rendimiento de CineKwak.
+        </p>
+
+    </div>
+
+
+    @if (cargando()) {
+
+        <p class="cargando">
+            Cargando reporte...
+        </p>
+
+    } @else {
+
+
+        <!-- ============================= -->
+        <!-- RESUMEN DIARIO -->
+        <!-- ============================= -->
+
+        <div class="resumen">
+
+            <div class="card-reporte">
+
+                <h3>
+                    Facturación de hoy
+                </h3>
+
+                <p class="valor">
+                    ${{ facturacion() }}
+                </p>
+
+            </div>
+
+
+            <div class="card-reporte">
+
+                <h3>
+                    Entradas vendidas hoy
+                </h3>
+
+                <p class="valor">
+                    {{ entradasVendidas() }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ============================= -->
+        <!-- GRÁFICOS -->
+        <!-- ============================= -->
+
+        <div class="graficos">
+
+
+            <!-- PELÍCULAS -->
+
+            <div class="grafico">
+
+                <h2>
+                    Películas más vistas
+                </h2>
+
+
+                <div class="selector-periodo">
+
+                    <button
+                        [class.activo]="periodoPeliculas() === 'semana'"
+                        (click)="cambiarPeriodoPeliculas('semana')">
+
+                        Semana
+
+                    </button>
+
+
+                    <button
+                        [class.activo]="periodoPeliculas() === 'mes'"
+                        (click)="cambiarPeriodoPeliculas('mes')">
+
+                        Mes
+
+                    </button>
+
+                </div>
+
+
+                <div class="contenedor-chart">
+
+                    <canvas
+                        id="graficoPeliculas">
+                    </canvas>
+
+                </div>
+
+            </div>
+
+
+            <!-- CANDY -->
+
+            <div class="grafico">
+
+                <h2>
+                    Productos Candy más vendidos
+                </h2>
+
+
+                <div class="selector-periodo">
+
+                    <button
+                        [class.activo]="periodoCandy() === 'semana'"
+                        (click)="cambiarPeriodoCandy('semana')">
+
+                        Semana
+
+                    </button>
+
+
+                    <button
+                        [class.activo]="periodoCandy() === 'mes'"
+                        (click)="cambiarPeriodoCandy('mes')">
+
+                        Mes
+
+                    </button>
+
+                </div>
+
+
+                <div class="contenedor-chart">
+
+                    <canvas
+                        id="graficoCandy">
+                    </canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ============================= -->
+        <!-- EXPORTACIÓN -->
+        <!-- ============================= -->
+
+        <div class="acciones">
+
+            <button>
+                Exportar PDF
+            </button>
+
+            <button>
+                Exportar Excel
+            </button>
+
+        </div>
+
+    }
+
+</section>

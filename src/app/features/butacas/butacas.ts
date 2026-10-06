@@ -48,19 +48,17 @@ export class Butacas implements OnInit, OnDestroy {
         this.butacas.set(this.butacasService.generarTodasLasButacas());
 
         const ocupadas = await this.butacasService.obtenerButacasOcupadas(this.funcionId);
-        this.butacasOcupadas.set(ocupadas);
+            this.butacasOcupadas.set(ocupadas);
 
-        this.realtimeChannel = this.butacasService.iniciarRealTime(
-            this.funcionId,
-            (butacas) => {
-                this.butacasOcupadas.set(butacas);
+            this.realtimeChannel = this.butacasService.iniciarRealTime(this.funcionId, (butacas) => {
+                    this.butacasOcupadas.set(butacas);
 
-                this.butacasSeleccionadas.update(actuales =>
-                    actuales.filter(butaca => !butacas.includes(butaca))
-                );
-            }
-        );
-    }
+                    this.butacasSeleccionadas.update(actuales =>
+                        actuales.filter(butaca => !butacas.includes(butaca))
+                    );
+                }
+            );
+        }
 
     ngOnDestroy() {
         if (this.realtimeChannel) {

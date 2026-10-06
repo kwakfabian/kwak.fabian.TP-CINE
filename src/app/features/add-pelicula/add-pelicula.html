@@ -1,261 +1,294 @@
-    <section>
+<section>
+    <div>
+        <h2>Agregar Pelicula</h2>
+
+        @if (editandoId()) {
+            <p>✏️ Editando: {{ f.pelicula_titulo.value }}</p>
+            <button type="button" (click)="cancelarEdicion()">Cancelar edición</button>
+        }
+
         <div>
-            <h2>Agregar Pelicula</h2>
-            @if (editandoId()) {
-                <p>✏️ Editando: {{ f.pelicula_titulo.value }}</p>
-                <button type="button" (click)="cancelarEdicion()">Cancelar edición</button>
-            }
-            <div>
-                <form [formGroup]="peliculaForm" (ngSubmit)="onSubmit()" class="pelicula-form">
-                    <div>
-                        <label for="pelicula_titulo">Titulo *</label>
-                        <input 
-                        type="text" 
-                        id="pelicula_titulo" 
-                        formControlName="pelicula_titulo" 
-                        placeholder="Nombre de la Pelicula" 
-                        [class.input-error]="f.pelicula_titulo.invalid && f.pelicula_titulo.touched">
+            <form [formGroup]="peliculaForm" (ngSubmit)="onSubmit()" class="pelicula-form">
 
-                        @if (f.pelicula_titulo.touched && f.pelicula_titulo.invalid) {
-                            <div>
-                                @if (f.pelicula_titulo.hasError('required')) {
-                                    <small>El titulo es obligatorio</small>
-                                }
-                                @if (f.pelicula_titulo.hasError('minlength')) {
-                                    <small>Minimo de 2 caracteres</small>
-                                }
-                                @if (f.pelicula_titulo.hasError('maxlength')) {
-                                    <small>Maximo de 100 caracteres</small>
-                                }
-                            </div>
-                        }
-                    </div>
-                    <div>
-                        <label for="img_url">URL de la Imagen *</label>
-                        <input 
-                        type="text" 
-                        id="img_url" 
-                        formControlName="img_url" 
-                        placeholder="https://..." 
-                        [class.input-error]="f.img_url.invalid && f.img_url.touched">
+                <div>
+                    <label for="pelicula_titulo">Titulo *</label>
 
-                        @if (f.img_url.touched && f.img_url.invalid) {
-                            <div>
-                                @if (f.img_url.hasError('required')) {
-                                    <small>La URL es obligatoria</small>
-                                }
-                                @if (f.img_url.hasError('pattern')) {
-                                    <small>Tiene que empezar con http:// o https://</small>
-                                }
-                            </div>
-                        }
-                    </div>
-
-                    <div>
-                        <label for="sinopsis">Sinopsis *</label>
-                        <input 
-                        type="text" 
-                        id="sinopsis" 
-                        formControlName="sinopsis" 
-                        placeholder="Nombre de la Pelicula" 
-                        [class.input-error]="f.sinopsis.invalid && f.sinopsis.touched">
-
-                        @if (f.sinopsis.touched && f.sinopsis.invalid) {
-                            <div>
-                                @if (f.sinopsis.hasError('required')) {
-                                    <small>El titulo es obligatorio</small>
-                                }
-                                @if (f.sinopsis.hasError('minlength')) {
-                                    <small>Minimo de 2 caracteres</small>
-                                }
-                                @if (f.sinopsis.hasError('maxlength')) {
-                                    <small>Maximo de 1000 caracteres</small>
-                                }
-                            </div>
-                        }
-                    </div>
-
-                    <div>
-                        <label>Generos *</label>
-                        <div>
-                            @for (g of generos; track g) {
-                                <label>
-                                <input 
-                                    type="checkbox" 
-                                    [checked]="f.genero.value?.includes(g)"
-                                    (change)="toggleGenero(g, $event)">
-                                    {{ g }}
-                                </label>
-                            }
-                        </div>
-
-                        @if (f.genero.touched && f.genero.invalid) {
-                            <small>Elegí al menos un genero</small>
-                        }
-                    </div>
-
-                    <div>
-                        <label for="duracion">Duracion (minutos) *</label>
-                        <input 
-                        type="number" 
-                        id="duracion" 
-                        formControlName="duracion" 
-                        placeholder="120" 
-                        [class.input-error]="f.duracion.invalid && f.duracion.touched">
-
-                        @if (f.duracion.touched && f.duracion.invalid) {
-                            <div>
-                                @if (f.duracion.hasError('required')) {
-                                    <small>La duracion es obligatoria</small>
-                                }
-                                @if (f.duracion.hasError('min')) {
-                                    <small>Tiene que ser mayor a 0</small>
-                                }
-                            </div>
-                        }
-                    </div>
-
-                    <div>
-                        <label for="edad_restriccion">Restriccion de Edad *</label>
-                        <select 
-                        id="edad_restriccion" 
-                        formControlName="edad_restriccion"
-                        [class.input-error]="f.edad_restriccion.invalid && f.edad_restriccion.touched">
-                            <option value="" disabled>Selecciona la Restriccion de edad</option>
-                            @for (e of edad_restriccion; track e) {
-                                <option [value]="e">{{ e }}</option>
-                            }
-                        </select>
-
-                        @if (f.edad_restriccion.touched && f.edad_restriccion.invalid) {
-                            <div>
-                                @if (f.edad_restriccion.hasError('required')) {
-                                    <small>El edad_restriccion es obligatorio</small>
-                                }
-                            </div>
-                        }
-                    </div>
-
-                    <div>
-                        <label for="estado">Estado *</label>
-                        <select 
-                        id="estado" 
-                        formControlName="estado"
-                        [class.input-error]="f.estado.invalid && f.estado.touched">
-                            <option value="" disabled>Selecciona un estado</option>
-                            @for (e of estados; track e) {
-                                <option [value]="e">{{ e }}</option>
-                            }
-                        </select>
-
-                        @if (f.estado.touched && f.estado.invalid) {
-                            <div>
-                                @if (f.estado.hasError('required')) {
-                                    <small>El estado es obligatorio</small>
-                                }
-                            </div>
-                        }
-                    </div>
-
-                    <div>
-                        <label for="disponible">
-                            <input 
-                            type="checkbox" 
-                            id="disponible" 
-                            formControlName="disponible">
-                            Disponible
-                        </label>
-                    </div>
-
-                    <button class= "btn-agregar-pelicula" type="submit" [disabled]="peliculaForm.invalid">
-                        {{ editandoId() ? 'Guardar Cambios' : 'Agregar Pelicula' }}
-                    </button>
-                </form>
-            </div>
-
-            <hr>
-
-            <h2>Películas existentes</h2>
-                <div class="filtros-admin">
                     <input
                         type="text"
-                        placeholder="Buscar película..."
-                        [(ngModel)]="busquedaAdmin"
-                    >
-                    <div class="filtros-grupo">
-                        <span>Género:</span>
-                        <button
-                            type="button"
-                            [class.activo]="generoSeleccionadoAdmin === 'TODOS'"
-                            (click)="seleccionarGeneroAdmin('TODOS')">
-                            Todos
-                        </button>
-                        @for (g of generos; track g) {
-                            <button
-                                type="button"
-                                [class.activo]="generoSeleccionadoAdmin === g"
-                                (click)="seleccionarGeneroAdmin(g)">
-                                {{ g }}
-                            </button>
-                        }
-                    </div>
+                        id="pelicula_titulo"
+                        formControlName="pelicula_titulo"
+                        placeholder="Nombre de la Pelicula"
+                        [class.input-error]="f.pelicula_titulo.invalid && f.pelicula_titulo.touched">
 
-                    <div class="filtros-grupo">
-                        <span>Estado:</span>
-                        <button
-                            type="button"
-                            [class.activo]="estadoSeleccionadoAdmin === 'TODOS'"
-                            (click)="seleccionarEstadoAdmin('TODOS')">
-                            Todos
-                        </button>
-                        <button
-                            type="button"
-                            [class.activo]="estadoSeleccionadoAdmin === 'PREVENTA'"
-                            (click)="seleccionarEstadoAdmin('PREVENTA')">
-                            PREVENTA
-                        </button>
-                        <button
-                            type="button"
-                            [class.activo]="estadoSeleccionadoAdmin === 'CARTELERA'"
-                            (click)="seleccionarEstadoAdmin('CARTELERA')">
-                            CARTELERA
-                        </button>
-                        <button
-                            type="button"
-                            [class.activo]="estadoSeleccionadoAdmin === 'MAS POPULARES'"
-                            (click)="seleccionarEstadoAdmin('MAS POPULARES')">
-                            MAS POPULARES
-                        </button>
-                    </div>
-                </div>
+                    @if (f.pelicula_titulo.touched && f.pelicula_titulo.invalid) {
+                        <div>
+                            @if (f.pelicula_titulo.hasError('required')) {
+                                <small>El titulo es obligatorio</small>
+                            }
 
-                <div class="lista-peliculas-admin">
-                    @for (pelicula of peliculasFiltradasAdmin(); track pelicula.pelicula_id) {
-                        <div class="item-pelicula-admin">
-                            <img
-                                [src]="pelicula.img_url"
-                                [alt]="pelicula.pelicula_titulo"
-                            >
-                            <div class="info-pelicula-admin">
-                                <span class="titulo-pelicula-admin">
-                                    {{ pelicula.pelicula_titulo }}
-                                </span>
+                            @if (f.pelicula_titulo.hasError('minlength')) {
+                                <small>Minimo de 2 caracteres</small>
+                            }
 
-                                <span class="estado-pelicula-admin">
-                                    {{ pelicula.estado }}
-                                </span>
-                            </div>
-
-                            <button
-                                type="button"
-                                class="btn-editar"
-                                (click)="iniciarEdicion(pelicula)">
-                                ✏️ Editar
-                            </button>
+                            @if (f.pelicula_titulo.hasError('maxlength')) {
+                                <small>Maximo de 100 caracteres</small>
+                            }
                         </div>
                     }
                 </div>
-        </div>
-    </section>
 
-    
+                <div>
+                    <label for="imagen">Imagen *</label>
+
+                    <input
+                        type="file"
+                        id="imagen"
+                        accept="image/png, image/jpeg, image/webp"
+                        (change)="seleccionarImagen($event)">
+
+                    @if (previewImagen) {
+                        <div class="preview-imagen">
+                            <img [src]="previewImagen" alt="Vista previa">
+
+                            <button
+                                type="button"
+                                class="btn-quitar-imagen"
+                                (click)="quitarImagen()">
+                                Quitar imagen
+                            </button>
+                        </div>
+                    } @else if (editandoId() && imagenActual) {
+                        <div class="preview-imagen">
+                            <img [src]="imagenActual" alt="Imagen actual">
+                        </div>
+                    }
+                </div>
+
+                <div>
+                    <label for="sinopsis">Sinopsis *</label>
+
+                    <input
+                        type="text"
+                        id="sinopsis"
+                        formControlName="sinopsis"
+                        placeholder="Sinopsis de la Pelicula"
+                        [class.input-error]="f.sinopsis.invalid && f.sinopsis.touched">
+
+                    @if (f.sinopsis.touched && f.sinopsis.invalid) {
+                        <div>
+                            @if (f.sinopsis.hasError('required')) {
+                                <small>La sinopsis es obligatoria</small>
+                            }
+
+                            @if (f.sinopsis.hasError('minlength')) {
+                                <small>Minimo de 2 caracteres</small>
+                            }
+
+                            @if (f.sinopsis.hasError('maxlength')) {
+                                <small>Maximo de 1000 caracteres</small>
+                            }
+                        </div>
+                    }
+                </div>
+
+                <div>
+                    <label>Generos *</label>
+
+                    <div>
+                        @for (g of generos; track g) {
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    [checked]="f.genero.value?.includes(g)"
+                                    (change)="toggleGenero(g, $event)">
+                                {{ g }}
+                            </label>
+                        }
+                    </div>
+
+                    @if (f.genero.touched && f.genero.invalid) {
+                        <small>Elegí al menos un genero</small>
+                    }
+                </div>
+
+                <div>
+                    <label for="duracion">Duracion (minutos) *</label>
+
+                    <input
+                        type="number"
+                        id="duracion"
+                        formControlName="duracion"
+                        placeholder="120"
+                        [class.input-error]="f.duracion.invalid && f.duracion.touched">
+
+                    @if (f.duracion.touched && f.duracion.invalid) {
+                        <div>
+                            @if (f.duracion.hasError('required')) {
+                                <small>La duracion es obligatoria</small>
+                            }
+
+                            @if (f.duracion.hasError('min')) {
+                                <small>Tiene que ser mayor a 0</small>
+                            }
+                        </div>
+                    }
+                </div>
+
+                <div>
+                    <label for="edad_restriccion">Restriccion de Edad *</label>
+
+                    <select
+                        id="edad_restriccion"
+                        formControlName="edad_restriccion"
+                        [class.input-error]="f.edad_restriccion.invalid && f.edad_restriccion.touched">
+
+                        <option value="" disabled>Selecciona la Restriccion de edad</option>
+
+                        @for (e of edad_restriccion; track e) {
+                            <option [value]="e">{{ e }}</option>
+                        }
+                    </select>
+
+                    @if (f.edad_restriccion.touched && f.edad_restriccion.invalid) {
+                        <div>
+                            @if (f.edad_restriccion.hasError('required')) {
+                                <small>La restriccion de edad es obligatoria</small>
+                            }
+                        </div>
+                    }
+                </div>
+
+                <div>
+                    <label for="estado">Estado *</label>
+
+                    <select
+                        id="estado"
+                        formControlName="estado"
+                        [class.input-error]="f.estado.invalid && f.estado.touched">
+
+                        <option value="" disabled>Selecciona un estado</option>
+
+                        @for (e of estados; track e) {
+                            <option [value]="e">{{ e }}</option>
+                        }
+                    </select>
+
+                    @if (f.estado.touched && f.estado.invalid) {
+                        <div>
+                            @if (f.estado.hasError('required')) {
+                                <small>El estado es obligatorio</small>
+                            }
+                        </div>
+                    }
+                </div>
+
+                <div>
+                    <label for="disponible">
+                        <input
+                            type="checkbox"
+                            id="disponible"
+                            formControlName="disponible">
+                        Disponible
+                    </label>
+                </div>
+
+                <button class="btn-agregar-pelicula" type="submit" [disabled]="peliculaForm.invalid">
+                    {{ editandoId() ? 'Guardar Cambios' : 'Agregar Pelicula' }}
+                </button>
+
+            </form>
+        </div>
+
+        <hr>
+
+        <h2>Películas existentes</h2>
+
+        <div class="filtros-admin">
+            <input
+                type="text"
+                placeholder="Buscar película..."
+                [(ngModel)]="busquedaAdmin">
+
+            <div class="filtros-grupo">
+                <span>Género:</span>
+
+                <button
+                    type="button"
+                    [class.activo]="generoSeleccionadoAdmin === 'TODOS'"
+                    (click)="seleccionarGeneroAdmin('TODOS')">
+                    Todos
+                </button>
+
+                @for (g of generos; track g) {
+                    <button
+                        type="button"
+                        [class.activo]="generoSeleccionadoAdmin === g"
+                        (click)="seleccionarGeneroAdmin(g)">
+                        {{ g }}
+                    </button>
+                }
+            </div>
+
+            <div class="filtros-grupo">
+                <span>Estado:</span>
+
+                <button
+                    type="button"
+                    [class.activo]="estadoSeleccionadoAdmin === 'TODOS'"
+                    (click)="seleccionarEstadoAdmin('TODOS')">
+                    Todos
+                </button>
+
+                <button
+                    type="button"
+                    [class.activo]="estadoSeleccionadoAdmin === 'PREVENTA'"
+                    (click)="seleccionarEstadoAdmin('PREVENTA')">
+                    PREVENTA
+                </button>
+
+                <button
+                    type="button"
+                    [class.activo]="estadoSeleccionadoAdmin === 'CARTELERA'"
+                    (click)="seleccionarEstadoAdmin('CARTELERA')">
+                    CARTELERA
+                </button>
+
+                <button
+                    type="button"
+                    [class.activo]="estadoSeleccionadoAdmin === 'MAS POPULARES'"
+                    (click)="seleccionarEstadoAdmin('MAS POPULARES')">
+                    MAS POPULARES
+                </button>
+            </div>
+        </div>
+
+        <div class="lista-peliculas-admin">
+            @for (pelicula of peliculasFiltradasAdmin(); track pelicula.pelicula_id) {
+                <div class="item-pelicula-admin">
+
+                    <img
+                        [src]="pelicula.img_url"
+                        [alt]="pelicula.pelicula_titulo">
+
+                    <div class="info-pelicula-admin">
+                        <span class="titulo-pelicula-admin">
+                            {{ pelicula.pelicula_titulo }}
+                        </span>
+
+                        <span class="estado-pelicula-admin">
+                            {{ pelicula.estado }}
+                        </span>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn-editar"
+                        (click)="iniciarEdicion(pelicula)">
+                        ✏️ Editar
+                    </button>
+
+                </div>
+            }
+        </div>
+    </div>
+</section>

@@ -9,7 +9,7 @@
                     <h2>Datos personales</h2>
                     <p>Nombre: {{ usuario.nombre }} {{ usuario.apellido }}</p>
                     <p>Email: {{ authService.currentUser()?.email }}</p>
-                    <p>Crédito disponible: {{ usuario.credito ?? 0 }}</p>
+                    <p>Credito disponible: {{ usuario.credito ?? 0 }}</p>
                 }
             </div>
 
@@ -68,7 +68,7 @@
 
                     </div>
                 } @else {
-                    <p class="mensaje-vacio">No tenés películas compradas.</p>
+                    <p class="mensaje-vacio">No tenes peliculas compradas.</p>
                 }
             </div>
 
@@ -129,7 +129,7 @@
                                                     class="ver-mas"
                                                     (click)="cambiarTamanoResena(pelicula.pelicula_id)"
                                                 >
-                                                    {{ resenasExpandidas[pelicula.pelicula_id] ? 'Ver menos' : 'Ver más' }}
+                                                    {{ resenasExpandidas[pelicula.pelicula_id] ? 'Ver menos' : 'Ver mas' }}
                                                 </button>
 
                                                 <button
@@ -156,9 +156,7 @@
                         }
                     </div>
                 } @else {
-                    <p class="mensaje-vacio">
-                        Todavía no tenés películas en tu historial.
-                    </p>
+                    <p class="mensaje-vacio">Todavía no tenes películas en tu historial</p>
                 }
             </div>
         </div>
@@ -194,7 +192,7 @@
                         }
                     </div>
                 } @else {
-                    <p class="mensaje-vacio">No tenés compras canceladas.</p>
+                    <p class="mensaje-vacio">No tenes compras canceladas</p>
                 }
             </div>
         </div>
