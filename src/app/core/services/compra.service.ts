@@ -11,6 +11,7 @@ export interface ItemCandySeleccionado {
 }
 
 @Injectable({ providedIn: 'root' })
+
 export class CompraService {
 
     private supabase = inject(SupabaseService).client;
@@ -169,7 +170,6 @@ export class CompraService {
         return nuevaCompra;
     }
 
-
     async cargarComprasUsuario(usuarioId: string) {
         const { data, error } = await this.supabase
             .from('compras')
@@ -183,7 +183,6 @@ export class CompraService {
         this.comprasUsuario.set(data ?? []);
     }
 
-
     puedeCancelar(fecha: string, horaInicio: string): boolean {
         const fechaFuncion = new Date(`${fecha}T${horaInicio}`);
         const ahora = new Date();
@@ -191,7 +190,6 @@ export class CompraService {
         const dosHoras = 2 * 60 * 60 * 1000;
         return diferencia > dosHoras;
     }
-
 
     async cancelarCompra(compra: Compra): Promise<boolean> {
         if (!compra.compra_id) {
@@ -243,7 +241,6 @@ export class CompraService {
         return true;
     }
 
-
     private async liberarButacas(compra: Compra): Promise<boolean> {
         const { data, error: errorBusqueda } = await this.supabase
             .from('butacas')
@@ -273,7 +270,6 @@ export class CompraService {
 
         return true;
     }
-
 
     private async marcarButacasComoOcupadas(): Promise<boolean> {
         const funcionId = this.funcionId();

@@ -9,9 +9,8 @@ export interface ResenaConUsuario extends Resena {
     };
 }
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable({ providedIn: 'root'})
+
 export class ResenaService {
 
     private supabase = inject(SupabaseService).client;
@@ -89,18 +88,12 @@ export class ResenaService {
             return 0;
         }
 
-        const total = resenas.reduce(
-            (suma, resena) => suma + resena.estrellas,
-            0
-        );
-
+        const total = resenas.reduce((suma, resena) => suma + resena.estrellas, 0);
         return total / resenas.length;
     }
 
     obtenerResenaPelicula(peliculaId: string): Resena | undefined {
-        return this.resenasUsuario().find(
-            resena => resena.pelicula_id === peliculaId
-        );
+        return this.resenasUsuario().find(resena => resena.pelicula_id === peliculaId);
     }
 
     async guardarResena(resena: Resena): Promise<boolean> {
@@ -131,7 +124,6 @@ export class ResenaService {
         }
 
         await this.cargarResenasUsuario(resena.usuario_id);
-
         return true;
     }
 
@@ -148,7 +140,6 @@ export class ResenaService {
         }
 
         await this.cargarResenasUsuario(usuarioId);
-
         return true;
     }
 }

@@ -2,13 +2,11 @@ import { Injectable, inject, signal } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { Usuario } from '../models/usuariointerface';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
+
 export class UsuarioService {
 
     private supabase = inject(SupabaseService).client;
-
     usuarios = signal<Usuario[]>([]);
 
     async cargarUsuarios() {

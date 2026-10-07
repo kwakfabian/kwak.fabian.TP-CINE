@@ -10,22 +10,18 @@ import { Pelicula } from '../../core/models/peliculainterface';
     styleUrl: './add-pelicula.css'
 })
 export class AddPelicula {
+
     private peliculaService = inject(PeliculaService);
-
     peliculas = this.peliculaService.peliculas;
-
     generos = ['Accion', 'Comedia', 'Drama', 'Terror', 'Ciencia Ficción', 'Fantasia', 'Romance', 'Suspenso', 'Aventura', 'Bibliografico', 'Animacion'];
     estados = ['CARTELERA', 'PREVENTA'];
     edad_restriccion = ['ATP', '+13', '+18'];
-
     busquedaAdmin: string = '';
     generoSeleccionadoAdmin: string = 'TODOS';
     estadoSeleccionadoAdmin: string = 'TODOS';
-
     imagenSeleccionada: File | null = null;
     imagenActual: string | null = null;
     previewImagen: string | null = null;
-
     editandoId = signal<string | null>(null);
 
     peliculaForm = new FormGroup({

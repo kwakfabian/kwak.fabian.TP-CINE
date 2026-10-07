@@ -4,16 +4,16 @@ import { Candy } from '../models/candyinterface';
 import { RealtimeChannel } from "@supabase/supabase-js";
 
 @Injectable({ providedIn: 'root' })
+
 export class CandyService {
+
     private supabase = inject(SupabaseService).client;
     private destroyRef = inject(DestroyRef);
-
     private candySignal = signal<Candy[]>([]);
+    private channel!: RealtimeChannel;
 
     cargando = signal(false);
     candy = computed(() => this.candySignal());
-
-    private channel!: RealtimeChannel;
 
     constructor() {
         this.cargarCandydesdeDB();
@@ -29,7 +29,6 @@ export class CandyService {
         const { data, error } = await this.supabase
             .from('candy')
             .select('*');
-
         console.log('DATOS:', data);
         console.log('ERROR:', error);
 
@@ -38,7 +37,6 @@ export class CandyService {
         } else {
             this.candySignal.set(data || []);
         }
-
         this.cargando.set(false);
     }
 
@@ -116,7 +114,6 @@ export class CandyService {
             console.error('Error al borrar imagen:', error.message);
             return false;
         }
-
         return true;
     }
 
@@ -144,7 +141,6 @@ export class CandyService {
             console.error('Error al editar candy:', error.message);
             return false;
         }
-
         return true;
     }
 }

@@ -4,15 +4,15 @@ import { Pelicula } from '../models/peliculainterface';
 import { RealtimeChannel } from "@supabase/supabase-js";
 
 @Injectable({ providedIn: 'root' })
+
 export class PeliculaService {
+
     private supabase = inject(SupabaseService).client;
     private destroyRef = inject(DestroyRef);
     private peliculasSignal = signal<Pelicula[]>([]);
-
+    private channel!: RealtimeChannel;
     cargando = signal(false);
     peliculas = computed(() => this.peliculasSignal());
-
-    private channel!: RealtimeChannel;
 
     constructor() {
         this.cargarPeliculasdesdeDB();
@@ -45,9 +45,11 @@ export class PeliculaService {
         return this.supabase
             .channel('peliculas-realtime')
             .on(
-                'postgres_changes',
-                { event: '*', schema: 'public', table: 'peliculas' },
-                (payload) => {
+                'postgres_changes',{ 
+                    event: '*', 
+                    schema: 'public', 
+                    table: 'peliculas' },
+                    (payload) => {
                     console.log('Cambio en tiempo real:', payload.eventType, payload);
 
                     switch (payload.eventType) {
@@ -159,23 +161,18 @@ export class PeliculaService {
         }
 
         await this.borrarImagenPelicula(imgUrl);
-
         return true;
     }
 
     async obtenerPeliculasMasVendidas(): Promise<Pelicula[]> {
-        const { data, error } = await this.supabase
-            .rpc('obtener_peliculas_mas_vendidas');
+        const { data, error } = await this.supabase.rpc('obtener_peliculas_mas_vendidas');
 
         if (error) {
             console.error('Error al obtener películas más vendidas:', error.message);
             return [];
         }
 
-        const top3Ids = data.map(
-            (item: { pelicula_id: string; cantidad_vendida: number }) => item.pelicula_id
-        );
-
+        const top3Ids = data.map((item: { pelicula_id: string; cantidad_vendida: number }) => item.pelicula_id);
         return top3Ids
             .map((id: string) => this.peliculasSignal().find((p: Pelicula) => p.pelicula_id === id))
             .filter((p: Pelicula | undefined): p is Pelicula => p !== undefined);

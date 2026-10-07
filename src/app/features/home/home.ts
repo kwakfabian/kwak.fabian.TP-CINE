@@ -10,16 +10,13 @@ import { FormsModule } from '@angular/forms';
     styleUrl: './home.css',
     templateUrl: './home.html',
 })
+
 export class Home {
 
     peliculaService = inject(PeliculaService);
-
     peliculas = this.peliculaService.peliculas;
-
     busqueda: string = '';
-
     generoSeleccionado: string = 'TODOS';
-
     generos: string[] = [
         'Accion',
         'Aventura',
@@ -30,7 +27,6 @@ export class Home {
         'Romance',
         'Animacion'
     ];
-
     peliculasMasVendidas = signal<Pelicula[]>([]);
 
     async ngOnInit() {

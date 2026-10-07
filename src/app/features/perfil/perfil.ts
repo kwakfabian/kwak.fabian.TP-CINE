@@ -23,11 +23,9 @@ export class Perfil implements OnInit {
     funcionService = inject(FuncionService);
     peliculaService = inject(PeliculaService);
     resenaService = inject(ResenaService);
-
     estrellasSeleccionadas: { [peliculaId: string]: number } = {};
     comentarios: { [peliculaId: string]: string } = {};
     resenasExpandidas: { [peliculaId: string]: boolean } = {};
-
     qrImagen: string | null = null;
     compraQr: Compra | null = null;
 
@@ -220,15 +218,11 @@ export class Perfil implements OnInit {
 
     async cancelarCompra(compra: Compra) {
         if (!this.puedeCancelar(compra)) {
-            alert(
-                'La compra solo puede cancelarse hasta 2 horas antes de la función.'
-            );
+            alert('La compra solo puede cancelarse hasta 2 horas antes de la función.');
             return;
         }
 
-        const confirmar = confirm(
-            '¿Seguro que querés cancelar esta compra?'
-        );
+        const confirmar = confirm('¿Seguro que querés cancelar esta compra?');
 
         if (!confirmar) {
             return;

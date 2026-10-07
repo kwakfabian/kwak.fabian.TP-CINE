@@ -4,32 +4,26 @@ import { Sala } from '../models/salainterface';
 import { RealtimeChannel } from "@supabase/supabase-js";
 
 @Injectable({ providedIn: 'root' })
+
 export class SalaService {
+
     private supabase = inject(SupabaseService).client;
     private destroyRef = inject(DestroyRef);
-
     private salasSignal = signal<Sala[]>([]);
-
+    private channel! : RealtimeChannel;
     cargando = signal(false);
-
     salas = computed(() => this.salasSignal());
 
-    private channel! : RealtimeChannel;
-
     constructor() {
+
         this.cargarSalasdesdeDB();
-
         this.channel = this.iniciarRealTime();
-
-        this.destroyRef.onDestroy(() => {
-            this.supabase.removeChannel(this.channel);
-        });
+        this.destroyRef.onDestroy(() => {this.supabase.removeChannel(this.channel);});
     }
 
     private async cargarSalasdesdeDB(): Promise<void> {
 
         this.cargando.set(true);
-
         const { data, error } = await this.supabase
             .from('salas')
             .select('*');
@@ -42,7 +36,6 @@ export class SalaService {
         } else {
             this.salasSignal.set(data || []);
         }
-
         this.cargando.set(false);
     }
 

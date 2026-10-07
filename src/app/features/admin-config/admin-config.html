@@ -11,8 +11,7 @@
                 type="number"
                 id="precioEstandar"
                 [(ngModel)]="precioEstandar"
-                min="0"
-            >
+                min="0">
         </div>
 
         <div class="campo">
@@ -21,8 +20,7 @@
                 type="number"
                 id="precioDiscapacitado"
                 [(ngModel)]="precioDiscapacitado"
-                min="0"
-            >
+                min="0">
         </div>
 
         <div class="campo">
@@ -31,16 +29,14 @@
                 type="number"
                 id="precioVip"
                 [(ngModel)]="precioVip"
-                min="0"
-            >
+                min="0">
         </div>
     </div>
 
     <button
         type="button"
         class="btn-guardar"
-        (click)="guardarConfiguracion()"
-    >
+        (click)="guardarConfiguracion()">
         Guardar configuracion
     </button>
 
@@ -53,8 +49,7 @@
                 type="text"
                 id="codigoCupon"
                 [(ngModel)]="codigoCupon"
-                placeholder="NombreCupon"
-            >
+                placeholder="NombreCupon">
         </div>
 
         <div class="campo">
@@ -64,15 +59,13 @@
                 id="descuentoCupon"
                 [(ngModel)]="descuentoCupon"
                 min="1"
-                max="100"
-            >
+                max="100">
         </div>
 
         <button
             type="button"
             class="btn-guardar"
-            (click)="guardarCupon()"
-        >
+            (click)="guardarCupon()">
             {{ cuponEditando ? 'Guardar cambios' : 'Crear cupon' }}
         </button>
 
@@ -80,8 +73,7 @@
             <button
                 type="button"
                 class="btn-cancelar"
-                (click)="cancelarEdicion()"
-            >
+                (click)="cancelarEdicion()">
                 Cancelar edicion
             </button>
         }
@@ -98,18 +90,11 @@
             @for (cupon of cuponService.cupones(); track cupon.cupon_id) {
                 <div
                     class="cupon"
-                    [class.cupon-inactivo]="!cupon.activo"
-                >
+                    [class.cupon-inactivo]="!cupon.activo">
                     <div class="cupon-info">
                         <strong>{{ cupon.codigo }}</strong>
-
-                        <span>
-                            Descuento: {{ cupon.descuento }}%
-                        </span>
-
-                        <span>
-                            Estado: {{ cupon.activo ? 'Activo' : 'Inactivo' }}
-                        </span>
+                        <span>Descuento: {{ cupon.descuento }}%</span>
+                        <span>Estado: {{ cupon.activo ? 'Activo' : 'Inactivo' }}</span>
                     </div>
 
                     <div class="cupon-acciones">

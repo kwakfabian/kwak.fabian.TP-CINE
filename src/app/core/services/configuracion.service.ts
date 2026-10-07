@@ -2,13 +2,11 @@ import { Injectable, inject, signal } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { Configuracion } from '../models/configuracioninterface';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
+
 export class ConfiguracionService {
 
     private supabase = inject(SupabaseService).client;
-
     configuracion = signal<Configuracion | null>(null);
 
     constructor() {

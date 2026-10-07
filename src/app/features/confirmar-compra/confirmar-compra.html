@@ -5,10 +5,18 @@
         <div class="resumen-compra">
             <h3>Resumen de tu compra</h3>
 
-            <p><strong>Película:</strong> {{ peliculaActual()?.pelicula_titulo }}</p>
-            <p><strong>Fecha:</strong> {{ funcionActual()?.fecha }} — {{ funcionActual()?.hora_inicio }}</p>
-
-            <p><strong>Butacas:</strong> {{ compraService.butacasSeleccionadas().join(', ') }}</p>
+            <p>
+                <strong>Película:</strong> 
+                {{ peliculaActual()?.pelicula_titulo }}
+            </p>
+            <p>
+                <strong>Fecha:</strong> 
+                {{ funcionActual()?.fecha }} — {{ funcionActual()?.hora_inicio }}
+            </p>
+            <p>
+                <strong>Butacas:</strong> 
+                {{ compraService.butacasSeleccionadas().join(', ') }}
+            </p>
 
             @if (compraService.candySeleccionado().length > 0) {
                 <div class="resumen-candy">
@@ -17,8 +25,7 @@
                     <ul>
                         @for (item of compraService.candySeleccionado(); track item.candy_id) {
                             <li>
-                                {{ item.cantidad }}x {{ item.nombre_candy }} —
-                                ${{ item.precio * item.cantidad }}
+                                {{ item.cantidad }}x {{ item.nombre_candy }} — ${{ item.precio * item.cantidad }}
                             </li>
                         }
                     </ul>
@@ -54,20 +61,11 @@
                     }
 
                     @if (obtenerCuponSeleccionado()) {
-                        <p>
-                            Cupón aplicado:
-                            {{ obtenerCuponSeleccionado()?.codigo }}
-                        </p>
-
-                        <p>
-                            Descuento:
-                            -${{ obtenerMontoDescuentoCupon() }}
-                        </p>
+                        <p>Cupón aplicado: {{ obtenerCuponSeleccionado()?.codigo }}</p>
+                        <p>Descuento: -${{ obtenerMontoDescuentoCupon() }}</p>
 
                         <p class="precio-total">
-                            <strong>
-                                Total con cupón: ${{ calcularTotalConCupon() }}
-                            </strong>
+                            <strong>Total con cupón: ${{ calcularTotalConCupon() }}</strong>
                         </p>
                     }
 
@@ -78,9 +76,7 @@
                 <div class="credito-compra">
 
                     <p>
-                        <strong>
-                            Crédito disponible: {{ obtenerCreditoDisponible() }}
-                        </strong>
+                        <strong>Crédito disponible: {{ obtenerCreditoDisponible() }}</strong>
                     </p>
 
                     <input
@@ -93,47 +89,32 @@
                     >
 
                     @if (obtenerCreditoDisponible() <= 0) {
-                        <small class="error-credito">
-                            No tenés crédito disponible.
-                        </small>
+                        <small class="error-credito">No tenés crédito disponible.</small>
                     }
 
                     @if (obtenerCreditoUsado() > obtenerCreditoDisponible()) {
-                        <small class="error-credito">
-                            No tenés crédito suficiente. Tu saldo disponible es de {{ obtenerCreditoDisponible() }}.
-                        </small>
+                        <small class="error-credito">No tenés crédito suficiente. Tu saldo disponible es de {{ obtenerCreditoDisponible() }}.</small>
                     }
 
                     @if (obtenerCreditoUsado() > calcularTotalConCupon()) {
-                        <small class="error-credito">
-                            No podés usar más crédito que el total de la compra.
-                        </small>
+                        <small class="error-credito">No podés usar más crédito que el total de la compra.</small>
                     }
 
                     @if (obtenerCreditoUsado() < 0) {
-                        <small class="error-credito">
-                            El crédito no puede ser negativo.
-                        </small>
+                        <small class="error-credito">El crédito no puede ser negativo.</small>
                     }
 
                     @if (obtenerCreditoUsado() > 0 && creditoValido()) {
-                        <p>
-                            Crédito utilizado:
-                            -{{ obtenerCreditoUsado() }}
-                        </p>
+                        <p>Crédito utilizado: -{{ obtenerCreditoUsado() }}</p>
 
                         <p class="precio-total">
-                            <strong>
-                                Total a pagar: {{ calcularTotalAPagar() }}
-                            </strong>
+                            <strong>Total a pagar: {{ calcularTotalAPagar() }}</strong>
                         </p>
                     }
 
                     @if (obtenerCuponSeleccionado() && obtenerCreditoUsado() === 0) {
                         <p class="precio-total">
-                            <strong>
-                                Total a pagar: {{ calcularTotalAPagar() }}
-                            </strong>
+                            <strong>Total a pagar: {{ calcularTotalAPagar() }}</strong>
                         </p>
                     }
 
@@ -208,10 +189,7 @@
         <div class="compra-finalizada">
 
             <h2>¡Compra confirmada!</h2>
-
-            <p>
-                Presentá este QR al ingresar al cine y para retirar tu Candy.
-            </p>
+            <p>Presentá este QR al ingresar al cine y para retirar tu Candy.</p>
 
             @if (qrImagen()) {
                 <img

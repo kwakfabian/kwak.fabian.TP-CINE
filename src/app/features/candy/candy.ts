@@ -15,13 +15,12 @@ export class Candy {
   candyService = inject(CandyService);
   compraService = inject(CompraService);
   router = inject(Router);
-
   candy = this.candyService.candy;
 
   cantidades: {
     candy_id: string;
     cantidad: number;
-  }[] = [];
+    }[] = [];
 
   cambiarCantidad(candyId: string, cantidad: number): void {
 
@@ -30,7 +29,6 @@ export class Candy {
     );
 
     if (productoExistente) {
-
       productoExistente.cantidad = cantidad;
 
     } else {
@@ -50,10 +48,8 @@ export class Candy {
       .filter(item => item.cantidad > 0)
       .map(item => {
 
-        const producto = this.candy().find(
-          candy => candy.candy_id === item.candy_id
-        );
-
+        const producto = this.candy().find(candy => candy.candy_id === item.candy_id);
+      
         return {
           candy_id: item.candy_id,
           nombre_candy: producto!.nombre_candy,

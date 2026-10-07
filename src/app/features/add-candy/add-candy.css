@@ -76,8 +76,6 @@ select option {
     color: white;
 }
 
-/* Imagen */
-
 input[type="file"] {
     width: 100%;
     box-sizing: border-box;
@@ -106,8 +104,6 @@ input[type="file"]::file-selector-button:hover {
     background-color: #ccc;
 }
 
-/* Preview imagen */
-
 .preview-imagen {
     margin-top: 12px;
     padding: 18px;
@@ -135,8 +131,6 @@ input[type="file"]::file-selector-button:hover {
     transform: scale(1.02);
 }
 
-/* Quitar imagen */
-
 .btn-quitar-imagen {
     padding: 8px 16px;
     background-color: transparent;
@@ -159,8 +153,6 @@ input[type="file"]::file-selector-button:hover {
     transform: scale(0.97);
 }
 
-/* Checkbox disponible */
-
 input[type="checkbox"] {
     width: 16px;
     height: 16px;
@@ -175,8 +167,6 @@ form > div:nth-last-child(2) label {
     font-weight: normal;
 }
 
-/* Errores */
-
 small {
     color: #ff6b6b;
     font-size: 13px;
@@ -185,8 +175,6 @@ small {
 .input-error {
     border-color: #ff6b6b !important;
 }
-
-/* Boton agregar */
 
 form > button[type="submit"] {
     width: 100%;
@@ -213,8 +201,6 @@ form > button[type="submit"]:disabled {
     color: #aaa;
     cursor: not-allowed;
 }
-
-/* Filtros */
 
 .filtros-admin {
     margin-bottom: 25px;
@@ -291,8 +277,6 @@ form > button[type="submit"]:disabled {
     transform: scale(0.95);
 }
 
-/* Lista de candy */
-
 .lista-candy-admin {
     display: flex;
     flex-direction: column;
@@ -354,8 +338,6 @@ form > button[type="submit"]:disabled {
     color: #ddd;
 }
 
-/* Boton editar */
-
 .btn-editar {
     padding: 9px 15px;
     border: 1px solid #444;
@@ -373,8 +355,6 @@ form > button[type="submit"]:disabled {
     border-color: white;
     color: #181818;
 }
-
-/* Modo edicion */
 
 section > div > p {
     text-align: center;
@@ -404,8 +384,6 @@ hr {
     border: none;
     border-top: 1px solid #333;
 }
-
-/* Responsive */
 
 @media (max-width: 600px) {
     section {

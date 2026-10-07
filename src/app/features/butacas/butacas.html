@@ -111,55 +111,37 @@
 
   <div class="resumen">
 
-    <p>
-      Butacas seleccionadas:
-      {{ butacasSeleccionadas().length }} / {{ cantidadBoletos }}
-    </p>
+    <p>Butacas seleccionadas: {{ butacasSeleccionadas().length }} / {{ cantidadBoletos }}</p>
 
     @if (butacasSeleccionadas().length > 0) {
-      <p>
-        {{ butacasSeleccionadas().join(', ') }}
-      </p>
+      <p>{{ butacasSeleccionadas().join(', ') }}</p>
     }
 
     <div class="referencia-precios">
 
       <div class="item-precio">
-        <div class="butaca-muestra normal">L14</div>
-
-        <span class="precio-muestra">
-          ${{ configuracionService.configuracion()?.precio_estandar ?? 3000 }}
-        </span>
-
-        <span class="etiqueta-muestra">
-          Normal
-        </span>
+        <div class="butaca-muestra normal">
+          L14
+        </div>
+        <span class="precio-muestra">${{ configuracionService.configuracion()?.precio_estandar ?? 3000 }}</span>
+        <span class="etiqueta-muestra">Normal</span>
       </div>
 
       <div class="item-precio">
-        <div class="butaca-muestra discapacitado">J5</div>
-
-        <span class="precio-muestra">
-          ${{ configuracionService.configuracion()?.precio_discapacitado ?? 3000 }}
-        </span>
-
-        <span class="etiqueta-muestra">
-          Discapacitado
-        </span>
+        <div class="butaca-muestra discapacitado">
+          J5
+        </div>
+        <span class="precio-muestra">${{ configuracionService.configuracion()?.precio_discapacitado ?? 3000 }}</span>
+        <span class="etiqueta-muestra">Discapacitado</span>
       </div>
 
       <div class="item-precio">
-        <div class="butaca-muestra vip">R10</div>
-
-        <span class="precio-muestra">
-          ${{ configuracionService.configuracion()?.precio_vip ?? 4500 }}
-        </span>
-
-        <span class="etiqueta-muestra">
-          VIP
-        </span>
+        <div class="butaca-muestra vip">
+          R10
+        </div>
+        <span class="precio-muestra">${{ configuracionService.configuracion()?.precio_vip ?? 4500 }}</span>
+        <span class="etiqueta-muestra">VIP</span>
       </div>
-
     </div>
 
     <button

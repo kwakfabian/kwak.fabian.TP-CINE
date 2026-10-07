@@ -12,17 +12,15 @@ import { Funcion } from '../../core/models/funcioninterface';
     templateUrl: './add-funcion.html',
 })
 export class AddFuncion implements OnInit {
+
     private funcionService = inject(FuncionService);
     private peliculaService = inject(PeliculaService);
     private salaService = inject(SalaService);
-
     funciones = this.funcionService.funciones;
     peliculas = this.peliculaService.peliculas;
     salas = this.salaService.salas;
-
     formatos = ['2D', '3D'];
     idiomas = ['Doblada', 'Subtitulada'];
-
     editandoId = signal<string | null>(null);
 
     funcionForm = new FormGroup({
@@ -44,7 +42,6 @@ export class AddFuncion implements OnInit {
 
     iniciarEdicion(funcion: Funcion) {
         this.editandoId.set(funcion.funciones_id);
-
         this.funcionForm.setValue({
             peliculas_id: funcion.peliculas_id,
             salas_id: funcion.salas_id,

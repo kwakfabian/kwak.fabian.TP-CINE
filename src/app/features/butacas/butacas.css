@@ -28,7 +28,6 @@
     gap: 10px;
 }
 
-/* TODAS LAS FILAS TIENEN EL MISMO ANCHO */
 .fila {
     display: flex;
     align-items: center;
@@ -50,7 +49,6 @@
     gap: 5px;
 }
 
-/* PASILLOS */
 .grupo:first-of-type {
     margin-right: 20px;
 }
@@ -59,7 +57,6 @@
     margin-right: 20px;
 }
 
-/* BUTACAS NORMALES */
 .fila button {
     width: 38px;
     height: 34px;
@@ -91,12 +88,6 @@
     transform: scale(1.05);
 }
 
-
-/* ================================= */
-/* J Y K = 2 | 10 | 2               */
-/* MISMO ANCHO TOTAL QUE LAS DEMÁS   */
-/* ================================= */
-
 .fila-accesible .grupo {
     gap: 5px;
 }
@@ -114,9 +105,6 @@
     background-color: #4a90d9;
 }
 
-/* ================================= */
-/* R, S Y T = VIP                    */
-/* ================================= */
 
 .fila-vip {
     padding: 8px 12px;
@@ -132,9 +120,6 @@
     background-color: #e5c100;
     color: black
 }
-
-
-/* RESUMEN */
 
 .resumen {
     margin: 40px auto 0;

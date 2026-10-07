@@ -10,22 +10,19 @@ import { UsuarioService } from '../../core/services/usuario.service';
 export class AdminUsuarios implements OnInit {
 
     usuarioService = inject(UsuarioService);
-
     cargando = signal(true);
     mensaje = signal<string | null>(null);
 
     async ngOnInit() {
+
     await this.usuarioService.cargarUsuarios();
-
     console.log(this.usuarioService.usuarios());
-
     this.cargando.set(false);
 }
     async cambiarRol(usuarioId: string, event: Event) {
 
         const select = event.target as HTMLSelectElement;
         const nuevoRol = select.value;
-
         const resultado = await this.usuarioService.cambiarRol(
             usuarioId,
             nuevoRol

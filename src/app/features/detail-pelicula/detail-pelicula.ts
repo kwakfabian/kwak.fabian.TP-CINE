@@ -13,18 +13,14 @@ import { ResenaService } from '../../core/services/resena.service';
 })
 export class DetailPelicula implements OnInit {
 
-    peliculaService = inject(PeliculaService);
-    funcionService = inject(FuncionService);
-    resenaService = inject(ResenaService);
-
     private compraService = inject(CompraService);
     private route = inject(ActivatedRoute);
     private router = inject(Router);
-
+    peliculaService = inject(PeliculaService);
+    funcionService = inject(FuncionService);
+    resenaService = inject(ResenaService);
     peliculaId = this.route.snapshot.paramMap.get('id')!;
-
     pelicula = this.peliculaService.getPeliculasId(this.peliculaId);
-
     fechaSeleccionada = signal<string | null>(null);
     horarioSeleccionado = signal<string | null>(null);
     cantidadBoletos = signal<number>(1);
@@ -62,7 +58,6 @@ export class DetailPelicula implements OnInit {
         }
 
         const total = resenas.reduce((suma, resena) => suma + resena.estrellas, 0);
-
         return total / resenas.length;
     });
 
@@ -108,13 +103,7 @@ export class DetailPelicula implements OnInit {
         this.cantidadBoletos()
     );
 
-    this.router.navigate(
-        ['/comprar', funcionId, 'butacas'],
-        {
-            queryParams: {
-                cantidad: this.cantidadBoletos()
-            }
-        }
+    this.router.navigate(['/comprar', funcionId, 'butacas'],{queryParams: {cantidad: this.cantidadBoletos()}}
     );
 }
 }

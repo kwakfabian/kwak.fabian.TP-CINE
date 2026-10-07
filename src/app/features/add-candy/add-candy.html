@@ -190,17 +190,9 @@
                     <img [src]="candy.img_url" [alt]="candy.nombre_candy">
 
                     <div class="info-candy-admin">
-                        <span class="titulo-candy-admin">
-                            {{ candy.nombre_candy }}
-                        </span>
-
-                        <span class="tipo-candy-admin">
-                            {{ candy.tipo_candy }}
-                        </span>
-
-                        <span class="precio-candy-admin">
-                            ${{ candy.precio }}
-                        </span>
+                        <span class="titulo-candy-admin">{{ candy.nombre_candy }}</span>
+                        <span class="tipo-candy-admin">{{ candy.tipo_candy }}</span>
+                        <span class="precio-candy-admin">${{ candy.precio }}</span>
                     </div>
 
                     <button

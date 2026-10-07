@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
     templateUrl: './butacas.html',
     styleUrl: './butacas.css'
 })
+
 export class Butacas implements OnInit, OnDestroy {
 
     filas: string[] = [
@@ -26,12 +27,9 @@ export class Butacas implements OnInit, OnDestroy {
     private router = inject(Router);
     private butacasService = inject(ButacasService);
     private compraService = inject(CompraService);
-
     configuracionService = inject(ConfiguracionService);
-
     funcionId!: string;
     cantidadBoletos!: number;
-
     butacas = signal<string[]>([]);
     butacasOcupadas = signal<string[]>([]);
     butacasSeleccionadas = signal<string[]>([]);
@@ -40,21 +38,14 @@ export class Butacas implements OnInit, OnDestroy {
 
         this.funcionId = this.route.snapshot.paramMap.get('funcionId')!;
         this.cantidadBoletos = Number(this.route.snapshot.queryParamMap.get('cantidad'));
-
         this.compraService.setearFuncion(this.funcionId, this.cantidadBoletos);
-
         await this.configuracionService.cargarConfiguracion();
-
         this.butacas.set(this.butacasService.generarTodasLasButacas());
-
         const ocupadas = await this.butacasService.obtenerButacasOcupadas(this.funcionId);
             this.butacasOcupadas.set(ocupadas);
-
             this.realtimeChannel = this.butacasService.iniciarRealTime(this.funcionId, (butacas) => {
                     this.butacasOcupadas.set(butacas);
-
-                    this.butacasSeleccionadas.update(actuales =>
-                        actuales.filter(butaca => !butacas.includes(butaca))
+                    this.butacasSeleccionadas.update(actuales => actuales.filter(butaca => !butacas.includes(butaca))
                     );
                 }
             );
@@ -80,8 +71,7 @@ export class Butacas implements OnInit, OnDestroy {
         }
 
         if (this.estaSeleccionada(butaca)) {
-            this.butacasSeleccionadas.update(actuales =>
-                actuales.filter(b => b !== butaca)
+            this.butacasSeleccionadas.update(actuales => actuales.filter(b => b !== butaca)
             );
         } else {
             if (this.butacasSeleccionadas().length >= this.cantidadBoletos) {
@@ -103,12 +93,7 @@ export class Butacas implements OnInit, OnDestroy {
         }
 
         this.compraService.setearButacas(this.butacasSeleccionadas());
-
-        console.log(
-            'Butacas guardadas en CompraService:',
-            this.compraService.butacasSeleccionadas()
-        );
-
+        console.log('Butacas guardadas en CompraService:', this.compraService.butacasSeleccionadas());
         this.router.navigate(['/candy']);
     }
 }

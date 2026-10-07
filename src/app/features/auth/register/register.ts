@@ -9,11 +9,12 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrl: './register.css',
   templateUrl: './register.html',
 })
+
 export class RegisterComponent {
+
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
-
   tipoDeSangre = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
   colorDeOjos = ['Negro', 'Celeste', 'Verde', 'Marron', 'Otro']
 

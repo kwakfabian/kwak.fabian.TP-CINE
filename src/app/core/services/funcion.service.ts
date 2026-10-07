@@ -3,6 +3,7 @@ import { SupabaseService } from './supabase.service';
 import { Funcion } from '../models/funcioninterface';
 
 @Injectable({ providedIn: 'root' })
+
 export class FuncionService {
     private supabase = inject(SupabaseService).client;
 
@@ -83,18 +84,13 @@ export class FuncionService {
 
             const inicioExistente = horaAMinutos(funcionExistente.hora_inicio);
             const finExistente = inicioExistente + Number(peliculaExistente.duracion);
-
-            const nuevaAntes =
-                finNueva + 30 <= inicioExistente;
-
-            const nuevaDespues =
-                inicioNueva >= finExistente + 30;
-
+            const nuevaAntes = finNueva + 30 <= inicioExistente;
+            const nuevaDespues = inicioNueva >= finExistente + 30;
+            
             if (!nuevaAntes && !nuevaDespues) {
                 return false;
             }
         }
-
         return true;
     }
 

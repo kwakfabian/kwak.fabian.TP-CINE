@@ -10,19 +10,15 @@ import { Candy } from '../../core/models/candyinterface';
     templateUrl: './add-candy.html',
 })
 export class AddCandy {
+
     private candyService = inject(CandyService);
-
     candys = this.candyService.candy;
-
     tiposCandy = ['Combo', 'Pochoclo', 'Bebidas', 'Snacks'];
-
     busquedaAdmin: string = '';
     tipoCandySeleccionadoAdmin: string = 'TODOS';
-
     imagenSeleccionada: File | null = null;
     imagenActual: string | null = null;
     previewImagen: string | null = null;
-
     editandoId = signal<string | null>(null);
 
     candyForm = new FormGroup({
@@ -163,7 +159,6 @@ export class AddCandy {
                 alert('Error al subir la imagen.');
                 return;
             }
-
             imgUrl = nuevaUrl;
         }
 
@@ -196,7 +191,6 @@ export class AddCandy {
             if (this.imagenSeleccionada && imgUrl !== imagenAnterior) {
                 await this.candyService.borrarImagenCandy(imgUrl);
             }
-
             alert('Error al guardar el candy. Intenta nuevamente.');
         }
     }

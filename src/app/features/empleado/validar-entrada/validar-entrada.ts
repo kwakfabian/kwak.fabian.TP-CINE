@@ -55,7 +55,6 @@ export class ValidarEntrada {
       this.mensaje.set('Ocurrió un error al validar la entrada.');
 
     } finally {
-
       this.cargando.set(false);
 
     }

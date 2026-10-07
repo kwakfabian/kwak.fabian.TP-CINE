@@ -4,12 +4,10 @@
     margin: 50px auto;
     padding: 35px;
     box-sizing: border-box;
-
     background-color: #181818;
     border: 1px solid #333;
     border-radius: 12px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
-
     font-family: Arial, Helvetica, sans-serif;
     color: white;
 }
@@ -22,7 +20,6 @@
 
 .resumen-compra h3 {
     margin: 0 0 15px;
-
     text-align: center;
     font-size: 26px;
     letter-spacing: 2px;
@@ -32,17 +29,14 @@
 .resumen-compra p {
     margin: 0;
     padding: 12px 15px;
-
     background-color: #242424;
     border: 1px solid #333;
     border-radius: 6px;
-
     font-size: 15px;
 }
 
 .resumen-candy {
     padding: 15px;
-
     background-color: #242424;
     border: 1px solid #333;
     border-radius: 6px;
@@ -64,21 +58,17 @@
 
 .precio-total {
     margin-top: 5px !important;
-
     background-color: #2b2b2b !important;
     border: 1px solid #555 !important;
-
     font-size: 18px !important;
 }
 
 .cupon-compra {
     margin-top: 15px;
     padding: 20px;
-
     background-color: #202020;
     border: 1px solid #444;
     border-radius: 8px;
-
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -86,10 +76,8 @@
 
 .cupon-compra p {
     padding: 0;
-
     background-color: transparent;
     border: none;
-
     font-size: 15px;
 }
 
@@ -103,17 +91,13 @@
     width: 100%;
     box-sizing: border-box;
     padding: 12px 14px;
-
     background-color: #242424;
     border: 1px solid #444;
     border-radius: 6px;
-
     color: white;
     font-size: 15px;
     outline: none;
-
     cursor: pointer;
-
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
@@ -130,11 +114,9 @@
 .credito-compra {
     margin-top: 15px;
     padding: 20px;
-
     background-color: #202020;
     border: 1px solid #444;
     border-radius: 8px;
-
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -142,10 +124,8 @@
 
 .credito-compra p {
     padding: 0;
-
     background-color: transparent;
     border: none;
-
     font-size: 15px;
 }
 
@@ -159,15 +139,12 @@
     width: 100%;
     box-sizing: border-box;
     padding: 12px 14px;
-
     background-color: #242424;
     border: 1px solid #444;
     border-radius: 6px;
-
     color: white;
     font-size: 15px;
     outline: none;
-
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
@@ -179,13 +156,11 @@
 .datos-invitado {
     margin-top: 25px;
     padding-top: 25px;
-
     border-top: 1px solid #333;
 }
 
 .datos-invitado h3 {
     margin: 0 0 20px;
-
     text-align: center;
     font-size: 20px;
 }
@@ -212,15 +187,12 @@
     width: 100%;
     box-sizing: border-box;
     padding: 12px 14px;
-
     background-color: #242424;
     border: 1px solid #444;
     border-radius: 6px;
-
     color: white;
     font-size: 15px;
     outline: none;
-
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
@@ -233,18 +205,13 @@
     width: 100%;
     padding: 13px;
     margin-top: 20px;
-
     border: 1px solid #666;
     border-radius: 6px;
-
     background-color: transparent;
     color: white;
-
     font-size: 16px;
     font-weight: bold;
-
     cursor: pointer;
-
     transition: background-color 0.2s, border-color 0.2s;
 }
 
@@ -257,19 +224,14 @@
     width: 100%;
     padding: 13px;
     margin-top: 25px;
-
     border: none;
     border-radius: 6px;
-
     background-color: #e50914;
     color: white;
-
     font-size: 16px;
     font-weight: bold;
     letter-spacing: 1px;
-
     cursor: pointer;
-
     transition: background-color 0.2s, transform 0.2s;
 }
 

@@ -92,7 +92,7 @@
 
 /* BOTONES */
 
-.acciones {
+.exportar-reportes {
     display: flex;
     justify-content: center;
     gap: 20px;
@@ -100,7 +100,7 @@
     margin-top: 30px;
 }
 
-.acciones button {
+.exportar-reportes button {
     padding: 12px 25px;
 
     border: none;
@@ -114,7 +114,7 @@
     transition: 0.2s;
 }
 
-.acciones button:hover {
+.exportar-reportes button:hover {
     transform: scale(1.05);
     filter: brightness(85%);
 }
@@ -173,7 +173,7 @@
         grid-template-columns: 1fr;
     }
 
-    .acciones {
+    .exportar-reportes {
         flex-direction: column;
     }
 }

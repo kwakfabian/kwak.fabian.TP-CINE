@@ -76,8 +76,6 @@ select option {
     color: white;
 }
 
-/* Imagen */
-
 input[type="file"] {
     width: 100%;
     box-sizing: border-box;
@@ -105,8 +103,6 @@ input[type="file"]::file-selector-button {
 input[type="file"]::file-selector-button:hover {
     background-color: #ccc;
 }
-
-/* Preview de imagen */
 
 .preview-imagen {
     margin-top: 10px;
@@ -142,8 +138,6 @@ input[type="file"]::file-selector-button:hover {
     background-color: #f40612;
 }
 
-/* Generos */
-
 form > div:nth-child(4) > div {
     display: flex;
     flex-wrap: wrap;
@@ -162,15 +156,11 @@ form > div:nth-child(4) > div label {
     cursor: pointer;
 }
 
-/* Checkboxes */
-
 input[type="checkbox"] {
     width: 16px;
     height: 16px;
     cursor: pointer;
 }
-
-/* Disponible */
 
 form > div:nth-last-child(2) label {
     display: flex;
@@ -180,8 +170,6 @@ form > div:nth-last-child(2) label {
     font-weight: normal;
 }
 
-/* Errores */
-
 small {
     color: #ff6b6b;
     font-size: 13px;
@@ -190,8 +178,6 @@ small {
 .input-error {
     border-color: #ff6b6b !important;
 }
-
-/* Boton */
 
 .btn-agregar-pelicula {
     width: 100%;
@@ -219,16 +205,12 @@ small {
     cursor: not-allowed;
 }
 
-/* Lista de peliculas */
-
 .lista-peliculas-admin {
     display: flex;
     flex-direction: column;
     gap: 12px;
     margin-top: 25px;
 }
-
-/* Filtros */
 
 .filtros-admin {
     margin-bottom: 25px;
@@ -305,8 +287,6 @@ small {
     transform: scale(0.95);
 }
 
-/* Peliculas existentes */
-
 .item-pelicula-admin {
     display: flex;
     align-items: center;
@@ -355,8 +335,6 @@ small {
     text-transform: uppercase;
 }
 
-/* Botones editar y eliminar */
-
 .btn-editar,
 .btn-eliminar {
     padding: 9px 15px;
@@ -381,8 +359,6 @@ small {
     border-color: #e50914;
     color: white;
 }
-
-/* Editando */
 
 section > div > p {
     text-align: center;
@@ -412,8 +388,6 @@ hr {
     border: none;
     border-top: 1px solid #333;
 }
-
-/* Responsive */
 
 @media (max-width: 600px) {
     section {

@@ -2,15 +2,11 @@ import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { RealtimeChannel } from '@supabase/supabase-js';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
+
 export class ButacasService {
 
-  constructor(
-    private supabase: SupabaseService
-  ) {
-
+  constructor(private supabase: SupabaseService) {
   }
 
   async obtenerButacasOcupadas(funcionId: string): Promise<string[]> {

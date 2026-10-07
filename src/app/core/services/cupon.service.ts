@@ -2,9 +2,8 @@ import { Injectable, inject, signal } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { Cupon } from '../models/cuponinterface';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
+
 export class CuponService {
 
     private supabase = inject(SupabaseService).client;

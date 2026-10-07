@@ -8,22 +8,14 @@
     </div>
 
     <div class="scanner">
-
       <div class="scanner-placeholder">
         <span class="scanner-icon">▦</span>
-
         <h2>Escanear código QR</h2>
-
-        <p>
-          Utilizá la cámara para escanear el código
-          de la entrada.
-        </p>
-
+        <p> Utilizá la cámara para escanear el código de la entrada.</p>
         <button class="btn-camera" type="button">
           Activar cámara
         </button>
       </div>
-
     </div>
 
     <div class="separador">
@@ -33,11 +25,8 @@
     </div>
 
     <div class="manual">
-
       <label for="codigo">Código de entrada</label>
-
       <div class="codigo-container">
-
         <input
           id="codigo"
           type="text"
@@ -45,7 +34,6 @@
           placeholder="Ej: ENT-8F4A92C71B"
           (keyup.enter)="validarCodigo()"
         >
-
         <button
           type="button"
           class="btn-validar"
@@ -53,19 +41,15 @@
         >
           Validar
         </button>
-
       </div>
-
     </div>
 
     @if (mensaje()) {
-
       <div
         class="resultado"
         [class.exito]="tipoMensaje() === 'exito'"
         [class.error]="tipoMensaje() === 'error'"
       >
-
         <div class="resultado-icon">
           @if (tipoMensaje() === 'exito') {
             ✓
@@ -73,7 +57,6 @@
             ✕
           }
         </div>
-
         <div class="resultado-info">
           <strong>
             @if (tipoMensaje() === 'exito') {
@@ -82,10 +65,8 @@
               Error
             }
           </strong>
-
           <p>{{ mensaje() }}</p>
         </div>
-
         <button
           type="button"
           class="btn-limpiar"
@@ -93,11 +74,8 @@
         >
           ✕
         </button>
-
       </div>
-
     }
-
   </div>
-
+  
 </div>

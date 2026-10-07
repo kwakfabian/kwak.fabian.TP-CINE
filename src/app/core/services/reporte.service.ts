@@ -1,61 +1,35 @@
 import { Injectable, inject } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
+
 export class ReporteService {
 
     private supabase = inject(SupabaseService).client;
-
-
-    // =========================================================
-    // OBTENER FECHA DE INICIO SEGÚN PERÍODO
-    // =========================================================
-
     private obtenerFechaInicio(periodo: 'semana' | 'mes') {
 
         const ahora = new Date();
         const fechaInicio = new Date();
-
         if (periodo === 'semana') {
-
             const diaActual = ahora.getDay();
+            const diasDesdeLunes =diaActual === 0? 6: diaActual - 1;
 
-            const diasDesdeLunes =
-                diaActual === 0
-                    ? 6
-                    : diaActual - 1;
-
-            fechaInicio.setDate(
-                ahora.getDate() - diasDesdeLunes
-            );
-
+            fechaInicio.setDate(ahora.getDate() - diasDesdeLunes);
             fechaInicio.setHours(0, 0, 0, 0);
 
         } else {
 
             fechaInicio.setDate(1);
-
             fechaInicio.setHours(0, 0, 0, 0);
         }
 
         return fechaInicio;
     }
 
-
-    // =========================================================
-    // REPORTE DIARIO
-    // =========================================================
-
     async obtenerReporteDiario() {
 
-        const inicioDia = new Date();
-        inicioDia.setHours(0, 0, 0, 0);
-
-        const finDia = new Date();
-        finDia.setHours(23, 59, 59, 999);
-
+        const inicioDia = new Date();inicioDia.setHours(0, 0, 0, 0);
+        const finDia = new Date();finDia.setHours(23, 59, 59, 999);
         const { data, error } = await this.supabase
             .from('compras')
             .select('precio_total, butacas, fecha_compra')
@@ -69,11 +43,7 @@ export class ReporteService {
             );
 
         if (error) {
-
-            console.error(
-                'Error al obtener reporte diario:',
-                error.message
-            );
+            console.error('Error al obtener reporte diario:',error.message);
 
             return {
                 facturacion: 0,
@@ -86,11 +56,8 @@ export class ReporteService {
 
         data.forEach(compra => {
 
-            facturacion +=
-                Number(compra.precio_total);
-
-            entradasVendidas +=
-                compra.butacas?.length || 0;
+            facturacion += Number(compra.precio_total);
+            entradasVendidas += compra.butacas?.length || 0;
 
         });
 
@@ -100,31 +67,16 @@ export class ReporteService {
         };
     }
 
-
-    // =========================================================
-    // PELÍCULAS MÁS VISTAS
-    // =========================================================
-
-    async obtenerPeliculasMasVistas(
-        periodo: 'semana' | 'mes'
-    ) {
+    async obtenerPeliculasMasVistas( periodo: 'semana' | 'mes') {
 
         const ahora = new Date();
-
-        const fechaInicio =
-            this.obtenerFechaInicio(periodo);
-
-
+        const fechaInicio = this.obtenerFechaInicio(periodo);
         const { data, error } = await this.supabase
             .from('compras')
             .select(`
                 butacas,
                 fecha_compra,
-                funciones (
-                    peliculas (
-                        pelicula_titulo
-                    )
-                )
+                funciones (peliculas (pelicula_titulo))
             `)
             .gte(
                 'fecha_compra',
@@ -138,19 +90,11 @@ export class ReporteService {
 
         if (error) {
 
-            console.error(
-                'Error al obtener películas más vistas:',
-                error.message
-            );
-
+            console.error('Error al obtener películas más vistas:',error.message);
             return [];
         }
 
-
-        const peliculas: {
-            [titulo: string]: number
-        } = {};
-
+        const peliculas: {[titulo: string]: number} = {};
 
         data.forEach((compra: any) => {
 
@@ -159,15 +103,11 @@ export class ReporteService {
                     ?.peliculas
                     ?.pelicula_titulo;
 
-
             if (!titulo) {
                 return;
             }
 
-
-            const cantidadEntradas =
-                compra.butacas?.length || 0;
-
+            const cantidadEntradas = compra.butacas?.length || 0;
 
             if (peliculas[titulo]) {
 
@@ -179,38 +119,23 @@ export class ReporteService {
                 peliculas[titulo] =
                     cantidadEntradas;
             }
-
         });
 
-
         return Object.entries(peliculas)
-
             .map(([titulo, entradas]) => ({
                 titulo,
                 entradas
             }))
-
             .sort(
                 (a, b) =>
                     b.entradas - a.entradas
             );
     }
 
-
-    // =========================================================
-    // CANDY MÁS VENDIDO
-    // =========================================================
-
-    async obtenerCandyMasVendido(
-        periodo: 'semana' | 'mes'
-    ) {
+    async obtenerCandyMasVendido( periodo: 'semana' | 'mes') {
 
         const ahora = new Date();
-
-        const fechaInicio =
-            this.obtenerFechaInicio(periodo);
-
-
+        const fechaInicio = this.obtenerFechaInicio(periodo);
         const { data, error } = await this.supabase
             .from('compras')
             .select(`
@@ -229,68 +154,43 @@ export class ReporteService {
 
         if (error) {
 
-            console.error(
-                'Error al obtener Candy:',
-                error.message
-            );
-
+            console.error('Error al obtener Candy:',error.message);
             return [];
         }
 
+        const productos: {[nombre: string]: number} = {};
 
-        const productos: {
-            [nombre: string]: number
-        } = {};
-
-
-        data.forEach((compra: any) => {
-
-            const candy =
-                compra.candy_productos;
-
+        data.forEach((compra: any) => {const candy = compra.candy_productos;
 
             if (!Array.isArray(candy)) {
                 return;
             }
 
-
             candy.forEach((producto: any) => {
 
-                const nombre =
-                    producto.nombre_candy;
-
-                const cantidad =
-                    Number(producto.cantidad) || 0;
-
+                const nombre = producto.nombre_candy;
+                const cantidad = Number(producto.cantidad) || 0;
 
                 if (!nombre) {
                     return;
                 }
 
-
                 if (productos[nombre]) {
 
-                    productos[nombre] +=
-                        cantidad;
+                    productos[nombre] += cantidad;
 
                 } else {
 
-                    productos[nombre] =
-                        cantidad;
+                    productos[nombre] = cantidad;
                 }
-
             });
-
         });
 
-
         return Object.entries(productos)
-
             .map(([nombre, cantidad]) => ({
                 nombre,
                 cantidad
             }))
-
             .sort(
                 (a, b) =>
                     b.cantidad - a.cantidad

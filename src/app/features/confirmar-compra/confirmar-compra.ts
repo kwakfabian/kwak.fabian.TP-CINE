@@ -20,41 +20,34 @@ import { Pelicula } from '../../core/models/peliculainterface';
     styleUrl: './confirmar-compra.css'
 })
 export class ConfirmarCompra implements OnInit {
-
-    authService = inject(AuthService);
-    compraService = inject(CompraService);
-    cuponService = inject(CuponService);
-
+    
     private funcionService = inject(FuncionService);
     private peliculaService = inject(PeliculaService);
     private router = inject(Router);
-
+    authService = inject(AuthService);
+    compraService = inject(CompraService);
+    cuponService = inject(CuponService);
     creditoUsado = new FormControl(0);
     cuponSeleccionado = new FormControl('');
-
     compraFinalizada = signal(false);
     qrImagen = signal<string | null>(null);
     codigoQr = signal<string | null>(null);
-
     compraConfirmada: Compra | null = null;
     funcionConfirmada: Funcion | null = null;
     peliculaConfirmada: Pelicula | null = null;
 
     async ngOnInit() {
+
         this.funcionService.cargarTodasLasFunciones();
         await this.cuponService.cargarCupones();
-
         const usuarioActual = this.authService.currentUser();
-
         if (usuarioActual) {
             await this.cuponService.cargarCuponesUsados(usuarioActual.id);
         }
     }
 
     esAnonimo = computed(() => !this.authService.currentUser());
-
-    funcionActual = computed(() => {
-        const funcionId = this.compraService.funcionId();
+    funcionActual = computed(() => {const funcionId = this.compraService.funcionId();
 
         return this.funcionService.funciones().find(
             f => f.funciones_id === funcionId
@@ -62,13 +55,11 @@ export class ConfirmarCompra implements OnInit {
     });
 
     peliculaActual = computed(() => {
+
         const peliculaId = this.funcionActual()?.peliculas_id;
-
-        if (!peliculaId) return undefined;
-
-        return this.peliculaService.peliculas().find(
-            p => p.pelicula_id === peliculaId
-        );
+        if (!peliculaId) 
+            return undefined;
+        return this.peliculaService.peliculas().find(p => p.pelicula_id === peliculaId);
     });
 
     datosInvitadoForm = new FormGroup({
@@ -104,15 +95,13 @@ export class ConfirmarCompra implements OnInit {
     }
 
     cuponesDisponibles(): Cupon[] {
-        return this.cuponService.cupones().filter(
-            cupon => cupon.activo && !this.cuponService.cuponFueUsado(cupon.cupon_id)
+        return this.cuponService.cupones().filter( cupon => cupon.activo && !this.cuponService.cuponFueUsado(cupon.cupon_id)
         );
     }
 
     obtenerCuponSeleccionado(): Cupon | undefined {
 
         const cuponId = this.cuponSeleccionado.value;
-
         if (!cuponId) {
             return undefined;
         }
@@ -123,9 +112,7 @@ export class ConfirmarCompra implements OnInit {
     }
 
     obtenerDescuentoCupon(): number {
-        return Number(
-            this.obtenerCuponSeleccionado()?.descuento ?? 0
-        );
+        return Number(this.obtenerCuponSeleccionado()?.descuento ?? 0);
     }
 
     obtenerMontoDescuentoCupon(): number {
@@ -136,15 +123,11 @@ export class ConfirmarCompra implements OnInit {
     }
 
     calcularTotalConCupon(): number {
-        return this.compraService.calcularPrecioConCupon(
-            this.obtenerDescuentoCupon()
-        );
+        return this.compraService.calcularPrecioConCupon(this.obtenerDescuentoCupon());
     }
 
     obtenerCreditoDisponible(): number {
-        return Number(
-            this.authService.currentUserData()?.credito ?? 0
-        );
+        return Number(this.authService.currentUserData()?.credito ?? 0);
     }
 
     obtenerCreditoUsado(): number {
@@ -279,11 +262,7 @@ export class ConfirmarCompra implements OnInit {
             this.funcionConfirmada = funcionAntesDeComprar ?? null;
             this.peliculaConfirmada = peliculaAntesDeComprar ?? null;
             this.codigoQr.set(compraCreada.codigo_qr);
-
-            const imagenQr = await QRCode.toDataURL(
-                compraCreada.codigo_qr
-            );
-
+            const imagenQr = await QRCode.toDataURL(compraCreada.codigo_qr);
             this.qrImagen.set(imagenQr);
             this.compraFinalizada.set(true);
 
