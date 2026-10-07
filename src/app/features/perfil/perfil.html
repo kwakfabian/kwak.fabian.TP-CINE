@@ -1,45 +1,70 @@
 <section>
+
     <h1>Mi Perfil</h1>
 
     <div class="perfil-contenido">
 
         <div class="perfil-izquierda">
+
             <div class="seccion-perfil">
+
                 @if (authService.currentUserData(); as usuario) {
+
                     <h2>Datos personales</h2>
+
                     <p>Nombre: {{ usuario.nombre }} {{ usuario.apellido }}</p>
                     <p>Email: {{ authService.currentUser()?.email }}</p>
                     <p>Credito disponible: {{ usuario.credito ?? 0 }}</p>
+
                 }
+
             </div>
 
+
             <div class="seccion-perfil">
+
                 <h2>Películas compradas</h2>
+
                 @if (tienePeliculasCompradas()) {
+
                     <div class="lista-compras">
+
                         @for (compra of compraService.comprasUsuario(); track compra.compra_id) {
-                            @if (compra.compra_activa && !funcionYaPaso(compra)) {
+
+                            @if (compra.estado === 'activa') {
+
                                 <div class="compra">
+
                                     @if (obtenerPelicula(compra); as pelicula) {
+
                                         <img
                                             class="imagen-pelicula"
                                             [src]="pelicula.img_url"
                                             [alt]="pelicula.pelicula_titulo"
                                         >
+
                                     }
 
                                     <div class="datos-compra">
+
                                         @if (obtenerPelicula(compra); as pelicula) {
+
                                             <h3>{{ pelicula.pelicula_titulo }}</h3>
+
                                         }
+
                                         @if (obtenerFuncion(compra); as funcion) {
+
                                             <p>Fecha: {{ funcion.fecha }}</p>
                                             <p>Horario: {{ funcion.hora_inicio }}</p>
+
                                         }
+
                                         <p>Butacas: {{ compra.butacas.join(', ') }}</p>
                                         <p>Total: ${{ compra.precio_total }}</p>
 
                                         @if (compra.qr_disponible) {
+
                                             <button
                                                 type="button"
                                                 class="btn-qr"
@@ -47,63 +72,90 @@
                                             >
                                                 Ver QR
                                             </button>
+
                                         } @else {
+
                                             <p>QR no disponible.</p>
+
                                         }
 
                                         @if (puedeCancelar(compra)) {
+
                                             <button
                                                 type="button"
                                                 (click)="cancelarCompra(compra)"
                                             >
                                                 Cancelar compra
                                             </button>
+
                                         } @else {
+
                                             <p>Esta compra ya no se puede cancelar.</p>
+
                                         }
+
                                     </div>
+
                                 </div>
+
                             }
+
                         }
 
                     </div>
+
                 } @else {
+
                     <p class="mensaje-vacio">No tenes peliculas compradas.</p>
+
                 }
+
             </div>
 
+
             <div class="seccion-perfil">
+
                 <h2>Mis películas</h2>
 
                 @if (tieneHistorial()) {
+
                     <div class="lista-compras">
 
                         @for (compra of compraService.comprasUsuario(); track compra.compra_id) {
 
-                            @if (compra.compra_activa && funcionYaPaso(compra)) {
+                            @if (compra.estado === 'vista') {
+
                                 <div class="compra">
 
                                     @if (obtenerPelicula(compra); as pelicula) {
+
                                         <img
                                             class="imagen-pelicula"
                                             [src]="pelicula.img_url"
                                             [alt]="pelicula.pelicula_titulo"
                                         >
+
                                     }
 
                                     <div class="datos-compra">
 
                                         @if (obtenerPelicula(compra); as pelicula) {
+
                                             <h3>{{ pelicula.pelicula_titulo }}</h3>
+
                                             @if (obtenerFuncion(compra); as funcion) {
+
                                                 <p>Fecha: {{ funcion.fecha }}</p>
                                                 <p>Horario: {{ funcion.hora_inicio }}</p>
+
                                             }
+
                                             <p>Tu calificación:</p>
 
                                             <div class="estrellas">
 
                                                 @for (estrella of [1, 2, 3, 4, 5]; track estrella) {
+
                                                     <button
                                                         type="button"
                                                         class="estrella"
@@ -112,6 +164,7 @@
                                                     >
                                                         ★
                                                     </button>
+
                                                 }
 
                                             </div>
@@ -140,6 +193,7 @@
                                                 </button>
 
                                                 @if (resenaService.obtenerResenaPelicula(pelicula.pelicula_id)) {
+
                                                     <button
                                                         type="button"
                                                         class="quitar-resena"
@@ -147,70 +201,127 @@
                                                     >
                                                         Quitar reseña
                                                     </button>
+
                                                 }
+
                                             </div>
+
                                         }
+
                                     </div>
+
                                 </div>
+
                             }
+
                         }
+
                     </div>
+
                 } @else {
-                    <p class="mensaje-vacio">Todavía no tenes películas en tu historial</p>
+
+                    <p class="mensaje-vacio">
+                        Todavía no tenes películas en tu historial
+                    </p>
+
                 }
+
             </div>
+
         </div>
 
+
         <div class="perfil-derecha">
+
             <div class="seccion-perfil">
+
                 <h2>Compras canceladas</h2>
+
                 @if (tieneComprasCanceladas()) {
+
                     <div class="lista-canceladas">
+
                         @for (compra of compraService.comprasUsuario(); track compra.compra_id) {
-                            @if (!compra.compra_activa) {
+
+                            @if (compra.estado === 'cancelada') {
+
                                 <div class="compra compra-cancelada">
+
                                     @if (obtenerPelicula(compra); as pelicula) {
+
                                         <img
                                             class="imagen-pelicula"
                                             [src]="pelicula.img_url"
                                             [alt]="pelicula.pelicula_titulo"
                                         >
+
                                     }
+
                                     <div class="datos-compra">
+
                                         @if (obtenerPelicula(compra); as pelicula) {
+
                                             <h3>{{ pelicula.pelicula_titulo }}</h3>
+
                                         }
+
                                         @if (obtenerFuncion(compra); as funcion) {
+
                                             <p>Fecha: {{ funcion.fecha }}</p>
                                             <p>Horario: {{ funcion.hora_inicio }}</p>
+
                                         }
+
                                         <p>Butacas: {{ compra.butacas.join(', ') }}</p>
                                         <p>Total: ${{ compra.precio_total }}</p>
+
                                     </div>
+
                                 </div>
+
                             }
+
                         }
+
                     </div>
+
                 } @else {
-                    <p class="mensaje-vacio">No tenes compras canceladas</p>
+
+                    <p class="mensaje-vacio">
+                        No tenes compras canceladas
+                    </p>
+
                 }
+
             </div>
+
         </div>
+
     </div>
+
 </section>
+
 
 @if (compraQr && qrImagen) {
 
     <div class="fondo-qr" (click)="cerrarQr()">
 
         <div class="modal-qr" (click)="$event.stopPropagation()">
+
             <h2>Tu entrada</h2>
+
             @if (obtenerPelicula(compraQr); as pelicula) {
+
                 <h3>{{ pelicula.pelicula_titulo }}</h3>
+
             }
+
             @if (obtenerFuncion(compraQr); as funcion) {
+
                 <p>{{ funcion.fecha }} — {{ funcion.hora_inicio }}</p>
+
             }
+
             <p>Butacas: {{ compraQr.butacas.join(', ') }}</p>
 
             <img

@@ -39,28 +39,27 @@ export class RegisterComponent {
 
   async onSubmit() {
     if (this.registerForm.invalid) return;
+      this.isLoading.set(true);
+      this.errorMessage.set(null);
 
-    this.isLoading.set(true);
-    this.errorMessage.set(null);
+      const { email, password, nombre, apellido, fechaDeNacimiento, tipoDeSangre, colorDeOjos, vacacionesPorAnio } = this.registerForm.value;
 
-    const { email, password, nombre, apellido, fechaDeNacimiento, tipoDeSangre, colorDeOjos, vacacionesPorAnio } = this.registerForm.value;
+      try {
+        const { data, error } = await this.authService.signUp(email!, password!, nombre!, apellido!, fechaDeNacimiento!, tipoDeSangre!, colorDeOjos!,vacacionesPorAnio!);
+        if (error) throw error;
 
-    try {
-      const { data, error } = await this.authService.signUp(email!, password!, nombre!, apellido!, fechaDeNacimiento!, tipoDeSangre!, colorDeOjos!,vacacionesPorAnio!);
-      if (error) throw error;
+        if (data.user?.identities?.length === 0){
+          this.errorMessage.set('Este email ya esta registrado')
+        } else{
+          this.succesMessage.set('Registro exitoso')
+          this.registerForm.reset()
+          this.router.navigate(['/home']);
+        }
 
-      if (data.user?.identities?.length === 0){
-        this.errorMessage.set('Este email ya esta registrado')
-      } else{
-        this.succesMessage.set('Registro exitoso')
-        this.registerForm.reset()
-        this.router.navigate(['/home']);
+      } catch (error: any) {
+        this.errorMessage.set(error.message || 'Error al registrar la cuenta');
+      } finally {
+        this.isLoading.set(false);
       }
-
-    } catch (error: any) {
-      this.errorMessage.set(error.message || 'Error al registrar la cuenta');
-    } finally {
-      this.isLoading.set(false);
-    }
   }
 }

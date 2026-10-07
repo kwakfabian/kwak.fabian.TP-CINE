@@ -7,7 +7,9 @@ import { RealtimeChannel } from '@supabase/supabase-js';
 })
 export class ButacasService {
 
-  constructor(private supabase: SupabaseService) {
+  constructor(
+    private supabase: SupabaseService
+  ) {
 
   }
 

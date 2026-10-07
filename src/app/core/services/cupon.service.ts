@@ -78,7 +78,6 @@ export class CuponService {
             .insert([{
                 codigo: codigo.toUpperCase(),
                 descuento: descuento,
-                fecha_vencimiento: null,
                 activo: true
             }]);
 

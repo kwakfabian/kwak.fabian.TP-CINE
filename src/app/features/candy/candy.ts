@@ -1,9 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { CandyService } from '../../core/services/candy.service';
 import { CompraService } from '../../core/services/compra.service';
-
 import { CandyCard } from '../../shares/candy-card/candy-card';
 
 @Component({

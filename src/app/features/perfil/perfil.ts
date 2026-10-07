@@ -1,7 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import QRCode from 'qrcode';
-
 import { AuthService } from '../../core/services/auth.service';
 import { CompraService } from '../../core/services/compra.service';
 import { FuncionService } from '../../core/services/funcion.service';
@@ -84,7 +83,7 @@ export class Perfil implements OnInit {
     puedeCancelar(compra: Compra): boolean {
         const funcion = this.obtenerFuncion(compra);
 
-        if (!funcion || !compra.compra_activa) {
+        if (!funcion || compra.estado !== 'activa') {
             return false;
         }
 
@@ -96,26 +95,33 @@ export class Perfil implements OnInit {
 
     tienePeliculasCompradas(): boolean {
         return this.compraService.comprasUsuario().some(
-            compra => compra.compra_activa && !this.funcionYaPaso(compra)
+            compra => compra.estado === 'activa'
         );
     }
 
     tieneHistorial(): boolean {
         return this.compraService.comprasUsuario().some(
-            compra => compra.compra_activa && this.funcionYaPaso(compra)
+            compra =>
+                compra.estado === 'vista' &&
+                this.funcionYaPaso(compra)
         );
     }
 
     tieneComprasCanceladas(): boolean {
         return this.compraService.comprasUsuario().some(
-            compra => !compra.compra_activa
+            compra => compra.estado === 'cancelada'
         );
     }
 
     async verQr(compra: Compra) {
 
-        if (!compra.compra_activa) {
+        if (compra.estado === 'cancelada') {
             alert('Esta compra fue cancelada.');
+            return;
+        }
+
+        if (compra.estado === 'vista') {
+            alert('Esta entrada ya fue utilizada.');
             return;
         }
 
@@ -217,7 +223,6 @@ export class Perfil implements OnInit {
             alert(
                 'La compra solo puede cancelarse hasta 2 horas antes de la función.'
             );
-
             return;
         }
 

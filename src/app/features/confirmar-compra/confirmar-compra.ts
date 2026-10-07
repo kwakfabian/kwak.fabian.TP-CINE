@@ -3,7 +3,6 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angula
 import { Router } from '@angular/router';
 import jsPDF from 'jspdf';
 import QRCode from 'qrcode';
-
 import { AuthService } from '../../core/services/auth.service';
 import { CompraService } from '../../core/services/compra.service';
 import { FuncionService } from '../../core/services/funcion.service';

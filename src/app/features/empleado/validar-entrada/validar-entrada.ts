@@ -11,9 +11,7 @@ import { CompraService } from '../../../core/services/compra.service';
 export class ValidarEntrada {
 
   private compraService = inject(CompraService);
-
   codigo = '';
-
   mensaje = signal<string | null>(null);
   tipoMensaje = signal<'exito' | 'error' | null>(null);
   cargando = signal(false);

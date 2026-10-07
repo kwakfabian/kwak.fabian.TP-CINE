@@ -19,7 +19,6 @@ export class AdminConfig {
     precioVip: number = 0;
     codigoCupon: string = '';
     descuentoCupon: number = 0;
-
     cuponEditando: Cupon | null = null;
 
     async ngOnInit() {
@@ -36,18 +35,15 @@ export class AdminConfig {
     }
 
     async guardarConfiguracion() {
-
         if (this.precioEstandar < 0 || this.precioDiscapacitado < 0 || this.precioVip < 0 ) {
             alert('Los precios no pueden ser negativos.');
             return;
         }
-
         const exito = await this.configuracionService.modificarConfiguracion(
             this.precioEstandar,
             this.precioDiscapacitado,
             this.precioVip
         );
-
         if (exito) {
             alert('Configuracion guardada correctamente.');
         } else {
@@ -56,19 +52,15 @@ export class AdminConfig {
     }
 
     async guardarCupon() {
-
         if (!this.codigoCupon.trim()) {
             alert('Ingresa un codigo para el cupon.');
             return;
         }
-
         if (this.descuentoCupon <= 0 || this.descuentoCupon > 100 ) {
             alert('El descuento debe estar entre 1% y 100%.');
             return;
         }
-
         let exito: boolean;
-
         if (this.cuponEditando) {
             exito = await this.cuponService.modificarCupon(
                 this.cuponEditando.cupon_id,
@@ -81,17 +73,23 @@ export class AdminConfig {
                 this.descuentoCupon,
             );
         }
-
         if (exito) {
             if (this.cuponEditando) {
                 alert('Cupon modificado correctamente.');
             } else {
                 alert('Cupon creado correctamente.');
             }
-
             this.cancelarEdicion();
         } else {
             alert('Hubo un error al guardar el cupon.');
+        }
+    }
+
+    async cambiarEstadoCupon(cupon: Cupon) {
+        const exito = await this.cuponService.cambiarEstadoCupon(cupon);
+
+        if (!exito) {
+            alert('Hubo un error al cambiar el estado del cupon.');
         }
     }
 
@@ -105,14 +103,5 @@ export class AdminConfig {
         this.cuponEditando = null;
         this.codigoCupon = '';
         this.descuentoCupon = 0;
-    }
-
-    async cambiarEstadoCupon(cupon: Cupon) {
-
-        const exito = await this.cuponService.cambiarEstadoCupon(cupon);
-
-        if (!exito) {
-            alert('Hubo un error al cambiar el estado del cupon.');
-        }
     }
 }

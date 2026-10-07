@@ -9,6 +9,6 @@ export interface Compra {
     candy_productos: any | null;
     qr_disponible: boolean;
     codigo_qr: string;
-    compra_activa: boolean;
+    estado: string;
     precio_total: number;
 }

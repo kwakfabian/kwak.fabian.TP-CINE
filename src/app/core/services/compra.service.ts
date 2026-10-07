@@ -147,7 +147,7 @@ export class CompraService {
             butacas: this.butacasSeleccionadas(),
             candy_productos: this.candySeleccionado().length > 0 ? this.candySeleccionado() : null,
             qr_disponible: true,
-            compra_activa: true,
+            estado: 'activa',
             codigo_qr: codigoQr,
             precio_total: precioTotal
         };
@@ -227,7 +227,7 @@ export class CompraService {
 
         const { error: errorCompra } = await this.supabase
             .from('compras')
-            .update({compra_activa: false, qr_disponible: false})
+            .update({compra_activa: false, estado: 'cancelada'})
             .eq('compra_id', compra.compra_id);
         if (errorCompra) {
             console.error('Error al cancelar la compra:', errorCompra.message);
@@ -330,7 +330,6 @@ export class CompraService {
                 mensaje: 'Ingresá un código.'
             };
         }
-
         const { data: compra, error: errorBusqueda } = await this.supabase
             .from('compras')
             .select('*')
@@ -367,7 +366,7 @@ export class CompraService {
         const { data: compraActualizada, error: errorUpdate } = await this.supabase
             .from('compras')
             .update({
-                qr_disponible: false,
+                estado: 'vista',
                 compra_activa: false
             })
             .eq('compra_id', compra.compra_id)
@@ -385,7 +384,6 @@ export class CompraService {
             };
         }
 
-        // Si no actualizó ninguna fila, alguien ya la utilizó
         if (!compraActualizada) {
             return {
                 exito: false,

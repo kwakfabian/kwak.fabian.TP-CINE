@@ -1,112 +1,186 @@
 <section class="section-detalle">
-    <div class="card-detalle">
 
-        <img
-            class="img-detalle"
-            [src]="pelicula()?.img_url"
-            [alt]="pelicula()?.pelicula_titulo"
-        >
+    @if (pelicula(); as pelicula) {
 
-        <div class="info-detalle">
-            <h2>{{ pelicula()?.pelicula_titulo }}</h2>
+        <div class="contenido-detalle">
 
-            <p class="sinopsis">
-                {{ pelicula()?.sinopsis }}
-            </p>
+            <div class="card-detalle">
 
-            <div class="datos-detalle">
-                <span>{{ pelicula()?.duracion }} min</span>
-                <span>{{ pelicula()?.edad_restriccion }}</span>
-            </div>
+                <img
+                    class="img-detalle"
+                    [src]="pelicula.img_url"
+                    [alt]="pelicula.pelicula_titulo">
 
-            <div class="generos-detalle">
-                @for (g of pelicula()?.genero; track g) {
-                    <span class="chip-genero">
-                        {{ g }}
-                    </span>
-                }
-            </div>
+                <div class="info-detalle">
 
-            @if (fechasDisponibles().length > 0) {
+                    <h2>{{ pelicula.pelicula_titulo }}</h2>
 
-                <div class="selector-funciones">
-                    <label>Elegí una fecha</label>
+                    <p class="sinopsis">
+                        {{ pelicula.sinopsis }}
+                    </p>
 
-                    <div class="opciones-fecha">
-                        @for (fecha of fechasDisponibles(); track fecha) {
-                            <button
-                                type="button"
-                                class="chip-fecha"
-                                [class.chip-activo]="fechaSeleccionada() === fecha"
-                                (click)="elegirFecha(fecha)"
-                            >
-                                {{ fecha }}
-                            </button>
+                    <div class="datos-detalle">
+                        <span>{{ pelicula.duracion }} min</span>
+                        <span>{{ pelicula.edad_restriccion }}</span>
+                    </div>
+
+                    <div class="generos-detalle">
+                        @for (genero of pelicula.genero; track genero) {
+                            <span class="chip-genero">
+                                {{ genero }}
+                            </span>
                         }
                     </div>
-                </div>
 
-                @if (fechaSeleccionada()) {
                     <div class="selector-funciones">
-                        <label>Elegí un horario</label>
 
-                        <div class="opciones-horario">
-                            @for (
-                                funcion of horariosDelDia();
-                                track funcion.funciones_id
-                            ) {
+                        <label>Seleccioná una fecha</label>
+
+                        <div class="opciones-fecha">
+                            @for (fecha of fechasDisponibles(); track fecha) {
                                 <button
                                     type="button"
-                                    class="chip-horario"
-                                    [class.chip-activo]="
-                                        horarioSeleccionado() === funcion.funciones_id
-                                    "
-                                    (click)="elegirHorario(funcion.funciones_id)"
-                                >
-                                    {{ funcion.hora_inicio }}
-                                    —
-                                    {{ funcion.formato }}
+                                    class="chip-fecha"
+                                    [class.chip-activo]="fechaSeleccionada() === fecha"
+                                    (click)="seleccionarFecha(fecha)">
+                                    {{ fecha }}
                                 </button>
                             }
                         </div>
+
                     </div>
+
+                    @if (fechaSeleccionada()) {
+
+                        <div class="selector-funciones">
+
+                            <label>Seleccioná un horario</label>
+
+                            <div class="opciones-horario">
+                                @for (funcion of horariosDisponibles(); track funcion.funciones_id) {
+                                    <button
+                                        type="button"
+                                        class="chip-horario"
+                                        [class.chip-activo]="horarioSeleccionado() === funcion.funciones_id"
+                                        (click)="seleccionarHorario(funcion.funciones_id)">
+                                        {{ funcion.hora_inicio }}
+                                    </button>
+                                }
+                            </div>
+
+                        </div>
+
+                    }
+
+                    <div class="selector-cantidad">
+
+                        <label for="cantidad">Cantidad de entradas</label>
+
+                        <input
+                            type="number"
+                            id="cantidad"
+                            min="1"
+                            [value]="cantidadBoletos()"
+                            (input)="cambiarCantidad($event)">
+
+                    </div>
+
+                    <div class="espacio-flexible"></div>
+
+                    <button
+                        type="button"
+                        class="btn-comprar"
+                        [disabled]="!horarioSeleccionado()"
+                        (click)="comprar()">
+                        Comprar entradas
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="seccion-resenas">
+
+                <h2>Reseñas</h2>
+
+                @if (resenaService.resenasPelicula().length > 0) {
+
+                    <div class="resumen-resenas">
+
+                        <div class="promedio-numero">
+                            {{ promedioResenas().toFixed(1) }}
+                        </div>
+
+                        <div class="promedio-info">
+
+                            <div class="estrellas-promedio">
+                                ★★★★★
+                            </div>
+
+                            <span>
+                                {{ resenaService.resenasPelicula().length }}
+                                {{ resenaService.resenasPelicula().length === 1 ? 'reseña' : 'reseñas' }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="lista-resenas">
+
+                        @for (resena of resenaService.resenasPelicula(); track resena.resena_id) {
+
+                            <div class="resena">
+
+                                <div class="resena-encabezado">
+
+                                    <div>
+                                        <strong>
+                                            {{ resena.usuario?.nombre }}
+                                            {{ resena.usuario?.apellido }}
+                                        </strong>
+
+                                        @if (resena.fecha_creacion) {
+                                            <span class="fecha-resena">
+                                                {{ resena.fecha_creacion }}
+                                            </span>
+                                        }
+                                    </div>
+
+                                    <div class="estrellas">
+                                        @for (estrella of [1, 2, 3, 4, 5]; track estrella) {
+                                            <span [class.estrella-activa]="estrella <= resena.estrellas">
+                                                ★
+                                            </span>
+                                        }
+                                    </div>
+
+                                </div>
+
+                                <p>
+                                    {{ resena.comentario }}
+                                </p>
+
+                            </div>
+
+                        }
+
+                    </div>
+
+                } @else {
+
+                    <div class="sin-resenas">
+                        <span>☆</span>
+                        <p>Esta película todavía no tiene reseñas.</p>
+                    </div>
+
                 }
 
-                <!-- CANTIDAD -->
-                <div class="selector-cantidad">
-
-                    <label for="cantidad">
-                        Cantidad de boletos
-                    </label>
-
-                    <input
-                        type="number"
-                        id="cantidad"
-                        min="1"
-                        [value]="cantidadBoletos()"
-                        (input)="cantidadBoletos.set(+$any($event.target).value)"
-                    >
-
-                </div>
-
-                <div class="espacio-flexible"></div>
-
-                <button
-                    class="btn-comprar"
-                    [disabled]="!puedeComprar()"
-                    (click)="comprar()"
-                >
-                    Comprar Boletos
-                </button>
-
-            } @else {
-
-                <div class="selector-funciones">
-                    <p>No hay funciones disponibles para esta película.</p>
-                </div>
-
-            }
+            </div>
 
         </div>
-    </div>
+
+    }
+
 </section>
